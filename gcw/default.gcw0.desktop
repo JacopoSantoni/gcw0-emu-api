@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=GCW0 Emulators
+Comment=A frontend for emulation cores
+Terminal=false
+StartupNotify=true
+Exec=gcwemu
+Categories=emulators;

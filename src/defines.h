@@ -12,7 +12,7 @@
 
 #ifdef _VERBOSE_
 #define LOG(args...) printf(args);
-#elif
+#else
 #define LOG(args...) do { } while (false)
 #endif
 
