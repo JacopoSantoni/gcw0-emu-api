@@ -1,0 +1,3 @@
+[submodule "ohboy"]
+	path = ohboy
+	url = git://github.com/JacopoSantoni/ohboy
