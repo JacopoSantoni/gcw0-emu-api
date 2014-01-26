@@ -1,3 +1,6 @@
 [submodule "ohboy"]
 	path = ohboy
 	url = git://github.com/JacopoSantoni/ohboy
+[submodule "PocketSNES"]
+	path = PocketSNES
+	url = git://github.com/JacopoSantoni/PocketSNES.git
