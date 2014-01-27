@@ -1,20 +1,28 @@
 #include "emu_interface.h"
 
-#include <SDL/SDL.h>
+#include <SDL.h>
+
+#include "loader.h"
+#include "emu_interface.h"
 
 #include "dlfcn.h"
 
+
 int main(int argc, char **argv)
 {
-	void *handle = dlopen("cores/ohboy.dylib", RTLD_LOCAL|RTLD_NOW);
-	
-	EmuInterface* (*retrieve)();
-	*(void**) (&retrieve) = dlsym(handle, "retrieve");
-	EmuInterface *interface = retrieve();
-	
-	interface->run(argc, argv);
-	
-	dlclose(handle);
-
-	return 0;
+  Loader loader;
+  
+  loader.scan();
+  
+  if (argc > 1)
+  {
+    CoreHandle *core = loader.coreForFile(argv[1]);
+    if (core)
+    {
+      loader.loadCore(core->info.ident);
+      loader.getCore()->run(argc, argv);
+    }
+  }
+  
+  return 0;
 }
