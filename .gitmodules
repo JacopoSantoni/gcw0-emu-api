@@ -4,3 +4,6 @@
 [submodule "PocketSNES"]
 	path = PocketSNES
 	url = ssh://git@github.com/JacopoSantoni/PocketSNES.git
+[submodule "gambatte"]
+	path = gambatte
+	url = git@github.com:JacopoSantoni/gambatte.git
