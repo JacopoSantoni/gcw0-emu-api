@@ -72,6 +72,15 @@ struct ButtonSetting
   ButtonSetting(std::string name, GCWKey key, u8 shiftAmount) : name(name), key(key), shiftAmount(shiftAmount) { }
 };
 
+struct AnalogSetting
+{
+  std::string name;
+  GCWAnalogAxis axis;
+  float activeZone[2][2];
+  
+  AnalogSetting(std::string name, GCWAnalogAxis axis, float activeZone) { }
+};
+
   
 }
 

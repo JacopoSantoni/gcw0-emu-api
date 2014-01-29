@@ -41,6 +41,16 @@ enum GCWKey : s16
 const s8 SDL_INVALID_KEY = -1;
 const int GCWKEY_AMOUNT = 12;
 
+const s16 GCW_ANALOG_MIN = 0;
+const s16 GCW_ANALOG_MAX = 32768;
+
+enum GCWAnalogAxis
+{
+  GCW_ANALOG_AXIS_X = 0x01,
+  GCW_ANALOG_AXIS_Y = 0x02,
+  GCW_ANALOG_AXIS_BOTH = GCW_ANALOG_AXIS_X | GCW_ANALOG_AXIS_Y
+};
+
 typedef u32 ButtonStatus;
 
 
