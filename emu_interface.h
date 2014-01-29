@@ -4,21 +4,19 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
+#include <SDL.h>
 
+#include "defines.h"
 #include "settings.h"
 
-typedef uint8_t u8;
-typedef uint16_t u16;
+
+
+namespace gcw {
 
 class CoreInterface;
 
-enum ConsoleType : u16
-{
-  CONSOLE_UNSPECIFIED,
+
   
-  CONSOLE_GAME_BOY,
-  CONSOLE_SUPER_NINTENDO
-};
 
 struct CoreInfo
 {
@@ -41,19 +39,27 @@ class CoreInterface
     CoreInfo information;
   
     std::vector<Setting*> settings;
+    std::vector<ButtonSetting> buttons;
   
 	protected:
 		void registerExtension(std::string ext) { extensions.push_back(ext); }
     void registerInformations(ConsoleType type, std::string ident, std::string name, std::string version) { information = CoreInfo(type,ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(setting); }
+    void registerButton(ButtonSetting button) { buttons.push_back(button); }
 
 	public:
-		virtual ~CoreInterface() { }
-		virtual void run(int argc, char **argv) = 0;
+		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
+		
+    virtual void run(int argc, char **argv) = 0;
+  
+    virtual void setButtonStatus(ButtonStatus status) = 0;
 
     CoreInfo info() { return information; }
 		std::vector<std::string> supportedExtensions() { return extensions; }
     std::vector<Setting*> supportedSettings() { return settings; }
+    std::vector<ButtonSetting> supportedButtons() { return buttons; }
 };
+  
+}
 
 #endif

@@ -10,13 +10,13 @@
 
 int main(int argc, char **argv)
 {
-  Loader loader;
+  gcw::Loader loader;
   
   loader.scan();
   
   if (argc > 1)
   {
-    CoreHandle *core = loader.coreForFile(argv[1]);
+    gcw::CoreHandle *core = loader.coreForFile(argv[1]);
     if (core)
     {
       loader.loadCore(core->info.ident);

@@ -8,6 +8,8 @@
 
 #include "emu_interface.h"
 
+namespace gcw {
+
 struct CoreHandle
 {
   const CoreInfo info;
@@ -45,5 +47,7 @@ class Loader
   
     CoreInterface *getCore() { return core; }
 };
+  
+}
 
 #endif

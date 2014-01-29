@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+#include "defines.h"
+
+namespace gcw
+{
 
 class Setting
 {
@@ -57,6 +61,19 @@ class EnumSetting : public ConcreteSetting<EnumValue<T> >
   public:
     EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> defaultValue) : ConcreteSetting<EnumValue<T> >(name, ident, defaultValue), values(values)  { }
 };
+  
+
+struct ButtonSetting
+{
+  std::string name;
+  GCWKey key;
+  u8 shiftAmount;
+  
+  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount) : name(name), key(key), shiftAmount(shiftAmount) { }
+};
+
+  
+}
 
 
 #endif

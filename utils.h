@@ -6,11 +6,16 @@
 #include <vector>
 #include <string>
 
-class Files
+namespace gcw
 {
-	public:
-		static std::vector<std::string> findFiles(std::string path, const char *ext);
+  class Files
+  {
+    public:
+      static std::vector<std::string> findFiles(std::string path, std::string ext);
+      static std::vector<std::string> findFiles(std::string path, std::vector<std::string> exts);
 
-};
+    
+  };
+}
 
 #endif
