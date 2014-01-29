@@ -9,6 +9,7 @@ namespace gcw {
   class RomManager
   {
     private:
+      std::vector<std::string> paths;
     
   };
   

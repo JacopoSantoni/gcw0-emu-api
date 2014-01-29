@@ -38,8 +38,6 @@ void Controls::initControls(CoreInterface *core)
   // for each available button of the emulator enable its definition and its shift amount
   for (ButtonSetting &button : buttons)
   {
-    assert(button.key != )
-    
     mapping[indexForKey(button.key)].enabled = true;
     mapping[indexForKey(button.key)].shiftAmount = button.shiftAmount;
   }

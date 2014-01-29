@@ -52,6 +52,12 @@ class CoreInterface
 		
     virtual void run(int argc, char **argv) = 0;
   
+    /**
+     * Pass the current button status to the core. The status is built according to the button specification
+     * of the core (@see registerButton)
+     *
+     * @param status a bitmask, a bit is set if the corresponding button is pressed, 0 otherwise.
+     */
     virtual void setButtonStatus(ButtonStatus status) = 0;
 
     CoreInfo info() { return information; }
