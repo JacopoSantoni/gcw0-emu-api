@@ -8,7 +8,9 @@ enum KeyShiftAmount : u8
   KEY_A_SHIFT = 0,
   KEY_B_SHIFT = 1,
   KEY_X_SHIFT = 2,
-  KEY_Y_SHIFT = 3
+  KEY_Y_SHIFT = 3,
+  
+  KEY_Z_SHIFT = 4
 };
 
 class DummyCore : public CoreInterface
@@ -34,17 +36,27 @@ class DummyCore : public CoreInterface
       
       registerSetting(new BoolSetting("Transparency", "transparency", false));
       registerSetting(new BoolSetting("Show FPS", "show-fps", false));
+            
+      registerButton(ButtonSetting("A", GCW_KEY_A, KEY_A_SHIFT, true));
+      registerButton(ButtonSetting("B", GCW_KEY_B, KEY_B_SHIFT, true));
+      registerButton(ButtonSetting("X", GCW_KEY_X, KEY_X_SHIFT, true));
+      registerButton(ButtonSetting("Y", GCW_KEY_Y, KEY_Y_SHIFT, true));
+      
+      // this enables a joypad direction as a digital button
+      registerButton(ButtonSetting("Z", GCW_ANALOG_LEFT, KEY_Z_SHIFT, true));
+      
+      // this instead enables the joypad for normal analog use, of course they can't be both active!
+      enableNormalAnalogJoypad();
       
       
-      registerButton(ButtonSetting("A", GCWKEY_A, KEY_A_SHIFT, true));
-      registerButton(ButtonSetting("B", GCWKEY_B, KEY_B_SHIFT, true));
-      registerButton(ButtonSetting("X", GCWKEY_X, KEY_X_SHIFT, true));
-      registerButton(ButtonSetting("Y", GCWKEY_Y, KEY_Y_SHIFT, true));
+      setAnalogDeadZone(0.02f, 1.0f);
+
     }
 
     virtual void run(int argc, char **argv) { /*mainEntry(argc, argv);*/ }
   
-    virtual void setButtonStatus(ButtonStatus) { /* whatever */ }
+    virtual void setButtonStatus(ButtonStatus status) { /* whatever */ }
+    virtual void setAnalogStatus(AnalogStatus status) { /* whatever */ }
 };
 
 static DummyCore emulator;

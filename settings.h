@@ -66,23 +66,19 @@ class EnumSetting : public ConcreteSetting<EnumValue<T> >
 struct ButtonSetting
 {
   std::string name;
-  GCWKey key;
+  bool isAnalogKey;
+  union
+  {
+    GCWKey key;
+    GCWAnalog analogKey;
+  };
   u8 shiftAmount;
   bool canBeRebound;
-  
-  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
+
+  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), isAnalogKey(false), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
+  ButtonSetting(std::string name, GCWAnalog analogKey, u8 shiftAmount, bool canBeRebound) : name(name), isAnalogKey(true), analogKey(analogKey), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
 };
 
-struct AnalogSetting
-{
-  std::string name;
-  float activeZone[2][2];
-  
-  AnalogSetting(std::string name, float activeZone) { }
-};
-
-  
 }
-
 
 #endif
