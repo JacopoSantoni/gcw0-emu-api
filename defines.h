@@ -4,6 +4,18 @@
 #include <SDL.h>
 #include <assert.h>
 
+#define _VERBOSE_
+
+#ifdef _VERBOSE_
+#include <cstdio>
+#endif
+
+#ifdef _VERBOSE_
+#define LOG(args...) printf(args);
+#elif
+#define LOG(args...) do { } while (false)
+#endif
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;

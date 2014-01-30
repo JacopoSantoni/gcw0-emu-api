@@ -4,18 +4,46 @@
 
 #include "loader.h"
 #include "emu_interface.h"
+#include "controls.h"
 
 #include "dlfcn.h"
 
+#include "gfx.h"
 
-int main(int argc, char **argv)
+
+int run(int argc, char **argv)
 {
   gcw::Loader loader;
+  gcw::Controls controls;
+  gcw::Gfx gfx;
   
   loader.scan();
   
   loader.loadCore("dummy");
+  controls.initControls(loader.getCore());
   
+  gfx.init();
+  gfx.setFrameRate(10);
+  
+  bool running = true;
+  
+  while (running)
+  {
+    gfx.clear(gfx.ccc(rand()%256, rand()%256, rand()%256));
+    
+    gfx.frameRateDelay();
+    
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+      switch (event.type) {
+        case SDL_QUIT: running = false;
+      }
+    }
+    
+    gfx.flip();
+  }
+
   /*if (argc > 1)
   {
     gcw::CoreHandle *core = loader.coreForFile(argv[1]);

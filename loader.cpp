@@ -3,18 +3,6 @@
 #include "dlfcn.h"
 #include "utils.h"
 
-#define _VERBOSE_
-
-#ifdef _VERBOSE_
-#include <cstdio>
-#endif
-
-#ifdef _VERBOSE_
-  #define LOG(args...) printf(args);
-#elif
-  #define LOG(args...) do { } while (false)
-#endif
-
 const char* CORES_PATH = "cores/";
 const char* LIBRARY_EXTENSION = ".dylib";
 
@@ -88,8 +76,6 @@ void Loader::unload()
 
 void Loader::loadCore(std::string ident)
 {  
-  
-  
   vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->info.ident == ident; });
 
   if (it != cores.end()/* && core != (*it)->core*/)
@@ -101,6 +87,7 @@ void Loader::loadCore(std::string ident)
     
     #ifdef _DUMMY_CORE_
       handle->core = retrieve();
+      core = handle->core;
     #else
       void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
       CoreInterface* (*retrieve)();
