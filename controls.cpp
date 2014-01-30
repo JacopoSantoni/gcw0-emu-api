@@ -5,7 +5,7 @@
 using namespace std;
 using namespace gcw;
 
-s8 Controls::indexForKey(GCWKey key)
+s8 CoreControlsHandler::indexForKey(GCWKey key)
 {
   switch (key) {
     case GCW_KEY_A: return 0;
@@ -24,7 +24,7 @@ s8 Controls::indexForKey(GCWKey key)
   }
 }
 
-void Controls::initControls(CoreInterface *core)
+void CoreControlsHandler::initControls(CoreInterface *core)
 {
   vector<ButtonSetting> buttons = core->supportedButtons();
   
@@ -77,7 +77,7 @@ void Controls::initControls(CoreInterface *core)
   status = 0;
 }
 
-void Controls::handleEvents()
+void CoreControlsHandler::handleEvents()
 {
   SDL_Event event;
   

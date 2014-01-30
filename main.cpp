@@ -20,8 +20,8 @@ int run(int argc, char **argv)
   loader.scan();
   
   loader.loadCore("dummy");
-  controls.initControls(loader.getCore());
-  
+  ((gcw::CoreControlsHandler*)controls.current())->initControls(loader.getCore());
+
   gfx.init();
   gfx.setFrameRate(10);
   
