@@ -1,9 +1,9 @@
 [submodule "ohboy"]
 	path = ohboy
-	url = ssh://git@github.com/JacopoSantoni/ohboy.git
+	url = ssh://git@github.com/Jakz/ohboy.git
 [submodule "PocketSNES"]
 	path = PocketSNES
-	url = ssh://git@github.com/JacopoSantoni/PocketSNES.git
+	url = ssh://git@github.com/Jakz/PocketSNES.git
 [submodule "gambatte"]
 	path = gambatte
-	url = git@github.com:JacopoSantoni/gambatte.git
+	url = git@github.com:Jakz/gambatte.git
