@@ -40,7 +40,6 @@ void Gfx::frameRateDelay()
   frameRate.totalFrames++;
   
   u32 current = SDL_GetTicks();
-  u32 elapsed = current - frameRate.currentTicks;
   frameRate.currentTicks = current;
   
   u32 target = frameRate.baseTicks + static_cast<u32>(frameRate.totalFrames * frameRate.rateTicks);
