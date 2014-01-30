@@ -21,63 +21,75 @@ const char* LIBRARY_EXTENSION = ".dylib";
 using namespace std;
 using namespace gcw;
 
+void Loader::loadCoreInfo(CoreHandle *handle, CoreInterface *info)
+{
+  cores.push_back(handle);
+  vector<string> extensions = info->supportedExtensions();
+  for (string ext : extensions)
+    handledFileTypes[ext].push_back(handle);
+  
+  LOG("Found core: %s ident: %s\n",handle->info.name.c_str(), handle->info.ident.c_str());
+}
+
 void Loader::scan()
 {
-  vector<string> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION);
-  
-  LOG("Cores folder: %s\n",CORES_PATH);
-
-
-  for (string file : files)
-  {    
-    void *handle = dlopen((CORES_PATH+file).c_str(), RTLD_LOCAL|RTLD_NOW);
-    CoreInterface* (*retrieve)();
-    *(void**) (&retrieve) = dlsym(handle, "retrieve");
+  #ifdef _DUMMY_CORE_
+    CoreInterface *core = retrieve();
+    CoreHandle *handle = new CoreHandle("dummy", core->info());
+    loadCoreInfo(handle, core);
+    return;
+  #else  
+    vector<string> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION);
     
-    if (retrieve)
+    LOG("Cores folder: %s\n",CORES_PATH);
+
+
+    for (string file : files)
     {    
-      CoreInterface *interface = retrieve();
+      void *handle = dlopen((CORES_PATH+file).c_str(), RTLD_LOCAL|RTLD_NOW);
+      CoreInterface* (*retrieve)();
+      *(void**) (&retrieve) = dlsym(handle, "retrieve");
       
-      // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
-      // function since we're just scanning 
-      CoreHandle *coreHandle = new CoreHandle(CORES_PATH+file, interface->info());
-      cores.push_back(coreHandle);
+      if (retrieve)
+      {    
+        CoreInterface *interface = retrieve();
+        
+        // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
+        // function since we're just scanning 
+        CoreHandle *coreHandle = new CoreHandle(CORES_PATH+file, interface->info());
+        loadCoreInfo(coreHandle, interface);
+        
+      }
       
-      vector<string> extensions = interface->supportedExtensions();
-      for (string ext : extensions)
-        handledFileTypes[ext].push_back(coreHandle);
-      
-      
-      LOG("Found core at %s - name: %s ident: %s\n",file.c_str(), coreHandle->info.name.c_str(), coreHandle->info.ident.c_str());
+      dlclose(handle);
     }
-
-    
-    //interface->run(argc, argv);
-    
-    dlclose(handle);
-  }
+  #endif
 }
 
 void Loader::unload()
 {
-  if (core)
-  {
-    vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->core == core; });
-    
-    if (it != cores.end())
+  #ifndef _DUMMY_CORE_  
+    if (core)
     {
-      CoreHandle *handle = *it;
-      LOG("Unloading core: %s\n", handle->info.ident.c_str());
-      handle->core = nullptr;
-      dlclose(handle->handle);
-      handle->handle = nullptr;
-      core = nullptr;
+      vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->core == core; });
+      
+      if (it != cores.end())
+      {
+        CoreHandle *handle = *it;
+        LOG("Unloading core: %s\n", handle->info.ident.c_str());
+        handle->core = nullptr;
+        dlclose(handle->handle);
+        handle->handle = nullptr;
+        core = nullptr;
+      }
     }
-  }
+  #endif
 }
 
 void Loader::loadCore(std::string ident)
 {  
+  
+  
   vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->info.ident == ident; });
 
   if (it != cores.end()/* && core != (*it)->core*/)
@@ -87,13 +99,17 @@ void Loader::loadCore(std::string ident)
     
     LOG("Loading core %s at %s\n",handle->info.ident.c_str(),handle->fileName.c_str());
     
-    void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
-    CoreInterface* (*retrieve)();
-    *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
-    
-    handle->handle = dlhandle;
-    handle->core = retrieve();
-    core = handle->core;
+    #ifdef _DUMMY_CORE_
+      handle->core = retrieve();
+    #else
+      void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
+      CoreInterface* (*retrieve)();
+      *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
+      
+      handle->handle = dlhandle;
+      handle->core = retrieve();
+      core = handle->core;
+    #endif
   }
 }
 

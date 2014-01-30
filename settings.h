@@ -68,17 +68,17 @@ struct ButtonSetting
   std::string name;
   GCWKey key;
   u8 shiftAmount;
+  bool canBeRebound;
   
-  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount) : name(name), key(key), shiftAmount(shiftAmount) { }
+  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
 };
 
 struct AnalogSetting
 {
   std::string name;
-  GCWAnalogAxis axis;
   float activeZone[2][2];
   
-  AnalogSetting(std::string name, GCWAnalogAxis axis, float activeZone) { }
+  AnalogSetting(std::string name, float activeZone) { }
 };
 
   

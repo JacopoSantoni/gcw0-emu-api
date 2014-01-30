@@ -37,6 +37,14 @@ enum GCWKey : s16
   GCWKEY_SELECT = SDLK_ESCAPE,
   GCWKEY_START = SDLK_RETURN,
 };
+  
+enum GCWAnalog : s16
+{
+  GCWANALOG_LEFT,
+  GCWANALOG_RIGHT,
+  GCWANALOG_UP,
+  GCWANALOG_DOWN
+};
 
 const s8 SDL_INVALID_KEY = -1;
 const int GCWKEY_AMOUNT = 12;
@@ -44,12 +52,12 @@ const int GCWKEY_AMOUNT = 12;
 const s16 GCW_ANALOG_MIN = 0;
 const s16 GCW_ANALOG_MAX = 32768;
 
-enum GCWAnalogAxis
+/*enum GCWAnalogAxis
 {
   GCW_ANALOG_AXIS_X = 0x01,
   GCW_ANALOG_AXIS_Y = 0x02,
   GCW_ANALOG_AXIS_BOTH = GCW_ANALOG_AXIS_X | GCW_ANALOG_AXIS_Y
-};
+};*/
 
 typedef u32 ButtonStatus;
 

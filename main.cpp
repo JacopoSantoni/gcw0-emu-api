@@ -14,7 +14,9 @@ int main(int argc, char **argv)
   
   loader.scan();
   
-  if (argc > 1)
+  loader.loadCore("dummy");
+  
+  /*if (argc > 1)
   {
     gcw::CoreHandle *core = loader.coreForFile(argv[1]);
     if (core)
@@ -22,7 +24,7 @@ int main(int argc, char **argv)
       loader.loadCore(core->info.ident);
       loader.getCore()->run(argc, argv);
     }
-  }
+  }*/
   
   return 0;
 }

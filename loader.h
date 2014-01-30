@@ -8,7 +8,13 @@
 
 #include "emu_interface.h"
 
+#define _DUMMY_CORE_
+
 namespace gcw {
+  
+#ifdef _DUMMY_CORE_
+  extern "C" CoreInterface *retrieve();
+#endif
 
 struct CoreHandle
 {
@@ -33,6 +39,8 @@ class Loader
     std::vector<CoreHandle*> cores;
     CoreInterface *core;
     std::map<std::string,std::vector<CoreHandle*> > handledFileTypes;
+  
+    void loadCoreInfo(CoreHandle *handle, CoreInterface *info);
 
 
 	public:
