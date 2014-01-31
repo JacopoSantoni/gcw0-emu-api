@@ -33,9 +33,12 @@ struct CoreHandle
 	}
 };
 
+class Manager;
+  
 class Loader
 {
   private:
+    Manager* manager;
     std::vector<CoreHandle*> cores;
     CoreInterface *core;
     std::map<std::string,std::vector<CoreHandle*> > handledFileTypes;
@@ -44,7 +47,7 @@ class Loader
 
 
 	public:
-    Loader() : core(nullptr) { }
+    Loader(Manager *manager) : manager(manager), core(nullptr) { }
 
     void scan();
   
@@ -52,6 +55,15 @@ class Loader
   
     void loadCore(std::string ident);
     void unload();
+  
+    std::vector<std::string> allowedFileTypes()
+    {
+      std::vector<std::string> extensions;
+      std::transform(handledFileTypes.begin(), handledFileTypes.end(), std::back_inserter(extensions),
+        [](const std::map<std::string,std::vector<CoreHandle*> >::value_type &pair){return pair.first;});
+      
+      return extensions;
+    }
   
     CoreInterface *getCore() { return core; }
 };

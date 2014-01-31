@@ -6,12 +6,12 @@ using namespace std;
 using namespace std::chrono;
 using namespace gcw;
 
-vector<string> Files::findFiles(string path, string ext)
+vector<string> Files::findFiles(string path, string ext, bool recursive)
 {
-  return findFiles(path, vector<string>{ext});
+  return findFiles(path, vector<string>{ext}, recursive);
 }
 
-vector<string> Files::findFiles(string path, vector<string> exts)
+vector<string> Files::findFiles(string path, vector<string> exts, bool recursive)
 {
   vector<string> files;
   
@@ -21,7 +21,8 @@ vector<string> Files::findFiles(string path, vector<string> exts)
     while ((ent = readdir (dir)) != NULL) {
       for (string &ext : exts)
       {
-        if (strncmp(ent->d_name + strlen(ent->d_name) - (ext.length()), ext.c_str(), ext.length()) == 0)
+        string rext = "."+ext;
+        if (strncmp(ent->d_name + strlen(ent->d_name) - (rext.length()), rext.c_str(), rext.length()) == 0)
         {
           files.push_back(ent->d_name);
           break;

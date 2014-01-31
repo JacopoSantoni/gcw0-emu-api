@@ -14,8 +14,8 @@ namespace gcw
   class Files
   {
     public:
-      static std::vector<std::string> findFiles(std::string path, std::string ext);
-      static std::vector<std::string> findFiles(std::string path, std::vector<std::string> exts);
+      static std::vector<std::string> findFiles(std::string path, std::string ext, bool recursive);
+      static std::vector<std::string> findFiles(std::string path, std::vector<std::string> exts, bool recursive);
 
     
   };

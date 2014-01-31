@@ -20,6 +20,7 @@ struct GfxBuffer
   u16 width;
   u16 height;
   
+  GfxBuffer() : base(nullptr), pitch(0), width(0), height(0) { }
   //void allocate(u16 width, u16 height, u16 pitch)
 };
 

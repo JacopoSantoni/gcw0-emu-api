@@ -64,7 +64,7 @@ class DummyCore : public CoreInterface
   
 void DummyCore::emulationFrame()
 {
-  Gfx::clear<u32>(buffer, Gfx::ccc(180, 0, 0));
+  Gfx::clear<u32>(buffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
 }
   
   

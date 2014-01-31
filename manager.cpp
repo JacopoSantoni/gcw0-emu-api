@@ -10,7 +10,7 @@ void Manager::init()
   ((gcw::CoreControlsHandler*)controls.current())->initControls(loader.getCore());
   
   gfx.init();
-  timer.setFrameRate(10.0f);
+  timer.setFrameRate(60.0f);
 
 }
 

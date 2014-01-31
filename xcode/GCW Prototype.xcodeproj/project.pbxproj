@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041DB200189AA37200E4AFE9 /* SDLMain.mm */; };
 		041DB204189AA46C00E4AFE9 /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041DB202189AA44400E4AFE9 /* gfx.cpp */; };
-		045B2659189AC86D00DA8019 /* Cocoa-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045B2658189AC86D00DA8019 /* Cocoa-Info.plist */; };
-		04B751891898BE2A0013CFD7 /* rom_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B7518218981CF50013CFD7 /* rom_manager.cpp */; };
+		044A07EF189C29DF003AEC51 /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044A07ED189C29B2003AEC51 /* rom_collection.cpp */; };
 		04B7518A1898BE300013CFD7 /* controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B751851898BDF80013CFD7 /* controls.cpp */; };
 		04B7518B1898BE320013CFD7 /* persistence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B751871898BDF90013CFD7 /* persistence.cpp */; };
 		04CB0439189766CC00169B41 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CB0433189766C200169B41 /* loader.cpp */; };
@@ -23,6 +22,8 @@
 		04CB04611897672100169B41 /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CB0437189766C200169B41 /* utils.cpp */; };
 		04CB04621897672200169B41 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CB043C189766D500169B41 /* main.cpp */; };
 		04CB04641897675200169B41 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04631897675200169B41 /* SDL.framework */; };
+		04DD9379189BFC4B00EC0AAA /* manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DD9377189BFC1200EC0AAA /* manager.cpp */; };
+		04DD937A189C170100EC0AAA /* Cocoa-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045B2658189AC86D00DA8019 /* Cocoa-Info.plist */; };
 		04E605D218998D100035A501 /* SDL in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E605D118998D100035A501 /* SDL */; };
 		04E605D41899EA4A0035A501 /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E605D31899EA4A0035A501 /* dummycore.cpp */; };
 		04E605D51899ECD20035A501 /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E605D31899EA4A0035A501 /* dummycore.cpp */; };
@@ -45,10 +46,10 @@
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
 		041DB202189AA44400E4AFE9 /* gfx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = gfx.cpp; path = ../gfx.cpp; sourceTree = SOURCE_ROOT; };
 		041DB203189AA44400E4AFE9 /* gfx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gfx.h; path = ../gfx.h; sourceTree = SOURCE_ROOT; };
+		044A07ED189C29B2003AEC51 /* rom_collection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rom_collection.cpp; path = ../rom_collection.cpp; sourceTree = SOURCE_ROOT; };
+		044A07EE189C29B2003AEC51 /* rom_collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rom_collection.h; path = ../rom_collection.h; sourceTree = SOURCE_ROOT; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		04B7518218981CF50013CFD7 /* rom_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rom_manager.cpp; path = ../rom_manager.cpp; sourceTree = SOURCE_ROOT; };
-		04B7518318981CF50013CFD7 /* rom_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rom_manager.h; path = ../rom_manager.h; sourceTree = SOURCE_ROOT; };
 		04B751841898B8FE0013CFD7 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../defines.h; sourceTree = SOURCE_ROOT; };
 		04B751851898BDF80013CFD7 /* controls.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = controls.cpp; path = ../controls.cpp; sourceTree = SOURCE_ROOT; };
 		04B751861898BDF90013CFD7 /* controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = controls.h; path = ../controls.h; sourceTree = SOURCE_ROOT; };
@@ -69,6 +70,8 @@
 		04CB04481897670300169B41 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04CB04491897670300169B41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04CB04631897675200169B41 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
+		04DD9377189BFC1200EC0AAA /* manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = manager.cpp; path = ../manager.cpp; sourceTree = SOURCE_ROOT; };
+		04DD9378189BFC1200EC0AAA /* manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = manager.h; path = ../manager.h; sourceTree = SOURCE_ROOT; };
 		04E605D118998D100035A501 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SDL; path = /Library/Frameworks/SDL.framework/Versions/Current/SDL; sourceTree = "<absolute>"; };
 		04E605D31899EA4A0035A501 /* dummycore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dummycore.cpp; path = ../dummycore.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -133,8 +136,8 @@
 				04CB0432189766C200169B41 /* emu_interface.h */,
 				04CB0433189766C200169B41 /* loader.cpp */,
 				04CB0434189766C200169B41 /* loader.h */,
-				04B7518218981CF50013CFD7 /* rom_manager.cpp */,
-				04B7518318981CF50013CFD7 /* rom_manager.h */,
+				044A07ED189C29B2003AEC51 /* rom_collection.cpp */,
+				044A07EE189C29B2003AEC51 /* rom_collection.h */,
 				04CB0435189766C200169B41 /* settings.cpp */,
 				04CB0436189766C200169B41 /* settings.h */,
 				04B751851898BDF80013CFD7 /* controls.cpp */,
@@ -146,6 +149,8 @@
 				04CB0438189766C200169B41 /* utils.h */,
 				041DB202189AA44400E4AFE9 /* gfx.cpp */,
 				041DB203189AA44400E4AFE9 /* gfx.h */,
+				04DD9377189BFC1200EC0AAA /* manager.cpp */,
+				04DD9378189BFC1200EC0AAA /* manager.h */,
 				04CB043C189766D500169B41 /* main.cpp */,
 			);
 			path = "GCW Prototype";
@@ -240,7 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				045B2659189AC86D00DA8019 /* Cocoa-Info.plist in Resources */,
+				04DD937A189C170100EC0AAA /* Cocoa-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,11 +272,12 @@
 				04CB04601897671F00169B41 /* settings.cpp in Sources */,
 				04CB04611897672100169B41 /* utils.cpp in Sources */,
 				04CB04621897672200169B41 /* main.cpp in Sources */,
-				04B751891898BE2A0013CFD7 /* rom_manager.cpp in Sources */,
 				04B7518A1898BE300013CFD7 /* controls.cpp in Sources */,
 				04B7518B1898BE320013CFD7 /* persistence.cpp in Sources */,
 				04E605D51899ECD20035A501 /* dummycore.cpp in Sources */,
+				04DD9379189BFC4B00EC0AAA /* manager.cpp in Sources */,
 				041DB204189AA46C00E4AFE9 /* gfx.cpp in Sources */,
+				044A07EF189C29DF003AEC51 /* rom_collection.cpp in Sources */,
 				041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -4,7 +4,7 @@
 #include "utils.h"
 
 const char* CORES_PATH = "cores/";
-const char* LIBRARY_EXTENSION = ".dylib";
+const char* LIBRARY_EXTENSION = "dylib";
 
 using namespace std;
 using namespace gcw;
