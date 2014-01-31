@@ -1,48 +1,15 @@
-#include "emu_interface.h"
+#include "manager.h"
 
-#include <SDL.h>
-
-#include "loader.h"
-#include "emu_interface.h"
-#include "controls.h"
-
-#include "dlfcn.h"
-
-#include "gfx.h"
-
-
+#ifdef MAKE
+int SDL_main(int argc, char **argv)
+#else
 int run(int argc, char **argv)
+#endif
 {
-  gcw::Loader loader;
-  gcw::Controls controls;
-  gcw::Gfx gfx;
+  gcw::Manager manager;
   
-  loader.scan();
-  
-  loader.loadCore("dummy");
-  ((gcw::CoreControlsHandler*)controls.current())->initControls(loader.getCore());
-
-  gfx.init();
-  gfx.setFrameRate(59.73);
-  
-  bool running = true;
-  
-  while (running)
-  {
-    gfx.clear(gfx.ccc(rand()%256, rand()%256, rand()%256));
-    
-    gfx.frameRateDelay();
-    
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-      switch (event.type) {
-        case SDL_QUIT: running = false;
-      }
-    }
-    
-    gfx.flip();
-  }
+  manager.init();
+  manager.run();
 
   /*if (argc > 1)
   {

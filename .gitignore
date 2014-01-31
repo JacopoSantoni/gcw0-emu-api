@@ -7,3 +7,4 @@ cores
 gcwemu
 update_submodules.sh
 xcuserdata
+.DS_Store

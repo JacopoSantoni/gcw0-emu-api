@@ -1,10 +1,5 @@
 #include "gfx.h"
 
-
-
-
-using namespace std;
-using namespace std::chrono;
 using namespace gcw;
 
 
@@ -32,35 +27,5 @@ void Gfx::init()
 }
 
 
-void Gfx::setFrameRate(float rate)
-{
-  LOG("setting framerate to %f\n", rate);
-  frameRate.totalFrames = 0;
-  frameRate.ticksForFrame = microseconds(static_cast<u32>(1000000 / rate));
-  frameRate.base = frameRate.clock.now();
-}
 
-void Gfx::frameRateDelay()
-{
-  frameRate.totalFrames++;
-  
-  time_point<steady_clock> current = frameRate.clock.now();
-  time_point<steady_clock> target = frameRate.base + (frameRate.ticksForFrame * frameRate.totalFrames);
-  
-  if (current <= target)
-  {
-    microseconds delay = duration_cast<microseconds>(target-current);
-    microseconds spent = duration_cast<microseconds>(current - (target - frameRate.ticksForFrame));
-    microseconds total = delay + spent;
-    
-    LOG("delay: %lldus - spent: %lldus - total: %lldus\n", delay.count(), spent.count(), total.count());
-    this_thread::sleep_for(target-current);
-  }
-  else
-  {
-    frameRate.base = current;
-    frameRate.totalFrames = 0;
-    // frame required more time than requested
-  }
-}
 
