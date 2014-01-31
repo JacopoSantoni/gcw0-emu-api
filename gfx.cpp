@@ -1,6 +1,10 @@
 #include "gfx.h"
 
+
+
+
 using namespace std;
+using namespace std::chrono;
 using namespace gcw;
 
 
@@ -28,31 +32,35 @@ void Gfx::init()
 }
 
 
-void Gfx::setFrameRate(u32 rate)
+void Gfx::setFrameRate(float rate)
 {
+  LOG("setting framerate to %f\n", rate);
   frameRate.totalFrames = 0;
-  frameRate.rate = rate;
-  frameRate.rateTicks = 1000.0f / rate;
+  frameRate.ticksForFrame = microseconds(static_cast<u32>(1000000 / rate));
+  frameRate.base = frameRate.clock.now();
 }
 
 void Gfx::frameRateDelay()
 {
   frameRate.totalFrames++;
   
-  u32 current = SDL_GetTicks();
-  frameRate.currentTicks = current;
-  
-  u32 target = frameRate.baseTicks + static_cast<u32>(frameRate.totalFrames * frameRate.rateTicks);
+  time_point<steady_clock> current = frameRate.clock.now();
+  time_point<steady_clock> target = frameRate.base + (frameRate.ticksForFrame * frameRate.totalFrames);
   
   if (current <= target)
   {
-    LOG("delay: %d\n", target-current);
-    SDL_Delay(target - current);
+    microseconds delay = duration_cast<microseconds>(target-current);
+    microseconds spent = duration_cast<microseconds>(current - (target - frameRate.ticksForFrame));
+    microseconds total = delay + spent;
+    
+    LOG("delay: %lldus - spent: %lldus - total: %lldus\n", delay.count(), spent.count(), total.count());
+    this_thread::sleep_for(target-current);
   }
   else
   {
-    frameRate.baseTicks = frameRate.currentTicks;
+    frameRate.base = current;
     frameRate.totalFrames = 0;
+    // frame required more time than requested
   }
 }
 

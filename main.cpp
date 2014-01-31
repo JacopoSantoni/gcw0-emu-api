@@ -23,7 +23,7 @@ int run(int argc, char **argv)
   ((gcw::CoreControlsHandler*)controls.current())->initControls(loader.getCore());
 
   gfx.init();
-  gfx.setFrameRate(10);
+  gfx.setFrameRate(59.73);
   
   bool running = true;
   

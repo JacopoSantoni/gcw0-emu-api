@@ -5,6 +5,9 @@
 
 #include <vector>
 #include <string>
+#include <chrono>
+#include <thread>
+
 #include <SDL.h>
 
 #define WIDTH (320)
@@ -19,28 +22,25 @@ namespace gcw
     private:
       struct FrameRate
       {
+        std::chrono::steady_clock clock;
+        std::chrono::microseconds ticksForFrame;
+        
         u32 totalFrames;
-        u32 baseTicks;
-        u32 currentTicks;
-        
-        float rateTicks;
-        u32 rate;
-        
-        FrameRate() : totalFrames(0), baseTicks(1), currentTicks(0), rateTicks(1000.0f / DEFAULT_FPS), rate(DEFAULT_FPS) { }
+        std::chrono::time_point<std::chrono::steady_clock> base;
+
+        FrameRate() : ticksForFrame(static_cast<u32>(1000000 / DEFAULT_FPS)), totalFrames(0) { }
       };
     
       SDL_Surface *screen;
       SDL_PixelFormat *format;
     
       FrameRate frameRate;
-    
-      u32 ticks() { u32 ticks = SDL_GetTicks(); return ticks > 0 ? ticks : 1; }
-  
+      
     public:
       void init();
       inline void flip() { SDL_Flip(screen); }
     
-      void setFrameRate(u32 rate);
+      void setFrameRate(float rate);
       void frameRateDelay();
     
       u32 ccc(u8 r, u8 b, u8 g) { return SDL_MapRGB(format, r, g, b); }
