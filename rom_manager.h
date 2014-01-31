@@ -6,7 +6,7 @@
 
 namespace gcw {
 
-  class RomManager
+  class RomCollection
   {
     private:
       std::vector<std::string> paths;

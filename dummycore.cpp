@@ -1,5 +1,7 @@
 #include "emu_interface.h"
 
+#include "gfx.h"
+
 using namespace std;
 using namespace gcw;
 
@@ -12,7 +14,7 @@ enum KeyShiftAmount : u8
   
   KEY_Z_SHIFT = 4
 };
-
+  
 class DummyCore : public CoreInterface
 {
   private:
@@ -53,11 +55,19 @@ class DummyCore : public CoreInterface
 
     }
 
+    virtual void emulationFrame();
     virtual void run(int argc, char **argv) { /*mainEntry(argc, argv);*/ }
   
     virtual void setButtonStatus(ButtonStatus status) { /* whatever */ }
     virtual void setAnalogStatus(AnalogStatus status) { /* whatever */ }
 };
+  
+void DummyCore::emulationFrame()
+{
+  Gfx::clear<u32>(buffer, Gfx::ccc(180, 0, 0));
+}
+  
+  
 
 static DummyCore emulator;
 

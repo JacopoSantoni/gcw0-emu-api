@@ -16,10 +16,22 @@ void Manager::init()
 
 void Manager::run()
 {
+  buffer.base = reinterpret_cast<u8*>(new u32[160*144*sizeof(u32)]);
+  buffer.width = 160;
+  buffer.pitch = 160;
+  buffer.height = 144;
+  loader.getCore()->setBuffer(buffer);
+  Offset offset;
+  offset.x = (WIDTH - 160)/2;
+  offset.y = (HEIGHT - 144)/2;
+  
   while (running)
   {
-    gfx.clear(gfx.ccc(rand()%256, rand()%256, rand()%256));
-
+    gfx.clear(gfx.ccc(0, 0, 0));
+    
+    loader.getCore()->emulationFrame();
+    gfx.rawBlit(buffer, offset);
+    
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

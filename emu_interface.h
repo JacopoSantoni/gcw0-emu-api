@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 #include "defines.h"
+#include "gfx.h"
 #include "settings.h"
 
 
@@ -15,8 +16,6 @@ namespace gcw {
 
 class CoreInterface;
 
-
-  
 
 struct CoreInfo
 {
@@ -29,9 +28,6 @@ struct CoreInfo
   CoreInfo() : type(CONSOLE_UNSPECIFIED), ident(std::string()), name(std::string()), version(std::string()) { }
 };
 
-
-
-
 class CoreInterface
 {
 	private:
@@ -43,6 +39,7 @@ class CoreInterface
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
   
+  
 	protected:
     CoreInterface() : analogJoypadEnabled(false) { }
   
@@ -52,6 +49,8 @@ class CoreInterface
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
+  
+    GfxBuffer buffer;
 
 	public:
 		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
@@ -67,6 +66,9 @@ class CoreInterface
     virtual void setButtonStatus(ButtonStatus status) = 0;
   
     virtual void setAnalogStatus(AnalogStatus status) = 0;
+  
+    virtual void emulationFrame() = 0;
+    void setBuffer(GfxBuffer buffer) { this->buffer = buffer; }
 
     CoreInfo info() { return information; }
 		std::vector<std::string> supportedExtensions() { return extensions; }

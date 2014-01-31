@@ -18,6 +18,8 @@ class Manager
   
     bool running;
   
+    GfxBuffer buffer;
+  
   public:
     Manager() : running(true) { }
     void scan() { loader.scan(); }

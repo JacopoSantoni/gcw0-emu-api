@@ -2,6 +2,7 @@
 
 using namespace gcw;
 
+SDL_PixelFormat *Gfx::format;
 
 void Gfx::init()
 {
@@ -23,9 +24,33 @@ void Gfx::init()
 		fprintf(stderr, "WARNING: Did not get double buffering.\n");
 	}
   
-  format = screen->format;
+  Gfx::format = screen->format;
 }
 
 
+template <typename T>
+void Gfx::rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset)
+{
+  SDL_LockSurface(dest);
+  T *p = static_cast<T*>(dest->pixels) + offset.x + offset.y*dest->w;
+  
+  for (int i = 0; i < buffer.height; ++i)
+    memcpy(p+(i*dest->w), buffer.base+i*buffer.width, sizeof(T)*buffer.width);
+  
+  SDL_UnlockSurface(dest);
+}
 
+template <typename T>
+void Gfx::clear(GfxBuffer &buffer, T color)
+{
+  T *p = reinterpret_cast<u32*>(buffer.base);
+  
+  for (int w = 0; w < buffer.width; ++w)
+    for (int h = 0; h < buffer.height; ++h)
+      p[h*buffer.pitch + w] = color;
+}
+
+
+template void Gfx::clear(GfxBuffer &buffer, u32 color);
+template void Gfx::rawBlit<u32>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
 
