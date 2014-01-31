@@ -32,6 +32,8 @@ void Manager::run()
     loader.getCore()->emulationFrame();
     gfx.rawBlit(buffer, offset);
     
+    gfx.print(20, 20, false, Font::bigFont, "antani");
+    
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

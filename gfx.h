@@ -4,11 +4,13 @@
 #include "defines.h"
 
 #include <vector>
+#include <map>
 #include <string>
 #include <chrono>
 #include <thread>
 
 #include <SDL.h>
+#include <SDL_Image.h>
 
 #define WIDTH (320)
 #define HEIGHT (240)
@@ -32,6 +34,8 @@ struct Offset
 
 namespace gcw
 {
+  struct Font;
+  
   class Gfx
   {
     private:
@@ -47,8 +51,8 @@ namespace gcw
       inline void flip() { SDL_Flip(screen); }
     
 
-    
-      static u32 ccc(u8 r, u8 b, u8 g) { return SDL_MapRGB(format, r, g, b); }
+      static inline SDL_Rect rrr(s16 x, s16 y, u16 w, u16 h) { return {x,y,w,h}; }
+      static inline u32 ccc(u8 r, u8 b, u8 g) { return SDL_MapRGB(format, r, g, b); }
   
       void clear(u32 color) {
         SDL_Rect rect = {0,0,static_cast<Uint16>(screen->w),static_cast<u16>(screen->h)};
@@ -56,10 +60,37 @@ namespace gcw
       }
     
       void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u32>(screen, buffer, offset); }
+    
+      void print(int x, int y, bool centered, const Font &font, const char *text);
+      void printf(int x, int y, bool centered, const Font &font, const char *text, ...);
 
     
       template<typename T>
       static void clear(GfxBuffer &buffer, T color);
+  };
+  
+  struct Font
+  {
+    protected:
+      SDL_Surface *image;
+      u8 widths[256];
+      u8 tileWidth;
+      u8 tileHeight;
+      u8 lineHeight;
+    
+    public:
+      Font(std::string filename, u8 defaultWidth, u8 tileWidth, u8 tileHeight, u8 lineHeight, std::map<std::string,u8> customWidths);
+    
+      u16 stringWidth(const char *text) const
+      {
+        u16 length = strlen(text), width = 0;
+        for (int i = 0; i < length; ++i) width += widths[static_cast<u8>(text[i])];
+        return width;
+      }
+    
+      friend class Gfx;
+    
+      static const Font bigFont;
   };
 }
 

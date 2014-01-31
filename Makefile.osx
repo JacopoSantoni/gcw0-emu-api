@@ -6,7 +6,9 @@ SDL_INCLUDES = $(shell sdl-config --cflags)
 SDL_LIBS = $(shell sdl-config --libs)
 
 CCFLAGS = -std=c++11 -stdlib=libc++ $(SDL_INCLUDES)
-LDFLAGS += -arch x86_64 $(SDL_LIBS)
+LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
+
+opt: CCFLAGS += -O3 -ffast-math
 
 #SOURCES:= $(wildcard *.cpp)
 #BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
@@ -14,7 +16,7 @@ SOURCES:= $(wildcard *.cpp)
 BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
 EXECUTABLE:= gcwemu
 
-all: $(EXECUTABLE)
+all opt: $(EXECUTABLE)
 
 $(EXECUTABLE): $(BINARIES)
 	$(CC) $(CCFLAGS) $(BINARIES) -o $@ $(LDFLAGS)
