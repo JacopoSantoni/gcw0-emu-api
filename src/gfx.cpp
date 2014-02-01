@@ -7,8 +7,11 @@ SDL_PixelFormat *Gfx::format;
 
 void Gfx::init()
 {
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK);
 	atexit(SDL_Quit);
+  
+  if(SDL_NumJoysticks() > 0)
+    SDL_JoystickOpen(0);
   
 	//SDL_ShowCursor(SDL_DISABLE);
   screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
