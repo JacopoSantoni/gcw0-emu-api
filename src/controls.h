@@ -26,7 +26,7 @@ class CoreControlsHandler : public ControlsHandler
   private:
     struct IntegralDeadZone { s16 min, max, delta; };
   
-    Controls * const controls;
+    const Controls * const controls;
   
     s8 indexForKey(GCWKey key);
     ButtonDefinition mapping[GCW_KEY_COUNT+GCW_ANALOG_COUNT];

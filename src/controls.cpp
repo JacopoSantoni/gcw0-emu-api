@@ -23,10 +23,10 @@ s8 CoreControlsHandler::indexForKey(GCWKey key)
     case GCW_KEY_START: return 10;
     case GCW_KEY_SELECT: return 11;
       
-    case GCW_ANALOG_LEFT: return SDL_INVALID_KEY;
-    case GCW_ANALOG_RIGHT: return SDL_INVALID_KEY;
-    case GCW_ANALOG_UP: return SDL_INVALID_KEY;
-    case GCW_ANALOG_DOWN: return SDL_INVALID_KEY;
+    case GCW_ANALOG_LEFT: return 12;
+    case GCW_ANALOG_RIGHT: return 13;
+    case GCW_ANALOG_UP: return 14;
+    case GCW_ANALOG_DOWN: return 15;
       
     default: return SDL_INVALID_KEY;
   }
@@ -48,10 +48,11 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   // for each available button of the emulator enable its definition and its shift amount
   for (ButtonSetting &button : buttons)
   {
+    s8 index = indexForKey(button.key);
+
     mapping[indexForKey(button.key)].enabled = true;
     mapping[indexForKey(button.key)].mask = 1 << button.shiftAmount;
 
-    s8 index = indexForKey(button.key);
     if (index >= GCW_KEY_COUNT)
       analogMode = GCW_ANALOG_DIGITAL_MODE;
   }
@@ -103,6 +104,7 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   // TODO: SDL_INIT_JOYSTICK should be enabled (always enable by on SDL_Init?)
   
   status = 0;
+  
 }
 
 void CoreControlsHandler::handleEvents()
@@ -119,7 +121,7 @@ void CoreControlsHandler::handleEvents()
         // find the index in the mapping, or SDL_INVALID_KEY if nothing is found
         s8 index = indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
         
-        if (index != SDL_INVALID_KEY && mapping[index].enabled)
+        if (index != SDL_INVALID_KEY && index < GCW_KEY_COUNT && mapping[index].enabled)
           status |= mapping[index].mask;
         
         break;
@@ -129,8 +131,10 @@ void CoreControlsHandler::handleEvents()
       {
         s8 index = indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
         
-        if (index != SDL_INVALID_KEY && mapping[index].enabled)
+        if (index != SDL_INVALID_KEY && index < GCW_KEY_COUNT && mapping[index].enabled)
           status &=  ~mapping[index].mask;
+        
+        break;
       }
         
         
@@ -194,9 +198,11 @@ void CoreControlsHandler::handleEvents()
     }
   }
   
-  LOG("EXPECTED: %u - FOUND: %u\n",suspendShortcut,status);
+  //LOG("EXPECTED: %u - FOUND: %u\n",suspendShortcut,status);
   
   if (suspendShortcut == status)
+  {
     controls->manager->exit();
-    
+  }
+  
 }
