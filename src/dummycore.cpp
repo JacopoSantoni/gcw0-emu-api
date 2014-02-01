@@ -119,9 +119,11 @@ void DummyCore::emulationFrame()
   DummyUtil::rectFill(gfxBuffer, 200, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
   
   int size = 10;
-  int cx = 45-size/2, cy = 130-size/2;
-  int range = 20;
-  DummyUtil::rectFill(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, buttonStatus & (1<<KEY_START_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  int cx = 45-size/2, cy = 140-size/2;
+  int range = 16;
+  
+  DummyUtil::rectFill(gfxBuffer, cx - range, cy - range, 2*range + size, 2*range + size, Gfx::ccc(160, 160, 160) );
+  DummyUtil::rectFill(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, Gfx::ccc(200, 0, 0) );
   
   //Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
 }

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=GCW0 Emulators
-Comment=A frontend for emulation cores
+Name=GCW0Lib
+Comment=GCW0Lib
 Terminal=false
 StartupNotify=true
 Exec=gcwemu

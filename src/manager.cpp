@@ -31,6 +31,7 @@ void Manager::run()
     
     controls.handleEvents();
     core->setButtonStatus(controls.getButtonStatus());
+    core->setAnalogStatus(controls.getAnalogStatus());
     
     core->emulationFrame();
     gfx.rawBlit(buffer, offset);

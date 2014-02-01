@@ -69,6 +69,7 @@ class Controls
     void swithToCoreControls(CoreInterface *core) { coreHandler.initControls(core, GCW_KEY_L | GCW_KEY_R); handler = &coreHandler; }
     ControlsHandler *current() { return handler; }
     ButtonStatus getButtonStatus() { return coreHandler.status; }
+    AnalogStatus getAnalogStatus() { return coreHandler.analogStatus; }
   
     friend class CoreControlsHandler;
   

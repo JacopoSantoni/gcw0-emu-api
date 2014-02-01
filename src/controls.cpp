@@ -92,9 +92,10 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   }
   
   // TODO: prepare real analog joypad if needed
-  if (analogMode != GCW_ANALOG_REAL_MODE)
+  if (analogMode != GCW_ANALOG_DIGITAL_MODE)
   {
-    // ..
+    if (core->isAnalogJoypadUsed())
+    	analogMode = GCW_ANALOG_REAL_MODE;
   }
   
   if (analogMode != GCW_ANALOG_NONE)
