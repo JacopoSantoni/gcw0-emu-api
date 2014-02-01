@@ -34,6 +34,12 @@ enum ConsoleType : u16
   CONSOLE_MULTIPLE
 };
 
+
+const s8 SDL_INVALID_KEY = -1;
+const int GCW_KEY_COUNT = 12;
+const int GCW_ANALOG_COUNT = 4;
+const int GCW_ANALOG_MAP_SHIFT = GCW_KEY_COUNT;
+
 enum GCWKey : s16
 {
   GCW_KEY_LEFT = SDLK_LEFT,
@@ -51,22 +57,12 @@ enum GCWKey : s16
   
   GCW_KEY_SELECT = SDLK_ESCAPE,
   GCW_KEY_START = SDLK_RETURN,
-};
   
-enum GCWAnalog : s16
-{
-  GCW_ANALOG_LEFT = 0,
-  GCW_ANALOG_RIGHT,
-  GCW_ANALOG_UP,
-  GCW_ANALOG_DOWN
+  GCW_ANALOG_LEFT = SDLK_a,
+  GCW_ANALOG_RIGHT = SDLK_d,
+  GCW_ANALOG_UP = SDLK_w,
+  GCW_ANALOG_DOWN = SDLK_s
 };
-  
-
-
-const s8 SDL_INVALID_KEY = -1;
-const int GCW_KEY_COUNT = 12;
-const int GCW_ANALOG_COUNT = 4;
-
 
 const s16 GCW_ANALOG_MIN = 0;
 const s16 GCW_ANALOG_MAX = 32768;

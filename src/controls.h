@@ -18,41 +18,59 @@ class ControlsHandler
     virtual void handleEvents() = 0;
 };
   
+class Controls;
+class Manager;
+  
 class CoreControlsHandler : public ControlsHandler
 {
   private:
     struct IntegralDeadZone { s16 min, max, delta; };
-    
+  
+    Controls * const controls;
+  
     s8 indexForKey(GCWKey key);
-    ButtonDefinition mapping[GCW_KEY_COUNT];
-    ButtonDefinition analogMapping[GCW_ANALOG_COUNT];
+    ButtonDefinition mapping[GCW_KEY_COUNT+GCW_ANALOG_COUNT];
     IntegralDeadZone analogDeadZone;
     AnalogMode analogMode;
-    
+  
+  
     ButtonStatus status;
     AnalogStatus analogStatus;
-
+  
+    ButtonStatus suspendShortcut;
+  
   public:
-    void initControls(CoreInterface *core);
+    CoreControlsHandler(Controls *controls) : controls(controls) { }
+    void initControls(CoreInterface *core, ButtonStatus suspendKeys);
   
     virtual void handleEvents();
   
     friend class Controls;
 };
   
+class MainMenuControlsHandler : public ControlsHandler
+{
+    
+};
+  
 class Controls
 {
   private:
+    Manager * const manager;
+  
     CoreControlsHandler coreHandler;
     ControlsHandler *handler;
   
+  
   public:
-    Controls() : handler(&coreHandler) { }
+    Controls(Manager *manager) : manager(manager), coreHandler(this), handler(&coreHandler) { }
     void handleEvents() { handler->handleEvents(); }
   
-    void swithToCoreControls(CoreInterface *core) { coreHandler.initControls(core); handler = &coreHandler; }
+    void swithToCoreControls(CoreInterface *core) { coreHandler.initControls(core, GCW_KEY_L | GCW_KEY_R); handler = &coreHandler; }
     ControlsHandler *current() { return handler; }
     ButtonStatus getButtonStatus() { return coreHandler.status; }
+  
+    friend class CoreControlsHandler;
   
 
 };

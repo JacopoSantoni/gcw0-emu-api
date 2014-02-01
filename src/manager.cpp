@@ -7,7 +7,7 @@ void Manager::init()
   loader.scan();
   
   core = loader.loadCore("dummy");
-  ((gcw::CoreControlsHandler*)controls.current())->initControls(core);
+  ((gcw::CoreControlsHandler*)controls.current())->initControls(core, GCW_KEY_L | GCW_KEY_R);
   
   gfx.init();
   timer.setFrameRate(60.0f);
@@ -35,7 +35,8 @@ void Manager::run()
     core->emulationFrame();
     gfx.rawBlit(buffer, offset);
     
-    gfx.print(20, 20, false, Font::bigFont, "foobar");
+    gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
+    gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");
     
     /*SDL_Event event;
     while (SDL_PollEvent(&event))

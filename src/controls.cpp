@@ -1,5 +1,7 @@
 #include "controls.h"
 
+#include "manager.h"
+
 #include <vector>
 
 using namespace std;
@@ -20,11 +22,17 @@ s8 CoreControlsHandler::indexForKey(GCWKey key)
     case GCW_KEY_R: return 9;
     case GCW_KEY_START: return 10;
     case GCW_KEY_SELECT: return 11;
+      
+    case GCW_ANALOG_LEFT: return SDL_INVALID_KEY;
+    case GCW_ANALOG_RIGHT: return SDL_INVALID_KEY;
+    case GCW_ANALOG_UP: return SDL_INVALID_KEY;
+    case GCW_ANALOG_DOWN: return SDL_INVALID_KEY;
+      
     default: return SDL_INVALID_KEY;
   }
 }
 
-void CoreControlsHandler::initControls(CoreInterface *core)
+void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspendKeys)
 {
   vector<ButtonSetting> buttons = core->supportedButtons();
   
@@ -32,26 +40,47 @@ void CoreControlsHandler::initControls(CoreInterface *core)
   // TODO: for each keybind saved replace buttons[i].key with the saved bind if override is enabled
   
   //reset button mapping
-  for (int i = 0; i < GCW_KEY_COUNT; ++i)
+  for (int i = 0; i < GCW_KEY_COUNT+GCW_ANALOG_COUNT; ++i)
     mapping[i].enabled = false;
-  for (int i = 0; i < GCW_ANALOG_COUNT; ++i)
-    analogMapping[i].enabled = false;
-  
+
   analogMode = GCW_ANALOG_NONE;
   
   // for each available button of the emulator enable its definition and its shift amount
   for (ButtonSetting &button : buttons)
   {
-    if (!button.isAnalogKey)
-    {
-      mapping[indexForKey(button.key)].enabled = true;
-      mapping[indexForKey(button.key)].mask = 1 << button.shiftAmount;
-    }
-    else
-    {
-      analogMapping[button.analogKey].enabled = true;
-      analogMapping[button.analogKey].mask = 1 << button.shiftAmount;
+    mapping[indexForKey(button.key)].enabled = true;
+    mapping[indexForKey(button.key)].mask = 1 << button.shiftAmount;
+
+    s8 index = indexForKey(button.key);
+    if (index >= GCW_KEY_COUNT)
       analogMode = GCW_ANALOG_DIGITAL_MODE;
+  }
+  
+  // each available button managed by the combiner (not active on emulator) must be enabled anyway to check for events not directly
+  // managed by the core. first we compute the whole button mask, so that we can find empty slots for unused required keys
+  ButtonStatus usedMask = 0;
+  suspendShortcut = 0;
+  for (ButtonDefinition& def : mapping)
+    if (def.enabled) usedMask |= def.mask;
+    
+  GCWKey keys[] = {GCW_KEY_L, GCW_KEY_R};
+  for (GCWKey& key : keys)
+  {
+    if (!mapping[indexForKey(key)].enabled)
+    {
+      mapping[indexForKey(key)].enabled = true;
+      
+      for (int i = 0; i < sizeof(ButtonStatus)*8; ++i)
+        if ((usedMask & (1<<i)) == 0)
+        {
+          mapping[indexForKey(key)].mask = 1 << i;
+          usedMask |= 1 << i;
+          
+          if (suspendKeys & key)
+            suspendShortcut |= 1 << i;
+          
+          break;
+        }
     }
   }
   
@@ -71,8 +100,7 @@ void CoreControlsHandler::initControls(CoreInterface *core)
     analogDeadZone.delta = analogDeadZone.max - analogDeadZone.min;
   }
   
-  // TODO: SDL_INIT_JOYSTICK should be enabled (always enable by on SDL Init?)
-  
+  // TODO: SDL_INIT_JOYSTICK should be enabled (always enable by on SDL_Init?)
   
   status = 0;
 }
@@ -119,20 +147,20 @@ void CoreControlsHandler::handleEvents()
           if (axis == GCW_ANALOG_AXIS_X)
           {
             if (value < -analogDeadZone.min)
-              status |= analogMapping[GCW_ANALOG_LEFT].mask;
+              status |= mapping[GCW_ANALOG_LEFT].mask;
             else if (value > analogDeadZone.min)
-              status |= analogMapping[GCW_ANALOG_RIGHT].mask;
+              status |= mapping[GCW_ANALOG_RIGHT].mask;
             else
-              status &=  ~((analogMapping[GCW_ANALOG_LEFT].mask) | analogMapping[GCW_ANALOG_RIGHT].mask);
+              status &=  ~((mapping[GCW_ANALOG_LEFT].mask) | mapping[GCW_ANALOG_RIGHT].mask);
           }
           else if (axis == GCW_ANALOG_AXIS_Y)
           {
             if (value < -analogDeadZone.min)
-              status |= analogMapping[GCW_ANALOG_UP].mask;
+              status |= mapping[GCW_ANALOG_UP].mask;
             else if (value > analogDeadZone.min)
-              status |= analogMapping[GCW_ANALOG_DOWN].mask;
+              status |= mapping[GCW_ANALOG_DOWN].mask;
             else
-              status &=  ~(analogMapping[GCW_ANALOG_UP].mask | analogMapping[GCW_ANALOG_DOWN].mask); // TODO: optimization - could be precomputed
+              status &=  ~(mapping[GCW_ANALOG_UP].mask | mapping[GCW_ANALOG_DOWN].mask); // TODO: optimization - could be precomputed
           }
 
         }
@@ -165,4 +193,10 @@ void CoreControlsHandler::handleEvents()
       }
     }
   }
+  
+  LOG("EXPECTED: %u - FOUND: %u\n",suspendShortcut,status);
+  
+  if (suspendShortcut == status)
+    controls->manager->exit();
+    
 }

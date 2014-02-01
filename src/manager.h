@@ -24,7 +24,7 @@ class Manager
     GfxBuffer buffer;
   
   public:
-    Manager() : core(nullptr), loader(this), collection(this), running(true) { }
+    Manager() : core(nullptr), loader(this), collection(this), controls(this), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();
@@ -34,6 +34,8 @@ class Manager
     Gfx *getGfx() { return &gfx; }
     Controls *getControls() { return &controls; }
     Timer *getTimer() { return &timer; }
+  
+    void exit() { running = false; }
   
   
   

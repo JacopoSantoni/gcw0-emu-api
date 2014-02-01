@@ -67,16 +67,11 @@ struct ButtonSetting
 {
   std::string name;
   bool isAnalogKey;
-  union
-  {
-    GCWKey key;
-    GCWAnalog analogKey;
-  };
+  GCWKey key;
   u8 shiftAmount;
   bool canBeRebound;
 
-  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), isAnalogKey(false), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
-  ButtonSetting(std::string name, GCWAnalog analogKey, u8 shiftAmount, bool canBeRebound) : name(name), isAnalogKey(true), analogKey(analogKey), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
+  ButtonSetting(std::string name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
 };
 
 }

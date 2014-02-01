@@ -39,7 +39,7 @@ class Manager;
 class Loader
 {
   private:
-    Manager* manager;
+    Manager* const manager;
     std::vector<CoreHandle*> cores;
     std::map<std::string,std::vector<CoreHandle*> > handledFileTypes;
   
