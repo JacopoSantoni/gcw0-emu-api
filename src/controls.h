@@ -24,7 +24,7 @@ class Manager;
 class CoreControlsHandler : public ControlsHandler
 {
   private:
-    struct IntegralDeadZone { s16 min, max, delta; };
+    struct IntegralDeadZone { s32 min, max, delta; };
   
     const Controls * const controls;
   

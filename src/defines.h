@@ -23,6 +23,7 @@ typedef uint64_t u64;
 
 typedef int8_t s8;
 typedef int16_t s16;
+typedef int32_t s32;
 
 enum ConsoleType : u16
 {
@@ -64,8 +65,8 @@ enum GCWKey : s16
   GCW_ANALOG_DOWN = SDLK_s
 };
 
-const s16 GCW_ANALOG_MIN = 0;
-const s16 GCW_ANALOG_MAX = 32768;
+const s32 GCW_ANALOG_MIN = 0;
+const s32 GCW_ANALOG_MAX = 32768;
   
 const s16 GWC_ANALOG_DEAD_ZONE_DEFAULT_MIN = 500;
 const s16 GCW_ANALOG_DEAD_ZONE_DEFAULT_MAX = 32768;
