@@ -12,7 +12,11 @@ enum KeyShiftAmount : u8
   KEY_X_SHIFT = 2,
   KEY_Y_SHIFT = 3,
   
-  KEY_Z_SHIFT = 4
+  KEY_LEFT_SHIFT = 4,
+  KEY_RIGHT_SHIFT = 5,
+  KEY_UP_SHIFT = 6,
+  KEY_DOWN_SHIFT = 7
+  
 };
   
 class DummyUtil
@@ -20,7 +24,7 @@ class DummyUtil
   public:
   static void rectFill(GfxBuffer buffer, int x, int y, int w, int h, u32 color)
   {
-    u32* data = reinterpret_cast<u32*>(buffer.base);
+    u32* data = reinterpret_cast<u32*>(buffer.data);
     
     for (int i = x; i < x+w; ++i)
       for (int j = y; j < y+h; ++j)
@@ -56,12 +60,16 @@ class DummyCore : public CoreInterface
       registerButton(ButtonSetting("B", GCW_KEY_B, KEY_B_SHIFT, true));
       registerButton(ButtonSetting("X", GCW_KEY_X, KEY_X_SHIFT, true));
       registerButton(ButtonSetting("Y", GCW_KEY_Y, KEY_Y_SHIFT, true));
+      registerButton(ButtonSetting("Up", GCW_KEY_UP, KEY_UP_SHIFT, true));
+      registerButton(ButtonSetting("Right", GCW_KEY_RIGHT, KEY_RIGHT_SHIFT, true));
+      registerButton(ButtonSetting("Left", GCW_KEY_LEFT, KEY_LEFT_SHIFT, true));
+      registerButton(ButtonSetting("Down", GCW_KEY_DOWN, KEY_DOWN_SHIFT, true));
       
       // this enables a joypad direction as a digital button
-      registerButton(ButtonSetting("Z", GCW_ANALOG_LEFT, KEY_Z_SHIFT, true));
+      //registerButton(ButtonSetting("Z", GCW_ANALOG_LEFT, KEY_Z_SHIFT, true));
       
       // this instead enables the joypad for normal analog use, of course they can't be both active!
-      enableNormalAnalogJoypad();
+      //enableNormalAnalogJoypad();
       
       
       setAnalogDeadZone(0.02f, 1.0f);
@@ -80,12 +88,16 @@ class DummyCore : public CoreInterface
 void DummyCore::emulationFrame()
 {
   Gfx::clear<u32>(gfxBuffer, Gfx::ccc(220,220,220));
-  
-  if  (buttonStatus & (1<<KEY_A_SHIFT))
-    DummyUtil::rectFill(gfxBuffer, 10, 10, 20, 20, Gfx::ccc(200, 0, 0));
-  else
-    DummyUtil::rectFill(gfxBuffer, 10, 10, 20, 20, Gfx::ccc(160, 160, 160));
 
+  DummyUtil::rectFill(gfxBuffer, 210, 60, 20, 20, buttonStatus & (1<<KEY_A_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 185, 85, 20, 20, buttonStatus & (1<<KEY_B_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 160, 60, 20, 20, buttonStatus & (1<<KEY_X_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 185, 35, 20, 20, buttonStatus & (1<<KEY_Y_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+
+  DummyUtil::rectFill(gfxBuffer, 60, 60, 20, 20, buttonStatus & (1<<KEY_RIGHT_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 35, 85, 20, 20, buttonStatus & (1<<KEY_DOWN_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 10, 60, 20, 20, buttonStatus & (1<<KEY_LEFT_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 35, 35, 20, 20, buttonStatus & (1<<KEY_UP_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
   
   //Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
 }

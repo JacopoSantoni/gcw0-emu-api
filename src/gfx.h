@@ -29,17 +29,17 @@ struct GfxBufferSpec
 
 struct GfxBuffer
 {
-  u8 *base;
+  u8 *data;
   u16 pitch;
   u16 width;
   u16 height;
   
-  GfxBuffer() : base(nullptr), pitch(0), width(0), height(0) { }
+  GfxBuffer() : data(nullptr), pitch(0), width(0), height(0) { }
   //void allocate(u16 width, u16 height, u16 pitch)
   
   void allocate(GfxBufferSpec spec)
   {
-    if (base) delete [] base;
+    if (data) delete [] data;
     
     u32 bufferSize;
     pitch = spec.width;
@@ -51,9 +51,11 @@ struct GfxBuffer
       case FORMAT_32BPP: bufferSize = width*height*sizeof(u32); break;
     }
     
-    base = new u8[bufferSize];
+    data = new u8[bufferSize];
 
   }
+  
+  ~GfxBuffer() { if (data) delete [] data; }
 };
 
 struct Offset
