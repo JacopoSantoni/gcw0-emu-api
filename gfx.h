@@ -15,6 +15,18 @@
 #define WIDTH (320)
 #define HEIGHT (240)
 
+enum GfxBufferFormat
+{
+  FORMAT_32BPP
+};
+
+struct GfxBufferSpec
+{
+  u16 width;
+  u16 height;
+  GfxBufferFormat format;
+};
+
 struct GfxBuffer
 {
   u8 *base;
@@ -24,6 +36,24 @@ struct GfxBuffer
   
   GfxBuffer() : base(nullptr), pitch(0), width(0), height(0) { }
   //void allocate(u16 width, u16 height, u16 pitch)
+  
+  void allocate(GfxBufferSpec spec)
+  {
+    if (base) delete [] base;
+    
+    u32 bufferSize;
+    pitch = spec.width;
+    width = spec.width;
+    height = spec.height;
+    
+    switch (spec.format)
+    {
+      case FORMAT_32BPP: bufferSize = width*height*sizeof(u32); break;
+    }
+    
+    base = new u8[bufferSize];
+
+  }
 };
 
 struct Offset

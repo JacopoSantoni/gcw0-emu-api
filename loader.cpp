@@ -74,7 +74,7 @@ void Loader::unload()
   #endif
 }
 
-void Loader::loadCore(std::string ident)
+CoreInterface* Loader::loadCore(std::string ident)
 {  
   vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->info.ident == ident; });
 
@@ -87,7 +87,7 @@ void Loader::loadCore(std::string ident)
     
     #ifdef _DUMMY_CORE_
       handle->core = retrieve();
-      core = handle->core;
+      return handle->core;
     #else
       void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
       CoreInterface* (*retrieve)();
@@ -95,9 +95,11 @@ void Loader::loadCore(std::string ident)
       
       handle->handle = dlhandle;
       handle->core = retrieve();
-      core = handle->core;
+      return handle->core;
     #endif
   }
+  
+  return nullptr;
 }
 
 

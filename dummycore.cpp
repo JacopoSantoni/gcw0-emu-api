@@ -52,6 +52,8 @@ class DummyCore : public CoreInterface
       
       
       setAnalogDeadZone(0.02f, 1.0f);
+      
+      setGfxFormat(240, 160, FORMAT_32BPP);
 
     }
 
@@ -64,7 +66,7 @@ class DummyCore : public CoreInterface
   
 void DummyCore::emulationFrame()
 {
-  Gfx::clear<u32>(buffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
+  Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
 }
   
   

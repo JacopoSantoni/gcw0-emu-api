@@ -12,6 +12,7 @@ namespace gcw {
 class Manager
 {
   private:
+    CoreInterface *core;
     Loader loader;
     RomCollection collection;
     Gfx gfx;
@@ -23,7 +24,7 @@ class Manager
     GfxBuffer buffer;
   
   public:
-    Manager() : loader(this), collection(this), running(true) { }
+    Manager() : core(nullptr), loader(this), collection(this), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();

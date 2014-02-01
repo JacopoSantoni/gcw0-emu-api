@@ -40,20 +40,19 @@ class Loader
   private:
     Manager* manager;
     std::vector<CoreHandle*> cores;
-    CoreInterface *core;
     std::map<std::string,std::vector<CoreHandle*> > handledFileTypes;
   
     void loadCoreInfo(CoreHandle *handle, CoreInterface *info);
 
 
 	public:
-    Loader(Manager *manager) : manager(manager), core(nullptr) { }
+    Loader(Manager *manager) : manager(manager) { }
 
     void scan();
   
     CoreHandle* coreForFile(std::string fileName);
   
-    void loadCore(std::string ident);
+    CoreInterface* loadCore(std::string ident);
     void unload();
   
     std::vector<std::string> allowedFileTypes()
@@ -64,8 +63,6 @@ class Loader
       
       return extensions;
     }
-  
-    CoreInterface *getCore() { return core; }
 };
   
 }

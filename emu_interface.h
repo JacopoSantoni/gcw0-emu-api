@@ -39,6 +39,8 @@ class CoreInterface
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
   
+    GfxBufferSpec gfxFormat;
+  
   
 	protected:
     CoreInterface() : analogJoypadEnabled(false) { }
@@ -50,7 +52,9 @@ class CoreInterface
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
   
-    GfxBuffer buffer;
+    void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
+  
+    GfxBuffer gfxBuffer;
 
 	public:
 		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
@@ -68,7 +72,7 @@ class CoreInterface
     virtual void setAnalogStatus(AnalogStatus status) = 0;
   
     virtual void emulationFrame() = 0;
-    void setBuffer(GfxBuffer buffer) { this->buffer = buffer; }
+    void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
 
     CoreInfo info() { return information; }
 		std::vector<std::string> supportedExtensions() { return extensions; }
@@ -78,6 +82,8 @@ class CoreInterface
     std::vector<ButtonSetting> supportedButtons() { return buttons; }
     AnalogDeadZone getAnalogDeadZone() { return analogDeadZone; }
     bool isAnalogJoypadUsed() { return analogJoypadEnabled; }
+  
+    GfxBufferSpec getGfxSpec() { return gfxFormat; }
 };
   
 }

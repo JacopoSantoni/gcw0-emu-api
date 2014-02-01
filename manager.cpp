@@ -6,8 +6,8 @@ void Manager::init()
 {
   loader.scan();
   
-  loader.loadCore("dummy");
-  ((gcw::CoreControlsHandler*)controls.current())->initControls(loader.getCore());
+  core = loader.loadCore("dummy");
+  ((gcw::CoreControlsHandler*)controls.current())->initControls(core);
   
   gfx.init();
   timer.setFrameRate(60.0f);
@@ -16,20 +16,18 @@ void Manager::init()
 
 void Manager::run()
 {
-  buffer.base = reinterpret_cast<u8*>(new u32[160*144*sizeof(u32)]);
-  buffer.width = 160;
-  buffer.pitch = 160;
-  buffer.height = 144;
-  loader.getCore()->setBuffer(buffer);
+  GfxBufferSpec gfxSpec = core->getGfxSpec();
+  buffer.allocate(gfxSpec);
+  core->setBuffer(buffer);
   Offset offset;
-  offset.x = (WIDTH - 160)/2;
-  offset.y = (HEIGHT - 144)/2;
+  offset.x = (WIDTH - buffer.width)/2;
+  offset.y = (HEIGHT - buffer.height)/2;
   
   while (running)
   {
     gfx.clear(gfx.ccc(0, 0, 0));
     
-    loader.getCore()->emulationFrame();
+    core->emulationFrame();
     gfx.rawBlit(buffer, offset);
     
     gfx.print(20, 20, false, Font::bigFont, "antani");
