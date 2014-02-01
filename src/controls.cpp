@@ -50,8 +50,8 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   {
     s8 index = indexForKey(button.key);
 
-    mapping[indexForKey(button.key)].enabled = true;
-    mapping[indexForKey(button.key)].mask = 1 << button.shiftAmount;
+    mapping[index].enabled = true;
+    mapping[index].mask = 1 << button.shiftAmount;
 
     if (index >= GCW_KEY_COUNT)
       analogMode = GCW_ANALOG_DIGITAL_MODE;
@@ -142,9 +142,7 @@ void CoreControlsHandler::handleEvents()
         
       // manage joypad
       case SDL_JOYAXISMOTION:
-      {
-                    LOG("V < DZ: %1.4f %1.4", event.jaxis.value,analogDeadZone.min);
-        
+      {              
         // joypad is used for digital buttons
         if (analogMode == GCW_ANALOG_DIGITAL_MODE)
         {
@@ -153,21 +151,21 @@ void CoreControlsHandler::handleEvents()
           
           if (axis == GCW_ANALOG_AXIS_X)
           {
-            if (value < -analogDeadZone.min)
-              status |= mapping[GCW_ANALOG_LEFT].mask;
-            else if (value > analogDeadZone.min)
-              status |= mapping[GCW_ANALOG_RIGHT].mask;
+            if (value < -analogDeadZone.min && mapping[GCW_ANALOG_LEFT_INDEX].enabled)
+              status |= mapping[GCW_ANALOG_LEFT_INDEX].mask;
+            else if (value > analogDeadZone.min && mapping[GCW_ANALOG_RIGHT_INDEX].enabled)
+              status |= mapping[GCW_ANALOG_RIGHT_INDEX].mask;
             else
-              status &=  ~((mapping[GCW_ANALOG_LEFT].mask) | mapping[GCW_ANALOG_RIGHT].mask);
+              status &=  ~((mapping[GCW_ANALOG_LEFT_INDEX].mask) | mapping[GCW_ANALOG_RIGHT_INDEX].mask);
           }
           else if (axis == GCW_ANALOG_AXIS_Y)
           {
-            if (value < -analogDeadZone.min)
-              status |= mapping[GCW_ANALOG_UP].mask;
-            else if (value > analogDeadZone.min)
-              status |= mapping[GCW_ANALOG_DOWN].mask;
+            if (value < -analogDeadZone.min && mapping[GCW_ANALOG_UP_INDEX].enabled)
+              status |= mapping[GCW_ANALOG_UP_INDEX].mask;
+            else if (value > analogDeadZone.min && mapping[GCW_ANALOG_DOWN_INDEX].enabled)
+              status |= mapping[GCW_ANALOG_DOWN_INDEX].mask;
             else
-              status &=  ~(mapping[GCW_ANALOG_UP].mask | mapping[GCW_ANALOG_DOWN].mask); // TODO: optimization - could be precomputed
+              status &=  ~(mapping[GCW_ANALOG_UP_INDEX].mask | mapping[GCW_ANALOG_DOWN_INDEX].mask); // TODO: optimization - could be precomputed
           }
 
         }

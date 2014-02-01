@@ -66,7 +66,10 @@ class DummyCore : public CoreInterface
       registerButton(ButtonSetting("Down", GCW_KEY_DOWN, KEY_DOWN_SHIFT, true));
       
       // this enables a joypad direction as a digital button
-      registerButton(ButtonSetting("Z", GCW_ANALOG_LEFT, KEY_LEFT_SHIFT, true));
+      registerButton(ButtonSetting("LeftA", GCW_ANALOG_LEFT, KEY_LEFT_SHIFT, true));
+      registerButton(ButtonSetting("RightA", GCW_ANALOG_RIGHT, KEY_RIGHT_SHIFT, true));
+      registerButton(ButtonSetting("UpA", GCW_ANALOG_UP, KEY_UP_SHIFT, true));
+      registerButton(ButtonSetting("DownA", GCW_ANALOG_DOWN, KEY_DOWN_SHIFT, true));
       
       // this instead enables the joypad for normal analog use, of course they can't be both active!
       //enableNormalAnalogJoypad();
