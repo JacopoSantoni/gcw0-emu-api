@@ -8,13 +8,16 @@ SDL_LIBS = $(shell sdl-config --libs)
 CCFLAGS = -std=c++11 -stdlib=libc++ $(SDL_INCLUDES)
 LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
 
+all opt debug:
 opt: CCFLAGS += -O3 -ffast-math
 debug: CCFLAGS += -g
 
 #SOURCES:= $(wildcard *.cpp)
 #BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
-SOURCES:= $(wildcard *.cpp)
-BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
+BINDIR:= obj
+SRCDIR:= src
+SOURCES:= $(wildcard $(SRCDIR)/*.cpp)
+BINARIES:= $(patsubst $(SRCDIR)/%.cpp,obj/%.o,$(SOURCES))
 EXECUTABLE:= gcwemu
 
 all opt debug: $(EXECUTABLE)
@@ -24,8 +27,14 @@ $(EXECUTABLE): $(BINARIES)
 
 #$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
 
+$(BINARIES): | $(BINDIR)
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
 clean:
-	rm -f gcw-emu *.o
-	
-.cpp.o:
+	rm -f gcw-emu $(BINDIR)/*.o
+	rmdir $(BINDIR)
+
+$(BINDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
