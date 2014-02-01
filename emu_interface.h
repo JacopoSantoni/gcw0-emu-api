@@ -55,6 +55,7 @@ class CoreInterface
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
   
     GfxBuffer gfxBuffer;
+    ButtonStatus buttonStatus;
 
 	public:
 		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
@@ -67,7 +68,7 @@ class CoreInterface
      *
      * @param status a bitmask, a bit is set if the corresponding button is pressed, 0 otherwise.
      */
-    virtual void setButtonStatus(ButtonStatus status) = 0;
+    void setButtonStatus(ButtonStatus status) { buttonStatus = status; }
   
     virtual void setAnalogStatus(AnalogStatus status) = 0;
   

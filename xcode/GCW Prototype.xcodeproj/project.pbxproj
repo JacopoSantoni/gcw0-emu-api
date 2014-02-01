@@ -10,6 +10,8 @@
 		041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041DB200189AA37200E4AFE9 /* SDLMain.mm */; };
 		041DB204189AA46C00E4AFE9 /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041DB202189AA44400E4AFE9 /* gfx.cpp */; };
 		044A07EF189C29DF003AEC51 /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 044A07ED189C29B2003AEC51 /* rom_collection.cpp */; };
+		04B63828189C9C2D0028FA74 /* SDL_image in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B63827189C9C2D0028FA74 /* SDL_image */; };
+		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04B7518A1898BE300013CFD7 /* controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B751851898BDF80013CFD7 /* controls.cpp */; };
 		04B7518B1898BE320013CFD7 /* persistence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04B751871898BDF90013CFD7 /* persistence.cpp */; };
 		04CB0439189766CC00169B41 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CB0433189766C200169B41 /* loader.cpp */; };
@@ -30,6 +32,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		04B6382E189C9DEF0028FA74 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				04B6382F189C9DF50028FA74 /* data in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04CB04241897669C00169B41 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -50,6 +62,8 @@
 		044A07EE189C29B2003AEC51 /* rom_collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rom_collection.h; path = ../rom_collection.h; sourceTree = SOURCE_ROOT; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		04B63827189C9C2D0028FA74 /* SDL_image */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SDL_image; path = ../../../../../../../Library/Frameworks/SDL_image.framework/Versions/Current/SDL_image; sourceTree = "<group>"; };
+		04B6382C189C9CC40028FA74 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
 		04B751841898B8FE0013CFD7 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../defines.h; sourceTree = SOURCE_ROOT; };
 		04B751851898BDF80013CFD7 /* controls.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = controls.cpp; path = ../controls.cpp; sourceTree = SOURCE_ROOT; };
 		04B751861898BDF90013CFD7 /* controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = controls.h; path = ../controls.h; sourceTree = SOURCE_ROOT; };
@@ -89,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04B63828189C9C2D0028FA74 /* SDL_image in Frameworks */,
 				04E605D218998D100035A501 /* SDL in Frameworks */,
 				04CB04451897670300169B41 /* Cocoa.framework in Frameworks */,
 			);
@@ -112,6 +127,8 @@
 		04CB041D1897669C00169B41 = {
 			isa = PBXGroup;
 			children = (
+				04B6382C189C9CC40028FA74 /* data */,
+				04B63827189C9C2D0028FA74 /* SDL_image */,
 				04E605D118998D100035A501 /* SDL */,
 				04CB04281897669C00169B41 /* GCW Prototype */,
 				041DB1FE189AA36000E4AFE9 /* Supporting Files */,
@@ -203,6 +220,7 @@
 				04CB043E1897670300169B41 /* Sources */,
 				04CB043F1897670300169B41 /* Frameworks */,
 				04CB04401897670300169B41 /* Resources */,
+				04B6382E189C9DEF0028FA74 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -362,11 +380,15 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-Prefix.pch";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/SDL_Image.framework/Headers,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
 					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\"",
+					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "-Wall";
@@ -380,11 +402,15 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-Prefix.pch";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/SDL_Image.framework/Headers,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
 					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\"",
+					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "-Wall";

@@ -15,6 +15,19 @@ enum KeyShiftAmount : u8
   KEY_Z_SHIFT = 4
 };
   
+class DummyUtil
+{
+  public:
+  static void rectFill(GfxBuffer buffer, int x, int y, int w, int h, u32 color)
+  {
+    u32* data = reinterpret_cast<u32*>(buffer.base);
+    
+    for (int i = x; i < x+w; ++i)
+      for (int j = y; j < y+h; ++j)
+        data[i + j*buffer.pitch] = color;
+  }
+};
+  
 class DummyCore : public CoreInterface
 {
   private:
@@ -66,9 +79,16 @@ class DummyCore : public CoreInterface
   
 void DummyCore::emulationFrame()
 {
-  Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
-}
+  Gfx::clear<u32>(gfxBuffer, Gfx::ccc(220,220,220));
   
+  if  (buttonStatus & (1<<KEY_A_SHIFT))
+    DummyUtil::rectFill(gfxBuffer, 10, 10, 20, 20, Gfx::ccc(200, 0, 0));
+  else
+    DummyUtil::rectFill(gfxBuffer, 10, 10, 20, 20, Gfx::ccc(160, 160, 160));
+
+  
+  //Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
+}
   
 
 static DummyCore emulator;

@@ -23,16 +23,21 @@ void Manager::run()
   offset.x = (WIDTH - buffer.width)/2;
   offset.y = (HEIGHT - buffer.height)/2;
   
+  controls.swithToCoreControls(core);
+  
   while (running)
   {
     gfx.clear(gfx.ccc(0, 0, 0));
     
+    controls.handleEvents();
+    core->setButtonStatus(controls.getButtonStatus());
+    
     core->emulationFrame();
     gfx.rawBlit(buffer, offset);
     
-    gfx.print(20, 20, false, Font::bigFont, "antani");
+    gfx.print(20, 20, false, Font::bigFont, "foobar");
     
-    SDL_Event event;
+    /*SDL_Event event;
     while (SDL_PollEvent(&event))
     {
       switch (event.type) {
@@ -40,7 +45,7 @@ void Manager::run()
           
         case SDL_KEYDOWN: running = false;
       }
-    }
+    }*/
     
     gfx.flip();
     timer.frameRateDelay();

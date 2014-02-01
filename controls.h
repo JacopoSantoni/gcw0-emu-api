@@ -36,6 +36,8 @@ class CoreControlsHandler : public ControlsHandler
     void initControls(CoreInterface *core);
   
     virtual void handleEvents();
+  
+    friend class Controls;
 };
   
 class Controls
@@ -48,7 +50,11 @@ class Controls
     Controls() : handler(&coreHandler) { }
     void handleEvents() { handler->handleEvents(); }
   
+    void swithToCoreControls(CoreInterface *core) { coreHandler.initControls(core); handler = &coreHandler; }
     ControlsHandler *current() { return handler; }
+    ButtonStatus getButtonStatus() { return coreHandler.status; }
+  
+
 };
   
 }
