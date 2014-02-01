@@ -99,6 +99,8 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
     analogDeadZone.min = deadZone.min*GCW_ANALOG_MAX;
     analogDeadZone.max = deadZone.max*GCW_ANALOG_MAX;
     analogDeadZone.delta = analogDeadZone.max - analogDeadZone.min;
+    
+    SDL_JoystickEventState(SDL_ENABLE);
   }
   
   // TODO: SDL_INIT_JOYSTICK should be enabled (always enable by on SDL_Init?)
@@ -141,6 +143,7 @@ void CoreControlsHandler::handleEvents()
       // manage joypad
       case SDL_JOYAXISMOTION:
       {
+                    LOG("V < DZ: %1.4f %1.4", event.jaxis.value,analogDeadZone.min);
         
         // joypad is used for digital buttons
         if (analogMode == GCW_ANALOG_DIGITAL_MODE)

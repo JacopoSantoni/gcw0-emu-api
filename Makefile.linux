@@ -1,6 +1,6 @@
-.PHONY: all clean opk send debug
+.PHONY: all ohboy PocketSNES clean
 
-CC = mipsel-linux-g++
+CC = g++
 
 SYSROOT:= $(shell $(CC) -print-sysroot)
 SDL_INCLUDES = $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
@@ -46,8 +46,4 @@ opk: $(EXECUTABLE)
 	cp -r data/* .opk_data/data/
 	cp -r gcw/* .opk_data/
 	cp $< .opk_data/gcwemu
-	mksquashfs .opk_data $(EXECUTABLE).opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
-	
-send: opk
-  scp gcwemu.opk root@10.1.1.2.:/media/SD/apps
-
+	mksquashfs .opk_data $<.opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
