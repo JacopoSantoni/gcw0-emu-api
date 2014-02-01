@@ -72,7 +72,7 @@ class DummyCore : public CoreInterface
       //enableNormalAnalogJoypad();
       
       
-      setAnalogDeadZone(0.02f, 1.0f);
+      setAnalogDeadZone(0.20f, 1.0f);
       
       setGfxFormat(240, 160, FORMAT_32BPP);
 
