@@ -55,7 +55,7 @@ struct GfxBuffer
 
   }
   
-  ~GfxBuffer() { if (data) delete [] data; }
+  //~GfxBuffer() { if (data) delete [] data; }
 };
 
 struct Offset
