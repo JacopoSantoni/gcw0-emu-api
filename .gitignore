@@ -8,3 +8,6 @@ gcwemu
 update_submodules.sh
 xcuserdata
 .DS_Store
+*.opk
+.opk_data
+send_opk.sh

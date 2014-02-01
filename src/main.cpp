@@ -23,3 +23,10 @@ int run(int argc, char **argv)
   
   return 0;
 }
+
+#ifdef __linux__
+int main(int argc, char **argv)
+{
+  SDL_main(argc,argv);
+}
+#endif

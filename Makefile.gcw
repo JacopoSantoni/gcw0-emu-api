@@ -1,0 +1,49 @@
+.PHONY: all ohboy PocketSNES clean
+
+CC = mipsel-linux-g++
+
+SYSROOT:= $(shell $(CC) -print-sysroot)
+SDL_INCLUDES = $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIBS = $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
+
+CCFLAGS = -std=c++11 $(SDL_INCLUDES)
+LDFLAGS += $(SDL_LIBS) -lSDL_image
+
+all opt debug:
+opk opt: CCFLAGS += -O3 -ffast-math
+debug: CCFLAGS += -g
+
+#SOURCES:= $(wildcard *.cpp)
+#BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
+BINDIR:= obj
+SRCDIR:= src
+SOURCES:= $(wildcard $(SRCDIR)/*.cpp)
+BINARIES:= $(patsubst $(SRCDIR)/%.cpp,obj/%.o,$(SOURCES))
+EXECUTABLE:= gcwemu
+
+all opt debug: $(EXECUTABLE)
+
+$(EXECUTABLE): $(BINARIES)
+	$(CC) $(CCFLAGS) $(BINARIES) -o $@ $(LDFLAGS)
+
+#$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
+
+$(BINARIES): | $(BINDIR)
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
+clean:
+	rm -f gcw-emu $(BINDIR)/*.o
+	rmdir $(BINDIR)
+
+$(BINDIR)/%.o : $(SRCDIR)/%.cpp
+	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
+	
+opk: $(EXECUTABLE)
+	rm -rf .opk_data
+	mkdir -p .opk_data/data/
+	cp -r data/* .opk_data/data/
+	cp -r gcw/* .opk_data/
+	cp $< .opk_data/gcwemu
+	mksquashfs .opk_data $<.opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
