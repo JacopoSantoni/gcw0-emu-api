@@ -56,6 +56,7 @@ class CoreInterface
   
     GfxBuffer gfxBuffer;
     ButtonStatus buttonStatus;
+    AnalogStatus analogStatus;
 
 	public:
 		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
@@ -70,7 +71,7 @@ class CoreInterface
      */
     void setButtonStatus(ButtonStatus status) { buttonStatus = status; }
   
-    virtual void setAnalogStatus(AnalogStatus status) = 0;
+    void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
   
     virtual void emulationFrame() = 0;
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

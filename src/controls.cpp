@@ -67,14 +67,16 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   GCWKey keys[] = {GCW_KEY_L, GCW_KEY_R};
   for (GCWKey& key : keys)
   {
-    if (!mapping[indexForKey(key)].enabled)
+    s8 index = indexForKey(key);
+    
+    if (!mapping[index].enabled)
     {
-      mapping[indexForKey(key)].enabled = true;
+      mapping[index].enabled = true;
       
       for (int i = 0; i < sizeof(ButtonStatus)*8; ++i)
         if ((usedMask & (1<<i)) == 0)
         {
-          mapping[indexForKey(key)].mask = 1 << i;
+          mapping[index].mask = 1 << i;
           usedMask |= 1 << i;
           
           if (suspendKeys & key)
@@ -82,6 +84,10 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
           
           break;
         }
+    }
+    else
+    {
+      suspendShortcut |= mapping[index].mask;
     }
   }
   
