@@ -28,9 +28,10 @@ enum KeyShiftAmount : u8
 class DummyUtil
 {
   public:
-  static void rectFill(GfxBuffer buffer, int x, int y, int w, int h, u32 color)
+  template<typename T>
+  static void rectFill(GfxBuffer buffer, int x, int y, int w, int h, T color)
   {
-    u32* data = reinterpret_cast<u32*>(buffer.data);
+    T* data = reinterpret_cast<T*>(buffer.data);
     
     for (int i = x; i < x+w; ++i)
       for (int j = y; j < y+h; ++j)
@@ -87,7 +88,7 @@ class DummyCore : public CoreInterface
       
       setAnalogDeadZone(0.20f, 1.0f);
       
-      setGfxFormat(240, 160, FORMAT_32BPP);
+      setGfxFormat(240, 160, FORMAT_565);
 
     }
 
@@ -100,32 +101,33 @@ class DummyCore : public CoreInterface
   
 void DummyCore::emulationFrame()
 {
-  Gfx::clear<u32>(gfxBuffer, Gfx::ccc(220,220,220));
-
-  DummyUtil::rectFill(gfxBuffer, 210, 60, 20, 20, buttonStatus & (1<<KEY_A_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 185, 85, 20, 20, buttonStatus & (1<<KEY_B_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 160, 60, 20, 20, buttonStatus & (1<<KEY_X_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 185, 35, 20, 20, buttonStatus & (1<<KEY_Y_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-
-  DummyUtil::rectFill(gfxBuffer, 60, 60, 20, 20, buttonStatus & (1<<KEY_RIGHT_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 35, 85, 20, 20, buttonStatus & (1<<KEY_DOWN_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 10, 60, 20, 20, buttonStatus & (1<<KEY_LEFT_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 35, 35, 20, 20, buttonStatus & (1<<KEY_UP_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  Gfx::clear<u16>(gfxBuffer, Gfx::ccc<u16>(220,220,220));
   
-  DummyUtil::rectFill(gfxBuffer, 10, 10, 30, 10, buttonStatus & (1<<KEY_L_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 200, 10, 30, 10, buttonStatus & (1<<KEY_R_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  u16 red = Gfx::ccc<u16>(200,0,0);
+  u16 grey = Gfx::ccc<u16>(160,160,160);
+
+  DummyUtil::rectFill(gfxBuffer, 210, 60, 20, 20, buttonStatus & (1<<KEY_A_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 185, 85, 20, 20, buttonStatus & (1<<KEY_B_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 160, 60, 20, 20, buttonStatus & (1<<KEY_X_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 185, 35, 20, 20, buttonStatus & (1<<KEY_Y_SHIFT) ? red : grey);
+
+  DummyUtil::rectFill(gfxBuffer, 60, 60, 20, 20, buttonStatus & (1<<KEY_RIGHT_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 35, 85, 20, 20, buttonStatus & (1<<KEY_DOWN_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 10, 60, 20, 20, buttonStatus & (1<<KEY_LEFT_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 35, 35, 20, 20, buttonStatus & (1<<KEY_UP_SHIFT) ? red : grey);
   
-  DummyUtil::rectFill(gfxBuffer, 200, 120, 30, 10, buttonStatus & (1<<KEY_SELECT_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
-  DummyUtil::rectFill(gfxBuffer, 200, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? Gfx::ccc(200, 0, 0) : Gfx::ccc(160, 160, 160));
+  DummyUtil::rectFill(gfxBuffer, 10, 10, 30, 10, buttonStatus & (1<<KEY_L_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 200, 10, 30, 10, buttonStatus & (1<<KEY_R_SHIFT) ? red : grey);
+  
+  DummyUtil::rectFill(gfxBuffer, 200, 120, 30, 10, buttonStatus & (1<<KEY_SELECT_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 200, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? red : grey);
   
   int size = 10;
   int cx = 45-size/2, cy = 140-size/2;
   int range = 16;
   
-  DummyUtil::rectFill(gfxBuffer, cx - range, cy - range, 2*range + size, 2*range + size, Gfx::ccc(160, 160, 160) );
-  DummyUtil::rectFill(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, Gfx::ccc(200, 0, 0) );
-  
-  //Gfx::clear<u32>(gfxBuffer, Gfx::ccc(rand()%256, rand()%256, rand()%256));
+  DummyUtil::rectFill<u16>(gfxBuffer, cx - range, cy - range, 2*range + size, 2*range + size, grey );
+  DummyUtil::rectFill<u16>(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, red );
 }
   
 

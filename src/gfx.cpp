@@ -13,10 +13,12 @@ void Gfx::init()
   if(SDL_NumJoysticks() > 0)
     SDL_JoystickOpen(0);
   
-	//SDL_ShowCursor(SDL_DISABLE);
-  screen = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  const int bpp = 16;
   
-	if (screen->format->BitsPerPixel != 32) {
+	//SDL_ShowCursor(SDL_DISABLE);
+  screen = SDL_SetVideoMode(WIDTH, HEIGHT, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  
+	if (screen->format->BitsPerPixel != bpp) {
     fprintf(stderr, "ERROR: Did not get 32 bpp, got %u bpp instead.\n",
             screen->format->BitsPerPixel);
     exit(1);
@@ -48,7 +50,7 @@ void Gfx::rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset)
 template <typename T>
 void Gfx::clear(GfxBuffer &buffer, T color)
 {
-  T *p = reinterpret_cast<u32*>(buffer.data);
+  T *p = reinterpret_cast<T*>(buffer.data);
   
   for (int w = 0; w < buffer.width; ++w)
     for (int h = 0; h < buffer.height; ++h)
@@ -82,7 +84,7 @@ void Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
     {
       u8 w = font.widths[static_cast<u8>(c)];
       rect = rrr(font.tileWidth * (c%32), font.tileHeight * (c/32), w, font.tileHeight);
-      SDL_BlitSurface(font.image, &rect, screen, &out);
+      //SDL_BlitSurface(font.image, &rect, screen, &out);
       out.x += w+1;
     }
   }
@@ -125,5 +127,8 @@ const Font Font::bigFont = Font("data/font.png", 6, 9, 9, 5,
 #pragma mark Template Instantiations
 
 template void Gfx::clear(GfxBuffer &buffer, u32 color);
+template void Gfx::clear(GfxBuffer &buffer, u16 color);
+
 template void Gfx::rawBlit<u32>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
+template void Gfx::rawBlit<u16>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
 

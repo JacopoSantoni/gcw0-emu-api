@@ -5,7 +5,7 @@ CC = clang++
 SDL_INCLUDES = $(shell sdl-config --cflags)
 SDL_LIBS = $(shell sdl-config --libs)
 
-CCFLAGS = -std=c++11 -stdlib=libc++ $(SDL_INCLUDES)
+CCFLAGS = -std=c++11 -stdlib=libc++ -Wall $(SDL_INCLUDES)
 LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
 
 all opt debug:

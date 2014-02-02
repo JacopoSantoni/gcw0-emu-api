@@ -17,7 +17,8 @@
 
 enum GfxBufferFormat
 {
-  FORMAT_32BPP
+  FORMAT_8888,
+  FORMAT_565
 };
 
 struct GfxBufferSpec
@@ -48,7 +49,8 @@ struct GfxBuffer
     
     switch (spec.format)
     {
-      case FORMAT_32BPP: bufferSize = width*height*sizeof(u32); break;
+      case FORMAT_8888: bufferSize = width*height*sizeof(u32); break;
+      case FORMAT_565: bufferSize = width*height*sizeof(u16); break;
     }
     
     data = new u8[bufferSize];
@@ -84,14 +86,17 @@ namespace gcw
     
 
       static inline SDL_Rect rrr(s16 x, s16 y, u16 w, u16 h) { return {x,y,w,h}; }
-      static inline u32 ccc(u8 r, u8 b, u8 g) { return SDL_MapRGB(format, r, g, b); }
+    
+      template<typename T>
+      static inline T ccc(u8 r, u8 b, u8 g) { return static_cast<T>(SDL_MapRGB(format, r, g, b)); }
   
-      void clear(u32 color) {
+      template<typename T>
+      void clear(T color) {
         SDL_Rect rect = {0,0,static_cast<Uint16>(screen->w),static_cast<u16>(screen->h)};
         SDL_FillRect(screen, &rect, color);
       }
     
-      void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u32>(screen, buffer, offset); }
+      void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u16>(screen, buffer, offset); }
     
       void print(int x, int y, bool centered, const Font &font, const char *text);
       void printf(int x, int y, bool centered, const Font &font, const char *text, ...);

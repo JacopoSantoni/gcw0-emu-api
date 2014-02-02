@@ -27,7 +27,7 @@ void Manager::run()
   
   while (running)
   {
-    gfx.clear(gfx.ccc(0, 0, 0));
+    gfx.clear<u16>(gfx.ccc<u16>(0, 0, 0));
     
     controls.handleEvents();
     core->setButtonStatus(controls.getButtonStatus());
