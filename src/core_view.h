@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 #include "emu_interface.h"
+#include "menu.h"
+#include "view.h"
 
 namespace gcw {
 
@@ -50,7 +52,15 @@ class CoreControlsHandler : public ControlsHandler
   
 class MainMenuControlsHandler : public ControlsHandler
 {
-    
+  private:
+    Menu* menu;
+  
+  public:
+    MainMenuControlsHandler();
+    void setMenu(Menu* menu) { this->menu = menu; }
+  
+    virtual void handleEvents();
+
 };
   
 class Controls
@@ -74,6 +84,34 @@ class Controls
     friend class CoreControlsHandler;
   
 
+};
+  
+  
+class CoreView : public View
+{
+  private:
+    struct IntegralDeadZone { s32 min, max, delta; };
+        
+    s8 indexForKey(GCWKey key);
+    ButtonDefinition mapping[GCW_KEY_COUNT+GCW_ANALOG_COUNT];
+    IntegralDeadZone analogDeadZone;
+    AnalogMode analogMode;
+    
+    
+    ButtonStatus status;
+    AnalogStatus analogStatus;
+    
+    ButtonStatus suspendShortcut;
+  
+    CoreInterface *core;
+  
+  public:
+    CoreView(Manager *manager) : View(manager) { }
+  
+    void initControls(CoreInterface *core, ButtonStatus suspendKeys);
+  
+    virtual void render();
+    virtual void handleEvents();
 };
   
 }

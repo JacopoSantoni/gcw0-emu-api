@@ -8,15 +8,23 @@
 
 namespace gcw
 {
+  
+enum SettingType : u8
+{
+  SETTING_BOOL,
+  SETTING_PATH,
+  SETTING_ENUM
+};
 
 class Setting
 {
   private:
+    SettingType type;
     std::string name;
     std::string ident;
   
   public:
-    Setting(std::string name, std::string ident) : name(name), ident(ident) { }
+    Setting(SettingType type, std::string name, std::string ident) : type(type), name(name), ident(ident) { }
     std::string getName() { return name; }
     std::string getIdent() { return ident; }
 };
@@ -28,7 +36,7 @@ class ConcreteSetting : public Setting
     V defaultValue;
   
   public:
-    ConcreteSetting(std::string name, std::string ident, V defaultValue) : Setting(name, ident), defaultValue(defaultValue) { }
+    ConcreteSetting(SettingType type, std::string name, std::string ident, V defaultValue) : Setting(type, name, ident), defaultValue(defaultValue) { }
     V getDefaultValue() { return defaultValue; }
 };
 
@@ -36,7 +44,7 @@ class BoolSetting : public ConcreteSetting<bool>
 {
   
   public:
-    BoolSetting(std::string name, std::string ident, bool defaultValue) : ConcreteSetting(name, ident, defaultValue) { }
+    BoolSetting(std::string name, std::string ident, bool defaultValue) : ConcreteSetting(SETTING_BOOL, name, ident, defaultValue) { }
 };
 
 template<typename T>
@@ -59,14 +67,13 @@ class EnumSetting : public ConcreteSetting<EnumValue<T> >
     EnumSet<T> values;
   
   public:
-    EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> defaultValue) : ConcreteSetting<EnumValue<T> >(name, ident, defaultValue), values(values)  { }
+    EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> defaultValue) : ConcreteSetting<EnumValue<T> >(SETTING_ENUM, name, ident, defaultValue), values(values)  { }
 };
   
 
 struct ButtonSetting
 {
   std::string name;
-  bool isAnalogKey;
   GCWKey key;
   u8 shiftAmount;
   bool canBeRebound;

@@ -90,6 +90,8 @@ struct AnalogStatus
 {
   float x;
   float y;
+  
+  AnalogStatus() : x(0.0f), y(0.0f) { }
 };
   
 

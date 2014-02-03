@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <stdint.h>
 #include <SDL.h>
 
@@ -34,7 +35,7 @@ class CoreInterface
 		std::vector<std::string> extensions;
     CoreInfo information;
   
-    std::vector<Setting*> settings;
+    std::vector<std::unique_ptr<Setting> > settings;
     std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
@@ -47,7 +48,7 @@ class CoreInterface
   
 		void registerExtension(std::string ext) { extensions.push_back(ext); }
     void registerInformations(ConsoleType type, std::string ident, std::string name, std::string version) { information = CoreInfo(type,ident,name,version); }
-    void registerSetting(Setting *setting) { settings.push_back(setting); }
+    void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
@@ -69,16 +70,16 @@ class CoreInterface
      *
      * @param status a bitmask, a bit is set if the corresponding button is pressed, 0 otherwise.
      */
-    void setButtonStatus(ButtonStatus status) { buttonStatus = status; }
+    virtual void setButtonStatus(ButtonStatus status) { buttonStatus = status; }
   
-    void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
+    virtual void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
   
     virtual void emulationFrame() = 0;
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
 
     CoreInfo info() { return information; }
 		std::vector<std::string> supportedExtensions() { return extensions; }
-    std::vector<Setting*> supportedSettings() { return settings; }
+    std::vector<std::unique_ptr<Setting> >* supportedSettings() { return &settings; }
   
   
     std::vector<ButtonSetting> supportedButtons() { return buttons; }

@@ -1,4 +1,4 @@
-#include "controls.h"
+#include "core_view.h"
 
 #include "manager.h"
 
@@ -7,7 +7,9 @@
 using namespace std;
 using namespace gcw;
 
-s8 CoreControlsHandler::indexForKey(GCWKey key)
+#pragma mark Core Controls
+
+s8 CoreView::indexForKey(GCWKey key)
 {
   switch (key) {
     case GCW_KEY_A: return 0;
@@ -32,8 +34,10 @@ s8 CoreControlsHandler::indexForKey(GCWKey key)
   }
 }
 
-void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspendKeys)
+void CoreView::initControls(CoreInterface *core, ButtonStatus suspendKeys)
 {
+  this->core = core;
+  
   vector<ButtonSetting> buttons = core->supportedButtons();
   
   // persistence->loadCustomKeysForCore(core)
@@ -116,7 +120,7 @@ void CoreControlsHandler::initControls(CoreInterface *core, ButtonStatus suspend
   
 }
 
-void CoreControlsHandler::handleEvents()
+void CoreView::handleEvents()
 {
   SDL_Event event;
   
@@ -210,7 +214,16 @@ void CoreControlsHandler::handleEvents()
   
   if (suspendShortcut == status)
   {
-    controls->manager->exit();
+    manager->exit();
   }
   
+  core->setButtonStatus(status);
+  core->setAnalogStatus(analogStatus);
+}
+
+
+
+void CoreView::render()
+{
+  core->emulationFrame();
 }

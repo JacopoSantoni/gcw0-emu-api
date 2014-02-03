@@ -7,10 +7,12 @@ void Manager::init()
   loader.scan();
   
   core = loader.loadCore("dummy");
-  ((gcw::CoreControlsHandler*)controls.current())->initControls(core, GCW_KEY_L | GCW_KEY_R);
   
   gfx.init();
   timer.setFrameRate(60.0f);
+  
+  currentView = &coreView;
+  coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
 
 }
 
@@ -23,17 +25,13 @@ void Manager::run()
   offset.x = (WIDTH - buffer.width)/2;
   offset.y = (HEIGHT - buffer.height)/2;
   
-  controls.swithToCoreControls(core);
-  
   while (running)
   {
     gfx.clear<u16>(gfx.ccc<u16>(0, 0, 0));
     
-    controls.handleEvents();
-    core->setButtonStatus(controls.getButtonStatus());
-    core->setAnalogStatus(controls.getAnalogStatus());
-    
-    core->emulationFrame();
+    currentView->handleEvents();
+    currentView->render();
+
     gfx.rawBlit(buffer, offset);
     
     gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");

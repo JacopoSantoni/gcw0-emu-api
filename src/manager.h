@@ -3,7 +3,7 @@
 
 #include "loader.h"
 #include "gfx.h"
-#include "controls.h"
+#include "core_view.h"
 #include "utils.h"
 #include "rom_collection.h"
 
@@ -16,15 +16,19 @@ class Manager
     Loader loader;
     RomCollection collection;
     Gfx gfx;
-    Controls controls;
     Timer timer;
+  
+    CoreView coreView;
+    View *currentView;
   
     bool running;
   
     GfxBuffer buffer;
   
+    
+  
   public:
-    Manager() : core(nullptr), loader(this), collection(this), controls(this), running(true) { }
+    Manager() : core(nullptr), loader(this), collection(this), coreView(this), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();
@@ -32,7 +36,6 @@ class Manager
     Loader *getLoader() { return &loader; }
     RomCollection *getRomCollection() { return &collection; }
     Gfx *getGfx() { return &gfx; }
-    Controls *getControls() { return &controls; }
     Timer *getTimer() { return &timer; }
   
     void exit() { running = false; }

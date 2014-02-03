@@ -57,7 +57,7 @@ class DummyCore : public CoreInterface
       
       registerSetting(new BoolSetting("Stereo", "enable-sound-stereo", false));
       
-      EnumSet<int32_t> frameSkip = {EnumValue<int32_t>("AUTO",-1),EnumValue<int32_t>("0",11025),EnumValue<int32_t>("1",1),EnumValue<int32_t>("2",2),EnumValue<int32_t>("3",3),EnumValue<int32_t>("4",4),EnumValue<int32_t>("5",5)};
+      EnumSet<int32_t> frameSkip = {EnumValue<int32_t>("AUTO",-1),EnumValue<int32_t>("0",0),EnumValue<int32_t>("1",1),EnumValue<int32_t>("2",2),EnumValue<int32_t>("3",3),EnumValue<int32_t>("4",4),EnumValue<int32_t>("5",5)};
       registerSetting(new EnumSetting<int32_t>("Frameskip", "frameskip", frameSkip, frameSkip[0]));
       
       registerSetting(new BoolSetting("Transparency", "transparency", false));
@@ -94,9 +94,6 @@ class DummyCore : public CoreInterface
 
     virtual void emulationFrame();
     virtual void run(int argc, char **argv) { /*mainEntry(argc, argv);*/ }
-  
-    virtual void setButtonStatus(ButtonStatus status) { /* whatever */ }
-    virtual void setAnalogStatus(AnalogStatus status) { /* whatever */ }
 };
   
 void DummyCore::emulationFrame()

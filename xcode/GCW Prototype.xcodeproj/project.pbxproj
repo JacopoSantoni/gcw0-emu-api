@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041DB200189AA37200E4AFE9 /* SDLMain.mm */; };
-		045DA531189CB97600776EFA /* controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA51D189CB8EA00776EFA /* controls.cpp */; };
+		045DA531189CB97600776EFA /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA51D189CB8EA00776EFA /* core_view.cpp */; };
 		045DA532189CB97800776EFA /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA520189CB8EA00776EFA /* dummycore.cpp */; };
 		045DA533189CB97900776EFA /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA522189CB8EA00776EFA /* gfx.cpp */; };
 		045DA534189CB97A00776EFA /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA524189CB8EA00776EFA /* loader.cpp */; };
@@ -18,6 +18,7 @@
 		045DA538189CB98200776EFA /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52B189CB8EA00776EFA /* rom_collection.cpp */; };
 		045DA539189CB98200776EFA /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52D189CB8EA00776EFA /* settings.cpp */; };
 		045DA53A189CB98200776EFA /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52F189CB8EA00776EFA /* utils.cpp */; };
+		045DA53D189F308700776EFA /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA53C189F305C00776EFA /* menu.cpp */; };
 		04B63828189C9C2D0028FA74 /* SDL_image in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B63827189C9C2D0028FA74 /* SDL_image */; };
 		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
@@ -49,12 +50,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0408CCAD189F40E800A036A8 /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../src/view.h; sourceTree = SOURCE_ROOT; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		045DA51D189CB8EA00776EFA /* controls.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = controls.cpp; path = ../src/controls.cpp; sourceTree = SOURCE_ROOT; };
-		045DA51E189CB8EA00776EFA /* controls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = controls.h; path = ../src/controls.h; sourceTree = SOURCE_ROOT; };
+		045DA51D189CB8EA00776EFA /* core_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = core_view.cpp; path = ../src/core_view.cpp; sourceTree = SOURCE_ROOT; };
+		045DA51E189CB8EA00776EFA /* core_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core_view.h; path = ../src/core_view.h; sourceTree = SOURCE_ROOT; };
 		045DA51F189CB8EA00776EFA /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../src/defines.h; sourceTree = SOURCE_ROOT; };
 		045DA520189CB8EA00776EFA /* dummycore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = dummycore.cpp; path = ../src/dummycore.cpp; sourceTree = SOURCE_ROOT; };
 		045DA521189CB8EA00776EFA /* emu_interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = emu_interface.h; path = ../src/emu_interface.h; sourceTree = SOURCE_ROOT; };
@@ -73,6 +75,8 @@
 		045DA52E189CB8EA00776EFA /* settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../src/settings.h; sourceTree = SOURCE_ROOT; };
 		045DA52F189CB8EA00776EFA /* utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../src/utils.cpp; sourceTree = SOURCE_ROOT; };
 		045DA530189CB8EA00776EFA /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../src/utils.h; sourceTree = SOURCE_ROOT; };
+		045DA53B189F305C00776EFA /* menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu.h; path = ../src/menu.h; sourceTree = SOURCE_ROOT; };
+		045DA53C189F305C00776EFA /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu.cpp; path = ../src/menu.cpp; sourceTree = SOURCE_ROOT; };
 		04B63827189C9C2D0028FA74 /* SDL_image */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SDL_image; path = ../../../../../../../Library/Frameworks/SDL_image.framework/Versions/Current/SDL_image; sourceTree = "<group>"; };
 		04B6382C189C9CC40028FA74 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
 		04CB04261897669C00169B41 /* GCW Prototype */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "GCW Prototype"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +111,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0408CCAE189F416400A036A8 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				0408CCAD189F40E800A036A8 /* view.h */,
+				045DA51E189CB8EA00776EFA /* core_view.h */,
+				045DA51D189CB8EA00776EFA /* core_view.cpp */,
+			);
+			name = views;
+			sourceTree = "<group>";
+		};
 		041DB1FE189AA36000E4AFE9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,8 +158,7 @@
 		04CB04281897669C00169B41 /* GCW Prototype */ = {
 			isa = PBXGroup;
 			children = (
-				045DA51D189CB8EA00776EFA /* controls.cpp */,
-				045DA51E189CB8EA00776EFA /* controls.h */,
+				0408CCAE189F416400A036A8 /* views */,
 				045DA51F189CB8EA00776EFA /* defines.h */,
 				045DA520189CB8EA00776EFA /* dummycore.cpp */,
 				045DA521189CB8EA00776EFA /* emu_interface.h */,
@@ -160,6 +173,8 @@
 				045DA52A189CB8EA00776EFA /* persistence.h */,
 				045DA52B189CB8EA00776EFA /* rom_collection.cpp */,
 				045DA52C189CB8EA00776EFA /* rom_collection.h */,
+				045DA53B189F305C00776EFA /* menu.h */,
+				045DA53C189F305C00776EFA /* menu.cpp */,
 				045DA52D189CB8EA00776EFA /* settings.cpp */,
 				045DA52E189CB8EA00776EFA /* settings.h */,
 				045DA52F189CB8EA00776EFA /* utils.cpp */,
@@ -283,8 +298,9 @@
 				045DA539189CB98200776EFA /* settings.cpp in Sources */,
 				045DA53A189CB98200776EFA /* utils.cpp in Sources */,
 				041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */,
-				045DA531189CB97600776EFA /* controls.cpp in Sources */,
+				045DA531189CB97600776EFA /* core_view.cpp in Sources */,
 				045DA532189CB97800776EFA /* dummycore.cpp in Sources */,
+				045DA53D189F308700776EFA /* menu.cpp in Sources */,
 				045DA534189CB97A00776EFA /* loader.cpp in Sources */,
 				045DA533189CB97900776EFA /* gfx.cpp in Sources */,
 			);
