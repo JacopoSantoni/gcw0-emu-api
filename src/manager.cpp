@@ -11,19 +11,17 @@ void Manager::init()
   gfx.init();
   timer.setFrameRate(60.0f);
   
-  currentView = &coreView;
-  coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
+  //currentView = &coreView;
+  //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
+  //coreView.initGfx();
+  
+  currentView = &menuView;
+  
 
 }
 
 void Manager::run()
 {
-  GfxBufferSpec gfxSpec = core->getGfxSpec();
-  buffer.allocate(gfxSpec);
-  core->setBuffer(buffer);
-  Offset offset;
-  offset.x = (WIDTH - buffer.width)/2;
-  offset.y = (HEIGHT - buffer.height)/2;
   
   while (running)
   {
@@ -32,7 +30,7 @@ void Manager::run()
     currentView->handleEvents();
     currentView->render();
 
-    gfx.rawBlit(buffer, offset);
+    
     
     gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
     gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");

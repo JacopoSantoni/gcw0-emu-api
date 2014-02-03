@@ -2,6 +2,7 @@
 #define _GFX_H_
 
 #include "defines.h"
+#include "utils.h"
 
 #include <vector>
 #include <map>
@@ -70,10 +71,9 @@ namespace gcw
 {
   struct Font;
   
-  class Gfx
+  class Gfx : public Uncopyable
   {
     private:
-    
       SDL_Surface *screen;
       static SDL_PixelFormat *format;
     
@@ -81,6 +81,7 @@ namespace gcw
       void rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
     
     public:
+      Gfx() { }
       void init();
       inline void flip() { SDL_Flip(screen); }
     

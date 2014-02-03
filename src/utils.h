@@ -36,6 +36,13 @@ namespace gcw
       void setFrameRate(float rate);
       void frameRateDelay();
   };
+  
+  class Uncopyable
+  {
+    private:
+      Uncopyable( const Uncopyable& other ) = delete; // non construction-copyable
+      Uncopyable& operator=( const Uncopyable& ) = delete; // non copyable
+  };
 }
 
 #endif

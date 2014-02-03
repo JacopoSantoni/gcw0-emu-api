@@ -9,6 +9,15 @@ using namespace gcw;
 
 #pragma mark Core Controls
 
+void CoreView::initGfx()
+{
+  GfxBufferSpec gfxSpec = core->getGfxSpec();
+  buffer.allocate(gfxSpec);
+  core->setBuffer(buffer);
+  offset.x = (WIDTH - buffer.width)/2;
+  offset.y = (HEIGHT - buffer.height)/2;
+}
+
 s8 CoreView::indexForKey(GCWKey key)
 {
   switch (key) {
@@ -226,4 +235,5 @@ void CoreView::handleEvents()
 void CoreView::render()
 {
   core->emulationFrame();
+  manager->getGfx()->rawBlit(buffer, offset);
 }

@@ -3,9 +3,11 @@
 
 #include "loader.h"
 #include "gfx.h"
-#include "core_view.h"
 #include "utils.h"
 #include "rom_collection.h"
+
+#include "core_view.h"
+#include "menu_view.h"
 
 namespace gcw {
   
@@ -19,16 +21,13 @@ class Manager
     Timer timer;
   
     CoreView coreView;
+    MenuView menuView;
     View *currentView;
   
     bool running;
-  
-    GfxBuffer buffer;
-  
-    
-  
+
   public:
-    Manager() : core(nullptr), loader(this), collection(this), coreView(this), running(true) { }
+    Manager() : core(nullptr), loader(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();

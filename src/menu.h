@@ -10,9 +10,10 @@
 class MenuEntry
 {
   private:
-  
+    std::string caption;
   public:
-    virtual std::string name();
+    MenuEntry(std::string caption) : caption(caption) { }
+    virtual const std::string& name() { return caption; }
 };
 
 class Menu
