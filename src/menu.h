@@ -7,27 +7,54 @@
 #include <vector>
 #include <memory>
 
+namespace gcw {
+  
+class Menu;
+class MenuView;
+
 class MenuEntry
 {
-  private:
+  protected:
     std::string caption;
   public:
     MenuEntry(std::string caption) : caption(caption) { }
     virtual const std::string& name() { return caption; }
+  
+    virtual void action(MenuView *view, GCWKey key) { }
 };
+
+class SubMenuEntry : public MenuEntry
+{
+  protected:
+    Menu *menu;
+ 
+  public:
+    SubMenuEntry(std::string caption, Menu *menu) : MenuEntry(caption), menu(menu) { }
+  
+    Menu *subMenu() { return menu; }
+  
+    virtual void action(MenuView *view, GCWKey key);
+};
+
+
+
 
 class Menu
 {
   private:
+    std::string caption;
     std::vector<std::unique_ptr<MenuEntry>> entries;
   
   public:
-    Menu() { }
+    Menu(std::string caption) : caption(caption) { }
   
     size_t count() { return entries.size(); }
     void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
     MenuEntry* entryAt(u32 index) { return entries[index].get(); }
   
+    const std::string& title() { return caption; }
 };
+  
+}
 
 #endif

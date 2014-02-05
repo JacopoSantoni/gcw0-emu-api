@@ -3,25 +3,43 @@
 
 #include <SDL.h>
 #include "emu_interface.h"
-#include "menu.h"
 #include "view.h"
+
+#include <stack>
 
 namespace gcw {
 
   class Manager;
+  class Menu;
+  class SubMenuEntry;
   
   class MenuView : public View
   {
     private:
-      Menu *menu;
+      struct MenuStatus
+      {
+        Menu *menu;
+        u8 index;
+        
+        MenuStatus(Menu *menu) : menu(menu), index(0) { }
+      };
+    
+      std::stack<MenuStatus> menuStack;
+      MenuStatus current;
+      Menu *root;
+    
+      void down();
+      void up();
     
     public:
       MenuView(Manager *manager);
     
-      void setMenu(Menu *menu) { this->menu = menu; }
+      void setMenu(Menu *root) { this->root = root; }
     
       virtual void render();
       virtual void handleEvents();
+    
+      void enterSubmenu(SubMenuEntry *entry);
   };
 
   

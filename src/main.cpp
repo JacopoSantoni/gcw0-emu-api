@@ -1,10 +1,11 @@
 #include "manager.h"
 
-#ifdef MAKE
+/*#ifdef MAKE
 int SDL_main(int argc, char **argv)
 #else
 int run(int argc, char **argv)
-#endif
+#endif*/
+int SDL_main(int argc, char **argv)
 {
   gcw::Manager manager;
   
