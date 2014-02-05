@@ -42,6 +42,9 @@ namespace gcw
     private:
       Uncopyable( const Uncopyable& other ) = delete; // non construction-copyable
       Uncopyable& operator=( const Uncopyable& ) = delete; // non copyable
+    
+    public:
+      Uncopyable() { }
   };
 }
 

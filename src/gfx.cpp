@@ -84,7 +84,7 @@ void Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
     {
       u8 w = font.widths[static_cast<u8>(c)];
       rect = rrr(font.tileWidth * (c%32), font.tileHeight * (c/32), w, font.tileHeight);
-      //SDL_BlitSurface(font.image, &rect, screen, &out);
+      SDL_BlitSurface(font.image, &rect, screen, &out);
       out.x += w+1;
     }
   }

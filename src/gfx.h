@@ -71,7 +71,7 @@ namespace gcw
 {
   struct Font;
   
-  class Gfx : public Uncopyable
+  class Gfx
   {
     private:
       SDL_Surface *screen;
@@ -81,7 +81,6 @@ namespace gcw
       void rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
     
     public:
-      Gfx() { }
       void init();
       inline void flip() { SDL_Flip(screen); }
     

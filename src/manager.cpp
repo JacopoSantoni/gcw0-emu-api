@@ -32,8 +32,8 @@ void Manager::run()
 
     
     
-    gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
-    gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");
+    //gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
+    //gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");
     
     /*SDL_Event event;
     while (SDL_PollEvent(&event))
