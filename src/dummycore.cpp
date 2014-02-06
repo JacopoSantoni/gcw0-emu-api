@@ -48,6 +48,7 @@ class DummyCore : public CoreInterface
     {
       registerInformations(CONSOLE_SUPER_NINTENDO, "dummy", "dummy", "1.0");
       registerExtension("smc");
+      registerExtension("gba");
       
       registerSetting(new BoolSetting("Auto Save SRAM", "auto-save-sram", false));
       registerSetting(new BoolSetting("Sound", "enable-sound", false));

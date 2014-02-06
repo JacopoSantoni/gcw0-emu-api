@@ -26,7 +26,7 @@ struct CoreInfo
   std::string version;
   
   CoreInfo(ConsoleType type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
-  CoreInfo() : type(CONSOLE_UNSPECIFIED), ident(std::string()), name(std::string()), version(std::string()) { }
+  CoreInfo() : type(CONSOLE_UNCATEGORISED), ident(std::string()), name(std::string()), version(std::string()) { }
 };
 
 class CoreInterface

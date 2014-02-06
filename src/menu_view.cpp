@@ -11,6 +11,8 @@ using namespace gcw;
 
 MenuView::MenuView(Manager *manager) : View(manager), current(nullptr)
 {
+  MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
+  
   Menu *menu = new Menu("Submenu");
   menu->addEntry(new MenuEntry("foobar"));
   menu->addEntry(new MenuEntry("antani"));
@@ -20,6 +22,7 @@ MenuView::MenuView(Manager *manager) : View(manager), current(nullptr)
   Menu *root = new Menu("Root");
   root->addEntry(new MenuEntry("asdella"));
   root->addEntry(new SubMenuEntry("submenu",menu));
+  root->addEntry(boolEntry);
   
   current = MenuStatus(root);
 }

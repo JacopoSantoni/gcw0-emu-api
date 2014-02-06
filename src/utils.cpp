@@ -8,10 +8,10 @@ using namespace gcw;
 
 vector<string> Files::findFiles(string path, string ext, bool recursive)
 {
-  return findFiles(path, vector<string>{ext}, recursive);
+  return findFiles(path, unordered_set<string>{ext}, recursive);
 }
 
-vector<string> Files::findFiles(string path, vector<string> exts, bool recursive)
+vector<string> Files::findFiles(string path, unordered_set<string> exts, bool recursive)
 {
   vector<string> files;
   
@@ -19,7 +19,7 @@ vector<string> Files::findFiles(string path, vector<string> exts, bool recursive
   struct dirent *ent;
   if ((dir = opendir (path.c_str())) != NULL) {
     while ((ent = readdir (dir)) != NULL) {
-      for (string &ext : exts)
+      for (const string &ext : exts)
       {
         string rext = "."+ext;
         if (strncmp(ent->d_name + strlen(ent->d_name) - (rext.length()), rext.c_str(), rext.length()) == 0)

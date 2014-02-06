@@ -5,6 +5,7 @@ using namespace gcw;
 void Manager::init()
 {
   loader.scan();
+  collection.scan();
   
   core = loader.loadCore("dummy");
   

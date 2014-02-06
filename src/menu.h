@@ -3,6 +3,8 @@
 
 #include "defines.h"
 
+#include "settings.h"
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -16,7 +18,9 @@ class MenuEntry
 {
   protected:
     std::string caption;
+  
   public:
+    MenuEntry() { }
     MenuEntry(std::string caption) : caption(caption) { }
     virtual const std::string& name() { return caption; }
   
@@ -33,6 +37,17 @@ class SubMenuEntry : public MenuEntry
   
     Menu *subMenu() { return menu; }
   
+    virtual void action(MenuView *view, GCWKey key);
+};
+  
+  class BoolMenuEntry : public MenuEntry
+{
+  private:
+    BoolSetting* setting;
+  
+  public:
+    BoolMenuEntry(BoolSetting *setting) : MenuEntry(setting->getName()+" "+(setting->getValue()?"true":"false")), setting(setting) { }
+
     virtual void action(MenuView *view, GCWKey key);
 };
 

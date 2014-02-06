@@ -27,17 +27,19 @@ class Setting
     Setting(SettingType type, std::string name, std::string ident) : type(type), name(name), ident(ident) { }
     std::string getName() { return name; }
     std::string getIdent() { return ident; }
+    SettingType getType() { return type; }
 };
 
 template<typename V>
 class ConcreteSetting : public Setting
 {
   private:
-    V defaultValue;
+    V value;
   
   public:
-    ConcreteSetting(SettingType type, std::string name, std::string ident, V defaultValue) : Setting(type, name, ident), defaultValue(defaultValue) { }
-    V getDefaultValue() { return defaultValue; }
+    ConcreteSetting(SettingType type, std::string name, std::string ident, V value) : Setting(type, name, ident), value(value) { }
+    V getValue() { return value; }
+    void setValue(V value) { this->value = value; }
 };
 
 class BoolSetting : public ConcreteSetting<bool>

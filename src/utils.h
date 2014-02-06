@@ -6,16 +6,24 @@
 #include <dirent.h>
 
 #include <chrono>
+#include <unordered_set>
 #include <vector>
 #include <string>
 
+
 namespace gcw
 {
+  struct FileEntry
+  {
+    std::string name;
+    std::string extension;
+  };
+  
   class Files
   {
     public:
       static std::vector<std::string> findFiles(std::string path, std::string ext, bool recursive);
-      static std::vector<std::string> findFiles(std::string path, std::vector<std::string> exts, bool recursive);
+      static std::vector<std::string> findFiles(std::string path, std::unordered_set<std::string> exts, bool recursive);
 
     
   };
