@@ -9,6 +9,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <unordered_map>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -71,6 +72,39 @@ namespace gcw
 {
   struct Font;
   
+  class ImageCache
+  {
+    private:
+      std::unordered_map<std::string, SDL_Surface*> cache;
+      
+      SDL_Surface* load(std::string name)
+      {
+        SDL_Surface *image = IMG_Load(name.c_str());
+        return image;
+      }
+      
+    public:
+      ImageCache() { }
+      
+      SDL_Surface *get(std::string name) {
+        std::unordered_map<std::string, SDL_Surface*>::iterator it = cache.find(name);
+        if (it != cache.end())
+          return it->second;
+        else
+        {
+          SDL_Surface *image = load(name);
+          cache[name] = image;
+          return image;
+        }
+      }
+      
+      ~ImageCache()
+      {
+        for (auto &pair : cache)
+          SDL_FreeSurface(pair.second);
+      }
+  };
+  
   class Gfx
   {
     private:
@@ -100,10 +134,19 @@ namespace gcw
     
       void print(int x, int y, bool centered, const Font &font, const char *text);
       void printf(int x, int y, bool centered, const Font &font, const char *text, ...);
-
+    
+      void blit(SDL_Surface *src, int x, int y)
+      {
+        SDL_Rect srcRect = rrr(0,0,src->w,src->h);
+        SDL_Rect dstRect = rrr(x,y,0,0);
+        
+        SDL_BlitSurface(src, &srcRect, screen, &dstRect);
+      }
     
       template<typename T>
       static void clear(GfxBuffer &buffer, T color);
+    
+      ImageCache cache;
   };
   
   struct Font

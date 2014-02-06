@@ -13,13 +13,13 @@ MenuView::MenuView(Manager *manager) : View(manager), current(nullptr)
 {
   MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
   
-  Menu *menu = new Menu("Submenu");
+  StandardMenu *menu = new StandardMenu("Submenu");
   menu->addEntry(new MenuEntry("foobar"));
   menu->addEntry(new MenuEntry("antani"));
   menu->addEntry(new MenuEntry("sblinda"));
   menu->addEntry(new MenuEntry("ciccio"));
   
-  Menu *root = new Menu("Root");
+  StandardMenu *root = new StandardMenu("Root");
   root->addEntry(new MenuEntry("asdella"));
   root->addEntry(new SubMenuEntry("submenu",menu));
   root->addEntry(boolEntry);
@@ -75,15 +75,18 @@ void MenuView::enterSubmenu(SubMenuEntry *entry)
 
 void MenuView::render()
 {
-  manager->getGfx()->print(10, 10, false, Font::bigFont, current.menu->title().c_str());
+  //gfx->blit(gfx->cache.get("data/consoles/gba-small.png"), 100, 100);
+  
+  
+  gfx->print(10, 10, false, Font::bigFont, current.menu->title().c_str());
 
   
   for (int i = 0; i < current.menu->count(); ++i)
   {
     MenuEntry * entry = current.menu->entryAt(i);
     
-    manager->getGfx()->print(20, 40+i*10, false, Font::bigFont, entry->name().c_str());
+    gfx->print(20, 40+i*10, false, Font::bigFont, entry->name().c_str());
   }
   
-  manager->getGfx()->print(10,40+current.index*10, false, Font::bigFont, ">");
+  gfx->print(10,40+current.index*10, false, Font::bigFont, ">");
 }

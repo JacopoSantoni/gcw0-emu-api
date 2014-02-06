@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0408CCAF189F451A00A036A8 /* menu_view.cpp */; };
 		041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041DB200189AA37200E4AFE9 /* SDLMain.mm */; };
+		04578B4818A4141900F8F463 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04578B4718A4141900F8F463 /* view.cpp */; };
+		04578B4918A4145100F8F463 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04578B4718A4141900F8F463 /* view.cpp */; };
 		045DA531189CB97600776EFA /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA51D189CB8EA00776EFA /* core_view.cpp */; };
 		045DA532189CB97800776EFA /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA520189CB8EA00776EFA /* dummycore.cpp */; };
 		045DA533189CB97900776EFA /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA522189CB8EA00776EFA /* gfx.cpp */; };
@@ -56,6 +58,7 @@
 		0408CCB0189F451A00A036A8 /* menu_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu_view.h; path = ../src/menu_view.h; sourceTree = SOURCE_ROOT; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
+		04578B4718A4141900F8F463 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cpp; path = ../src/view.cpp; sourceTree = SOURCE_ROOT; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		045DA51D189CB8EA00776EFA /* core_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = core_view.cpp; path = ../src/core_view.cpp; sourceTree = SOURCE_ROOT; };
@@ -118,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				0408CCAD189F40E800A036A8 /* view.h */,
+				04578B4718A4141900F8F463 /* view.cpp */,
 				045DA53B189F305C00776EFA /* menu.h */,
 				045DA53C189F305C00776EFA /* menu.cpp */,
 				045DA51E189CB8EA00776EFA /* core_view.h */,
@@ -289,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04578B4818A4141900F8F463 /* view.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +310,7 @@
 				041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */,
 				045DA531189CB97600776EFA /* core_view.cpp in Sources */,
 				0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */,
+				04578B4918A4145100F8F463 /* view.cpp in Sources */,
 				045DA532189CB97800776EFA /* dummycore.cpp in Sources */,
 				045DA53D189F308700776EFA /* menu.cpp in Sources */,
 				045DA534189CB97A00776EFA /* loader.cpp in Sources */,

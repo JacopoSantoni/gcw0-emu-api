@@ -235,5 +235,5 @@ void CoreView::handleEvents()
 void CoreView::render()
 {
   core->emulationFrame();
-  manager->getGfx()->rawBlit(buffer, offset);
+  gfx->rawBlit(buffer, offset);
 }
