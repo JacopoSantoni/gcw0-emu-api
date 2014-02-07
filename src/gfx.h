@@ -132,8 +132,8 @@ namespace gcw
     
       void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u16>(screen, buffer, offset); }
     
-      void print(int x, int y, bool centered, const Font &font, const char *text);
-      void printf(int x, int y, bool centered, const Font &font, const char *text, ...);
+      u16 print(int x, int y, bool centered, const Font &font, const char *text);
+      u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...);
     
       void blit(SDL_Surface *src, int x, int y)
       {
@@ -146,7 +146,7 @@ namespace gcw
       template<typename T>
       static void clear(GfxBuffer &buffer, T color);
     
-      ImageCache cache;
+      static ImageCache cache;
   };
   
   struct Font

@@ -1,5 +1,7 @@
 #include "manager.h"
 
+#include "menu.h"
+
 using namespace gcw;
 
 void Manager::init()
@@ -15,6 +17,22 @@ void Manager::init()
   //currentView = &coreView;
   //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
   //coreView.initGfx();
+  
+  MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
+  
+  StandardMenu *menu = new StandardMenu("Submenu");
+  menu->addEntry(new StandardMenuEntry("foobar"));
+  menu->addEntry(new StandardMenuEntry("antani"));
+  menu->addEntry(new StandardMenuEntry("sblinda"));
+  menu->addEntry(new StandardMenuEntry("ciccio"));
+  menu->addEntry(new ConsoleMenuEntry(collection.consoleByName("")));
+  
+  StandardMenu *root = new StandardMenu("Root");
+  root->addEntry(new StandardMenuEntry("asdella"));
+  root->addEntry(new SubMenuEntry("submenu",menu));
+  root->addEntry(boolEntry);
+  menuView.setMenu(menu);
+  
   
   currentView = &menuView;
   

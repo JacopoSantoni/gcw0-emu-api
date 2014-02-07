@@ -11,20 +11,7 @@ using namespace gcw;
 
 MenuView::MenuView(Manager *manager) : View(manager), current(nullptr)
 {
-  MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
-  
-  StandardMenu *menu = new StandardMenu("Submenu");
-  menu->addEntry(new MenuEntry("foobar"));
-  menu->addEntry(new MenuEntry("antani"));
-  menu->addEntry(new MenuEntry("sblinda"));
-  menu->addEntry(new MenuEntry("ciccio"));
-  
-  StandardMenu *root = new StandardMenu("Root");
-  root->addEntry(new MenuEntry("asdella"));
-  root->addEntry(new SubMenuEntry("submenu",menu));
-  root->addEntry(boolEntry);
-  
-  current = MenuStatus(root);
+
 }
 
 void MenuView::handleEvents()
@@ -77,16 +64,6 @@ void MenuView::render()
 {
   //gfx->blit(gfx->cache.get("data/consoles/gba-small.png"), 100, 100);
   
-  
-  gfx->print(10, 10, false, Font::bigFont, current.menu->title().c_str());
-
-  
-  for (int i = 0; i < current.menu->count(); ++i)
-  {
-    MenuEntry * entry = current.menu->entryAt(i);
-    
-    gfx->print(20, 40+i*10, false, Font::bigFont, entry->name().c_str());
-  }
-  
-  gfx->print(10,40+current.index*10, false, Font::bigFont, ">");
+  current.menu->render(gfx, 10, 10, 20, 40);  
+  gfx->print(10,40+current.index*18, false, Font::bigFont, ">");
 }

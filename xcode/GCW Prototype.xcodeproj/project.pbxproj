@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0401A6E018A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
+		0401A6E118A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
 		0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0408CCAF189F451A00A036A8 /* menu_view.cpp */; };
-		041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 041DB200189AA37200E4AFE9 /* SDLMain.mm */; };
-		04578B4818A4141900F8F463 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04578B4718A4141900F8F463 /* view.cpp */; };
-		04578B4918A4145100F8F463 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04578B4718A4141900F8F463 /* view.cpp */; };
+		043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0418A206A70015B350 /* SDL_image.framework */; };
+		043E7E0718A206A70015B350 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0518A206A70015B350 /* SDL.framework */; };
+		043E7E0918A208FE0015B350 /* libSDLmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0818A208FE0015B350 /* libSDLmain.a */; };
+		043E7E0A18A209040015B350 /* libSDLmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0818A208FE0015B350 /* libSDLmain.a */; };
 		045DA531189CB97600776EFA /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA51D189CB8EA00776EFA /* core_view.cpp */; };
 		045DA532189CB97800776EFA /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA520189CB8EA00776EFA /* dummycore.cpp */; };
 		045DA533189CB97900776EFA /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA522189CB8EA00776EFA /* gfx.cpp */; };
@@ -22,12 +25,9 @@
 		045DA539189CB98200776EFA /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52D189CB8EA00776EFA /* settings.cpp */; };
 		045DA53A189CB98200776EFA /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52F189CB8EA00776EFA /* utils.cpp */; };
 		045DA53D189F308700776EFA /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA53C189F305C00776EFA /* menu.cpp */; };
-		04B63828189C9C2D0028FA74 /* SDL_image in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B63827189C9C2D0028FA74 /* SDL_image */; };
 		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
-		04CB04641897675200169B41 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04631897675200169B41 /* SDL.framework */; };
 		04DD937A189C170100EC0AAA /* Cocoa-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045B2658189AC86D00DA8019 /* Cocoa-Info.plist */; };
-		04E605D218998D100035A501 /* SDL in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E605D118998D100035A501 /* SDL */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,12 +53,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0401A6DF18A4A959005A6991 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cpp; path = ../src/view.cpp; sourceTree = SOURCE_ROOT; };
 		0408CCAD189F40E800A036A8 /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../src/view.h; sourceTree = SOURCE_ROOT; };
 		0408CCAF189F451A00A036A8 /* menu_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu_view.cpp; path = ../src/menu_view.cpp; sourceTree = SOURCE_ROOT; };
 		0408CCB0189F451A00A036A8 /* menu_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu_view.h; path = ../src/menu_view.h; sourceTree = SOURCE_ROOT; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
-		04578B4718A4141900F8F463 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cpp; path = ../src/view.cpp; sourceTree = SOURCE_ROOT; };
+		043E7E0418A206A70015B350 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = ../../../../../../../Library/Frameworks/SDL_image.framework; sourceTree = "<group>"; };
+		043E7E0518A206A70015B350 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
+		043E7E0818A208FE0015B350 /* libSDLmain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLmain.a; path = ../../../../../../../usr/local/Cellar/sdl/1.2.15/lib/libSDLmain.a; sourceTree = "<group>"; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		045DA51D189CB8EA00776EFA /* core_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = core_view.cpp; path = ../src/core_view.cpp; sourceTree = SOURCE_ROOT; };
@@ -83,7 +86,6 @@
 		045DA530189CB8EA00776EFA /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../src/utils.h; sourceTree = SOURCE_ROOT; };
 		045DA53B189F305C00776EFA /* menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu.h; path = ../src/menu.h; sourceTree = SOURCE_ROOT; };
 		045DA53C189F305C00776EFA /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu.cpp; path = ../src/menu.cpp; sourceTree = SOURCE_ROOT; };
-		04B63827189C9C2D0028FA74 /* SDL_image */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SDL_image; path = ../../../../../../../Library/Frameworks/SDL_image.framework/Versions/Current/SDL_image; sourceTree = "<group>"; };
 		04B6382C189C9CC40028FA74 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
 		04CB04261897669C00169B41 /* GCW Prototype */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "GCW Prototype"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04CB04421897670300169B41 /* Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cocoa.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,8 +93,6 @@
 		04CB04471897670300169B41 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		04CB04481897670300169B41 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04CB04491897670300169B41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		04CB04631897675200169B41 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
-		04E605D118998D100035A501 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = SDL; path = /Library/Frameworks/SDL.framework/Versions/Current/SDL; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04CB04641897675200169B41 /* SDL.framework in Frameworks */,
+				043E7E0918A208FE0015B350 /* libSDLmain.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,9 +108,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04B63828189C9C2D0028FA74 /* SDL_image in Frameworks */,
-				04E605D218998D100035A501 /* SDL in Frameworks */,
+				043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */,
+				043E7E0718A206A70015B350 /* SDL.framework in Frameworks */,
 				04CB04451897670300169B41 /* Cocoa.framework in Frameworks */,
+				043E7E0A18A209040015B350 /* libSDLmain.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				0408CCAD189F40E800A036A8 /* view.h */,
-				04578B4718A4141900F8F463 /* view.cpp */,
+				0401A6DF18A4A959005A6991 /* view.cpp */,
 				045DA53B189F305C00776EFA /* menu.h */,
 				045DA53C189F305C00776EFA /* menu.cpp */,
 				045DA51E189CB8EA00776EFA /* core_view.h */,
@@ -147,9 +148,8 @@
 		04CB041D1897669C00169B41 = {
 			isa = PBXGroup;
 			children = (
+				043E7E0818A208FE0015B350 /* libSDLmain.a */,
 				04B6382C189C9CC40028FA74 /* data */,
-				04B63827189C9C2D0028FA74 /* SDL_image */,
-				04E605D118998D100035A501 /* SDL */,
 				04CB04281897669C00169B41 /* GCW Prototype */,
 				041DB1FE189AA36000E4AFE9 /* Supporting Files */,
 				04CB04431897670300169B41 /* Frameworks */,
@@ -195,7 +195,8 @@
 		04CB04431897670300169B41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				04CB04631897675200169B41 /* SDL.framework */,
+				043E7E0418A206A70015B350 /* SDL_image.framework */,
+				043E7E0518A206A70015B350 /* SDL.framework */,
 				04CB04441897670300169B41 /* Cocoa.framework */,
 				04CB04461897670300169B41 /* Other Frameworks */,
 			);
@@ -293,7 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04578B4818A4141900F8F463 /* view.cpp in Sources */,
+				0401A6E018A4A959005A6991 /* view.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,15 +303,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				045DA535189CB98200776EFA /* main.cpp in Sources */,
+				0401A6E118A4A959005A6991 /* view.cpp in Sources */,
 				045DA536189CB98200776EFA /* manager.cpp in Sources */,
 				045DA537189CB98200776EFA /* persistence.cpp in Sources */,
 				045DA538189CB98200776EFA /* rom_collection.cpp in Sources */,
 				045DA539189CB98200776EFA /* settings.cpp in Sources */,
 				045DA53A189CB98200776EFA /* utils.cpp in Sources */,
-				041DB201189AA3A700E4AFE9 /* SDLMain.mm in Sources */,
 				045DA531189CB97600776EFA /* core_view.cpp in Sources */,
 				0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */,
-				04578B4918A4145100F8F463 /* view.cpp in Sources */,
 				045DA532189CB97800776EFA /* dummycore.cpp in Sources */,
 				045DA53D189F308700776EFA /* menu.cpp in Sources */,
 				045DA534189CB97A00776EFA /* loader.cpp in Sources */,
@@ -381,6 +381,10 @@
 		04CB04301897669C00169B41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl/1.2.15/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -388,6 +392,10 @@
 		04CB04311897669C00169B41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl/1.2.15/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -396,6 +404,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -405,8 +417,9 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
-					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\"",
-					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\"",
+					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\\\"",
+					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\\\"",
+					/usr/local/Cellar/sdl/1.2.15/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "-Wall";
@@ -418,6 +431,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -427,8 +444,9 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
-					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\"",
-					"\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\"",
+					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\\\"",
+					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\\\"",
+					/usr/local/Cellar/sdl/1.2.15/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = "-Wall";

@@ -5,7 +5,7 @@ int SDL_main(int argc, char **argv)
 #else
 int run(int argc, char **argv)
 #endif*/
-int run(int argc, char **argv)
+int SDL_main(int argc, char **argv)
 {
   gcw::Manager manager;
   

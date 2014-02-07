@@ -34,7 +34,7 @@ namespace gcw {
     public:
       MenuView(Manager *manager);
     
-      void setMenu(Menu *root) { this->root = root; }
+      void setMenu(Menu *root) { this->root = root; current = MenuStatus(root); }
     
       virtual void render();
       virtual void handleEvents();

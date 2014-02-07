@@ -3,6 +3,8 @@
 using namespace std;
 using namespace gcw;
 
+
+ImageCache Gfx::cache;
 SDL_PixelFormat *Gfx::format;
 
 void Gfx::init()
@@ -58,7 +60,7 @@ void Gfx::clear(GfxBuffer &buffer, T color)
 }
 
 
-void Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
+u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
 {
   if (centered)
   {
@@ -88,9 +90,11 @@ void Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
       out.x += w+1;
     }
   }
+  
+  return out.x;
 }
 
-void Gfx::printf(int x, int y, bool centered, const Font &font, const char *text, ...)
+u16 Gfx::printf(int x, int y, bool centered, const Font &font, const char *text, ...)
 {
   char buffer[64];
   va_list args;
@@ -98,7 +102,7 @@ void Gfx::printf(int x, int y, bool centered, const Font &font, const char *text
   vsnprintf (buffer, 64, text, args);
   va_end(args);
   
-  print(x,y,centered,font,buffer);
+  return print(x,y,centered,font,buffer);
 }
 
 #pragma mark Font

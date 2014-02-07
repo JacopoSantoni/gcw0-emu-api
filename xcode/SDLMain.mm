@@ -192,7 +192,7 @@ static void CustomApplicationMain (int argc, char **argv)
 
 
 /* Main entry point to executable - should *not* be SDL_main! */
-int main (int argc, char **argv)
+extern "C" int main (int argc, char **argv)
 {
     CustomApplicationMain(argc, argv);
 

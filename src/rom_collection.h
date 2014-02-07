@@ -53,6 +53,7 @@ namespace gcw {
     
       std::vector<ConsoleSpec>* getConsoles() { return &specs; }
       RomIteratorRange getRomsForConsole(ConsoleSpec* spec) { return roms.equal_range(spec); }
+      ConsoleSpec* consoleByName(std::string name) { return &specs[1]; }
     
   };
   
