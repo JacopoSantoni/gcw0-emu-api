@@ -96,7 +96,7 @@ class Menu
   
 class StandardMenu : public Menu
 {
-  private:
+  protected:
     std::vector<std::unique_ptr<MenuEntry>> entries;
   
   public:
@@ -108,15 +108,18 @@ class StandardMenu : public Menu
 
 };
   
-class ConsoleMenu : public Menu
+class ConsoleMenu : public StandardMenu
 {
   private:
-    std::vector<ConsoleSpec*>* consoles;
   
   public:
-    ConsoleMenu(std::string caption, std::vector<ConsoleSpec*>* consoles);
-  
-    virtual size_t count() const { return consoles->size(); }
+    ConsoleMenu(std::string caption, std::vector<ConsoleSpec>* consoles) : StandardMenu(caption)
+    {
+      std::vector<ConsoleSpec>::iterator it;
+      
+      for (it = consoles->begin(); it != consoles->end(); ++it)
+        entries.push_back(std::unique_ptr<MenuEntry>(new ConsoleMenuEntry(&(*it))));
+    }
 };
   
 }

@@ -41,26 +41,21 @@ void BoolMenuEntry::render(Gfx *gfx, int x, int y)
 
 #pragma mark ConsoleMenuEntry
 
-ConsoleMenuEntry::ConsoleMenuEntry(ConsoleSpec *console) : console(console), icon(Gfx::cache.get("data/consoles/"+console->ident+"-small.png"))
+ConsoleMenuEntry::ConsoleMenuEntry(ConsoleSpec *console) : console(console), icon(Gfx::cache.getFallback("data/consoles/"+console->ident+"-small.png","data/consoles/console-small.png"))
 {
   
 }
 
 void ConsoleMenuEntry::render(Gfx *gfx, int x, int y)
 {
-  gfx->blit(icon, x, y);
-  gfx->print(x+icon->w+3, y, false, Font::bigFont, console->ident.c_str());
+  gfx->blitCentered(icon, x+5, y);
+  gfx->print(x+5+icon->w, y, false, Font::bigFont, console->name.c_str());
 }
 
 
 
 
 
-
-ConsoleMenu::ConsoleMenu(string caption, vector<ConsoleSpec*>* consoles) : Menu("Browse by System"), consoles(consoles)
-{
-  
-}
 
 
 

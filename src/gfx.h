@@ -85,7 +85,17 @@ namespace gcw
       
     public:
       ImageCache() { }
-      
+    
+      SDL_Surface *getFallback(std::string name, std::string fallback)
+      {
+        SDL_Surface *icon = get(name);
+        
+        if (!icon)
+          return get(fallback);
+        else
+          return icon;
+      }
+    
       SDL_Surface *get(std::string name) {
         std::unordered_map<std::string, SDL_Surface*>::iterator it = cache.find(name);
         if (it != cache.end())
@@ -141,6 +151,11 @@ namespace gcw
         SDL_Rect dstRect = rrr(x,y,0,0);
         
         SDL_BlitSurface(src, &srcRect, screen, &dstRect);
+      }
+    
+      void blitCentered(SDL_Surface *src, int x, int y)
+      {
+        blit(src, x-src->w/2, y-src->h/2);
       }
     
       template<typename T>

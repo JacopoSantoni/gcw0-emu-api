@@ -62,6 +62,8 @@ void Gfx::clear(GfxBuffer &buffer, T color)
 
 u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
 {
+  y -= font.tileHeight/2;
+  
   if (centered)
   {
     u16 length = font.stringWidth(text);

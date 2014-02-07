@@ -25,18 +25,16 @@ void Manager::init()
   menu->addEntry(new StandardMenuEntry("antani"));
   menu->addEntry(new StandardMenuEntry("sblinda"));
   menu->addEntry(new StandardMenuEntry("ciccio"));
-  menu->addEntry(new ConsoleMenuEntry(collection.consoleByName("")));
+  menu->addEntry(new SubMenuEntry("Browse by System",new ConsoleMenu("Browse by System",collection.getConsoles())));
   
   StandardMenu *root = new StandardMenu("Root");
   root->addEntry(new StandardMenuEntry("asdella"));
   root->addEntry(new SubMenuEntry("submenu",menu));
   root->addEntry(boolEntry);
-  menuView.setMenu(menu);
-  
-  
-  currentView = &menuView;
+  menuView.setMenu(root);
   
 
+  currentView = &menuView;
 }
 
 void Manager::run()
