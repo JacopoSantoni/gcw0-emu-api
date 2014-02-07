@@ -30,6 +30,8 @@ namespace gcw {
   };
   
   typedef std::unordered_multimap<ConsoleSpec*, RomEntry> RomMap;
+  typedef RomMap::iterator RomIterator;
+  typedef std::pair<RomIterator, RomIterator> RomIteratorRange;
 
   class Manager;
   
@@ -48,6 +50,9 @@ namespace gcw {
       RomCollection(Manager *manager) : manager(manager) { }
       void addPath(std::string path) { paths.push_back(path); }
       void scan();
+    
+      std::vector<ConsoleSpec>* getConsoles() { return &specs; }
+      RomIteratorRange getRomsForConsole(ConsoleSpec* spec) { return roms.equal_range(spec); }
     
   };
   

@@ -4,6 +4,7 @@
 #include "defines.h"
 
 #include "settings.h"
+#include "rom_collection.h"
 
 #include <string>
 #include <vector>
@@ -80,6 +81,17 @@ class StandardMenu : public Menu
     void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
     MenuEntry* entryAt(u32 index) { return entries[index].get(); }
 
+};
+  
+class ConsoleMenu : public Menu
+{
+  private:
+    std::vector<ConsoleSpec*>* consoles;
+  
+  public:
+    ConsoleMenu(std::string caption, std::vector<ConsoleSpec*>* consoles);
+  
+    virtual size_t count() { return consoles->size(); }
 };
   
 }

@@ -50,11 +50,11 @@ void RomCollection::scan()
   
   for (ConsoleSpec& spec : specs)
   {
-    pair<RomMap::iterator, RomMap::iterator> it = roms.equal_range(&spec);
+    pair<RomIterator, RomIterator> it = roms.equal_range(&spec);
     
     cout << "Console: " << spec.name << "(" << spec.ident << ")" << endl;
     
-    for (RomMap::iterator iit = it.first; iit != it.second; ++iit)
+    for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
       RomEntry &entry = iit->second;
       cout << "\t" << entry.name << " " << entry.ext << " : " << *entry.path << endl;

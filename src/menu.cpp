@@ -2,6 +2,7 @@
 
 #include "menu_view.h"
 
+using namespace std;
 using namespace gcw;
 
 void SubMenuEntry::action(MenuView *view, GCWKey key)
@@ -20,4 +21,11 @@ void BoolMenuEntry::action(MenuView *view, GCWKey key)
     caption = setting->getName() + " " + (newValue ? "true" : "false");
     setting->setValue(newValue);
   }
+}
+
+
+
+ConsoleMenu::ConsoleMenu(string caption, vector<ConsoleSpec*>* consoles) : Menu("Browse by System"), consoles(consoles)
+{
+  
 }
