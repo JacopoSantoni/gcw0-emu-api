@@ -18,12 +18,10 @@ void Manager::init()
   //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
   //coreView.initGfx();
   
-  MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
-  
   StandardMenu *root = new StandardMenu("Root");
-  root->addEntry(new SubMenuEntry("Browse by System",new ConsoleMenu("Browse by System",collection.getConsoles())));
+  root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
   root->addEntry(new StandardMenuEntry("asdella"));
-  root->addEntry(boolEntry);
+  root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager *manager){ manager->exit(); }) );
   menuView.setMenu(root);
   

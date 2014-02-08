@@ -40,19 +40,25 @@ void BoolMenuEntry::render(Gfx *gfx, int x, int y)
 
 }
 
-#pragma mark ConsoleMenuEntry
+#pragma mark SystemMenuEntry
 
-ConsoleMenuEntry::ConsoleMenuEntry(ConsoleSpec *console) : console(console), icon(Gfx::cache.getFallback("data/consoles/"+console->ident+"-small.png","data/consoles/console-small.png"))
+SystemMenuEntry::SystemMenuEntry(SystemSpec *system, Menu *menu) : SubMenuEntry(system->ident, menu), system(system), icon(Gfx::cache.getFallback("data/consoles/"+system->ident+"-small.png","data/consoles/system-small.png"))
 {
   
 }
 
-void ConsoleMenuEntry::render(Gfx *gfx, int x, int y)
+void SystemMenuEntry::render(Gfx *gfx, int x, int y)
 {
   gfx->blitCentered(icon, x+5, y);
-  gfx->print(x+5+icon->w, y, false, Font::bigFont, console->name.c_str());
+  gfx->print(x+5+icon->w, y, false, Font::bigFont, system->name.c_str());
 }
 
+#pragma mark RomMenuEntry
+
+void RomMenuEntry::render(Gfx *gfx, int x, int y)
+{
+  gfx->print(x, y, false, Font::bigFont, name().c_str());
+}
 
 
 

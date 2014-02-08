@@ -69,7 +69,7 @@ class EnumSetting : public ConcreteSetting<EnumValue<T> >
     EnumSet<T> values;
   
   public:
-    EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> defaultValue) : ConcreteSetting<EnumValue<T> >(SETTING_ENUM, name, ident, defaultValue), values(values)  { }
+    EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> value) : ConcreteSetting<EnumValue<T> >(SETTING_ENUM, name, ident, value), values(values)  { }
 };
   
 

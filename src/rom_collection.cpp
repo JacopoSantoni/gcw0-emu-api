@@ -8,19 +8,19 @@ using namespace gcw;
 void RomCollection::scan()
 {
   paths = {"/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/gba", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes"};
-  specs = {ConsoleSpec("uncat", "Uncategorized", {}), ConsoleSpec("snes", "Super Nintendo", {"smc","fig"}), ConsoleSpec("gba", "GameBoy Advance", {"gba"}), };
+  specs = {SystemSpec("uncat", "Uncategorized", {}), SystemSpec("snes", "Super Nintendo", {"smc","fig"}), SystemSpec("gba", "GameBoy Advance", {"gba"}), };
   
-  unordered_map<std::string, ConsoleSpec*> extsMapToConsole;
+  unordered_map<std::string, SystemSpec*> extsMapToSystem;
   unordered_set<std::string> exts;
   for (auto &spec : specs)
     for (auto &ext : spec.extensions)
     {
       exts.insert(ext);
       
-      if (extsMapToConsole.find(ext) == extsMapToConsole.end())
-        extsMapToConsole[ext] = &spec;
+      if (extsMapToSystem.find(ext) == extsMapToSystem.end())
+        extsMapToSystem[ext] = &spec;
       else
-        extsMapToConsole[ext] = &specs[0];
+        extsMapToSystem[ext] = &specs[0];
     }
   
   //manager->getLoader()->allowedFileTypes();
@@ -38,21 +38,21 @@ void RomCollection::scan()
       size_t dot = file.find_last_of(".");
       rom.name = file.substr(0,dot);
       rom.ext = file.substr(dot+1, string::npos);
-      rom.console = extsMapToConsole[rom.ext];
+      rom.system = extsMapToSystem[rom.ext];
       rom.path = &path;
       
-      roms.insert(std::pair<ConsoleSpec*,RomEntry>(rom.console,rom));
+      roms.insert(std::pair<SystemSpec*,RomEntry>(rom.system,rom));
       
     }
   }
   
   RomMap::iterator it;
   
-  for (ConsoleSpec& spec : specs)
+  for (SystemSpec& spec : specs)
   {
     pair<RomIterator, RomIterator> it = roms.equal_range(&spec);
     
-    cout << "Console: " << spec.name << "(" << spec.ident << ")" << endl;
+    cout << "System: " << spec.name << "(" << spec.ident << ")" << endl;
     
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {

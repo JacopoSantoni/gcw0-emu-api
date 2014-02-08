@@ -12,24 +12,24 @@
 namespace gcw {
   
   
-  struct ConsoleSpec
+  struct SystemSpec
   {
     std::string ident;
     std::string name;
     std::vector<std::string> extensions;
     
-    ConsoleSpec(std::string ident, std::string &&name, std::vector<std::string> &&extensions) : ident(ident), name(name), extensions(extensions) { }
+    SystemSpec(std::string ident, std::string &&name, std::vector<std::string> &&extensions) : ident(ident), name(name), extensions(extensions) { }
   };
   
   struct RomEntry
   {
     std::string name;
     std::string ext;
-    ConsoleSpec *console;
+    SystemSpec *system;
     std::string *path;
   };
   
-  typedef std::unordered_multimap<ConsoleSpec*, RomEntry> RomMap;
+  typedef std::unordered_multimap<SystemSpec*, RomEntry> RomMap;
   typedef RomMap::iterator RomIterator;
   typedef std::pair<RomIterator, RomIterator> RomIteratorRange;
 
@@ -38,7 +38,7 @@ namespace gcw {
   class RomCollection
   {
     private:
-      std::vector<ConsoleSpec> specs;
+      std::vector<SystemSpec> specs;
     
       Manager *manager;
       std::vector<std::string> paths;
@@ -51,10 +51,8 @@ namespace gcw {
       void addPath(std::string path) { paths.push_back(path); }
       void scan();
     
-      std::vector<ConsoleSpec>* getConsoles() { return &specs; }
-      RomIteratorRange getRomsForConsole(ConsoleSpec* spec) { return roms.equal_range(spec); }
-      ConsoleSpec* consoleByName(std::string name) { return &specs[1]; }
-    
+      std::vector<SystemSpec>* getSystems() { return &specs; }
+      RomIteratorRange getRomsForSystem(SystemSpec* spec) { return roms.equal_range(spec); }    
   };
   
 }

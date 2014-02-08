@@ -46,7 +46,7 @@ class DummyCore : public CoreInterface
   public:
     DummyCore()
     {
-      registerInformations(CONSOLE_SUPER_NINTENDO, "dummy", "dummy", "1.0");
+      registerInformations(SYSTEM_SUPER_NINTENDO, "dummy", "dummy", "1.0");
       registerExtension("smc");
       registerExtension("gba");
       

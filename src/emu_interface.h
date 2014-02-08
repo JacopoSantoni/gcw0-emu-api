@@ -20,13 +20,13 @@ class CoreInterface;
 
 struct CoreInfo
 {
-  ConsoleType type;
+  SystemType type;
   std::string ident;
   std::string name;
   std::string version;
   
-  CoreInfo(ConsoleType type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
-  CoreInfo() : type(CONSOLE_UNCATEGORISED), ident(std::string()), name(std::string()), version(std::string()) { }
+  CoreInfo(SystemType type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
+  CoreInfo() : type(SYSTEM_UNCATEGORISED), ident(std::string()), name(std::string()), version(std::string()) { }
 };
 
 class CoreInterface
@@ -47,7 +47,7 @@ class CoreInterface
     CoreInterface() : analogJoypadEnabled(false) { }
   
 		void registerExtension(std::string ext) { extensions.push_back(ext); }
-    void registerInformations(ConsoleType type, std::string ident, std::string name, std::string version) { information = CoreInfo(type,ident,name,version); }
+    void registerInformations(SystemType type, std::string ident, std::string name, std::string version) { information = CoreInfo(type,ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }

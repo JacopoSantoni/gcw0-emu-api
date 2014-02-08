@@ -74,18 +74,40 @@ class BoolMenuEntry : public StandardMenuEntry
     virtual void render(Gfx* gfx, int x, int y);
 };
   
-class ConsoleMenuEntry : public MenuEntry
+/*class EnumMenuEntry : public StandardMenuEntry
 {
 private:
-  ConsoleSpec* const console;
+  BoolSetting* const setting;
+  
+public:
+  BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+  
+  virtual void action(Manager *manager, GCWKey key);
+  virtual void render(Gfx* gfx, int x, int y);
+};*/
+  
+  
+class SystemMenuEntry : public SubMenuEntry
+{
+private:
+  SystemSpec* const system;
   SDL_Surface* const icon;
   
 public:
-  ConsoleMenuEntry(ConsoleSpec *console);
-  virtual const std::string& name() { return console->ident; }
+  SystemMenuEntry(SystemSpec *system, Menu *menu);
   virtual void render(Gfx* gfx, int x, int y);
 };
 
+class RomMenuEntry : public MenuEntry
+{
+  private:
+    RomEntry* const rom;
+  
+  public:
+    RomMenuEntry(RomEntry *rom) : rom(rom) { }
+    virtual const std::string& name() { return rom->name; }
+    virtual void render(Gfx* gfx, int x, int y);
+};
 
 
 
@@ -119,19 +141,44 @@ class StandardMenu : public Menu
 
 };
   
-class ConsoleMenu : public StandardMenu
+
+class RomsMenu : public StandardMenu
+{
+public:
+  RomsMenu(std::string caption, RomIteratorRange roms) : StandardMenu(caption)
+  {
+    for (RomIterator it = roms.first; it != roms.second; ++it)
+    {
+      RomEntry *rom = &it->second;
+      entries.push_back(std::unique_ptr<MenuEntry>(new RomMenuEntry(rom)));
+    }
+  }
+};
+  
+  
+class SystemsMenu : public StandardMenu
 {
   private:
   
   public:
-    ConsoleMenu(std::string caption, std::vector<ConsoleSpec>* consoles) : StandardMenu(caption)
+    SystemsMenu(std::string caption, RomCollection *collection) : StandardMenu(caption)
     {
-      std::vector<ConsoleSpec>::iterator it;
+      std::vector<SystemSpec>* systems = collection->getSystems();
+      std::vector<SystemSpec>::iterator it;
       
-      for (it = consoles->begin(); it != consoles->end(); ++it)
-        entries.push_back(std::unique_ptr<MenuEntry>(new ConsoleMenuEntry(&(*it))));
+      for (it = systems->begin(); it != systems->end(); ++it)
+      {
+        SystemSpec *system = &(*it);
+        RomIteratorRange roms = collection->getRomsForSystem(system);
+        
+        if (roms.first != roms.second)
+          entries.push_back(std::unique_ptr<MenuEntry>(new SystemMenuEntry(system, new RomsMenu(system->name, roms))));
+      }
+
     }
 };
+  
+
   
 }
 
