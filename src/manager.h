@@ -32,6 +32,8 @@ class Manager
     void init();
     void run();
   
+    MenuView *getMenuView() { return &menuView; }
+  
     Loader *getLoader() { return &loader; }
     RomCollection *getRomCollection() { return &collection; }
     Gfx *getGfx() { return &gfx; }

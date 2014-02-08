@@ -1,6 +1,7 @@
 #include "menu.h"
 
 #include "menu_view.h"
+#include "manager.h"
 
 using namespace std;
 using namespace gcw;
@@ -14,16 +15,16 @@ void MenuEntry::render(Gfx *gfx, int x, int y)
 
 #pragma mark SubMenuEntry
 
-void SubMenuEntry::action(MenuView *view, GCWKey key)
+void SubMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == GCW_KEY_RIGHT)
-    view->enterSubmenu(this);
+    manager->getMenuView()->enterSubmenu(this);
 }
 
 #pragma mark BoolMenuEntry
 
 
-void BoolMenuEntry::action(MenuView *view, GCWKey key)
+void BoolMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT)
   {

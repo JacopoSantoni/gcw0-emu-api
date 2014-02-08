@@ -25,14 +25,17 @@ void MenuView::handleEvents()
       // manage normal keys
       case SDL_KEYDOWN:
       {
-        switch (event.key.keysym.sym)
+        GCWKey key = static_cast<GCWKey>(event.key.keysym.sym);
+        switch (key)
         {
           case GCW_KEY_DOWN: down(); break;
           case GCW_KEY_UP: up(); break;
             
           case GCW_KEY_LEFT: if (!menuStack.empty()) { current = menuStack.top(); menuStack.pop(); } break;
             
-          case GCW_KEY_RIGHT: current.menu->entryAt(current.index)->action(this, GCW_KEY_RIGHT); break;
+          case GCW_KEY_RIGHT:
+          case GCW_KEY_B:            
+            current.menu->entryAt(current.index)->action(manager, key); break;
             
           default: break;
         }

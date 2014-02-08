@@ -20,17 +20,11 @@ void Manager::init()
   
   MenuEntry *boolEntry = new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true));
   
-  StandardMenu *menu = new StandardMenu("Submenu");
-  menu->addEntry(new StandardMenuEntry("foobar"));
-  menu->addEntry(new StandardMenuEntry("antani"));
-  menu->addEntry(new StandardMenuEntry("sblinda"));
-  menu->addEntry(new StandardMenuEntry("ciccio"));
-  menu->addEntry(new SubMenuEntry("Browse by System",new ConsoleMenu("Browse by System",collection.getConsoles())));
-  
   StandardMenu *root = new StandardMenu("Root");
+  root->addEntry(new SubMenuEntry("Browse by System",new ConsoleMenu("Browse by System",collection.getConsoles())));
   root->addEntry(new StandardMenuEntry("asdella"));
-  root->addEntry(new SubMenuEntry("submenu",menu));
   root->addEntry(boolEntry);
+  root->addEntry(new LambdaMenuEntry("Exit",[](Manager *manager){ manager->exit(); }) );
   menuView.setMenu(root);
   
 

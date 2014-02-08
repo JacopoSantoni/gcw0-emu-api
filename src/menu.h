@@ -22,7 +22,7 @@ class MenuEntry
     MenuEntry() { }
     virtual const std::string& name() = 0;
   
-    virtual void action(MenuView *view, GCWKey key) { }
+    virtual void action(Manager *manager, GCWKey key) { }
     virtual void render(Gfx* gfx, int x, int y);
 };
   
@@ -35,7 +35,18 @@ class StandardMenuEntry : public MenuEntry
     StandardMenuEntry(std::string caption) : caption(caption) { }
     virtual const std::string& name() { return caption; }
     
-    virtual void action(MenuView *view, GCWKey key) { }
+    virtual void action(Manager *manager, GCWKey key) { }
+};
+  
+class LambdaMenuEntry : public StandardMenuEntry
+{
+  protected:
+    std::function<void (Manager*)> lambda;
+  
+  public:
+    LambdaMenuEntry(std::string caption, std::function<void (Manager*)> lambda) : StandardMenuEntry(caption), lambda(lambda) { }
+
+    virtual void action(Manager *manager, GCWKey key) { if (key == GCW_KEY_B) lambda(manager); }
 };
 
 class SubMenuEntry : public StandardMenuEntry
@@ -48,7 +59,7 @@ class SubMenuEntry : public StandardMenuEntry
   
     Menu *subMenu() { return menu; }
   
-    virtual void action(MenuView *view, GCWKey key);
+    virtual void action(Manager *manager, GCWKey key);
 };
   
 class BoolMenuEntry : public StandardMenuEntry
@@ -59,7 +70,7 @@ class BoolMenuEntry : public StandardMenuEntry
   public:
     BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
 
-    virtual void action(MenuView *view, GCWKey key);
+    virtual void action(Manager *manager, GCWKey key);
     virtual void render(Gfx* gfx, int x, int y);
 };
   
