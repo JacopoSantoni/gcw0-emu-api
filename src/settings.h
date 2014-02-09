@@ -38,7 +38,7 @@ class ConcreteSetting : public Setting
   
   public:
     ConcreteSetting(SettingType type, std::string name, std::string ident, V value) : Setting(type, name, ident), value(value) { }
-    V getValue() { return value; }
+    V& getValue() { return value; }
     void setValue(V value) { this->value = value; }
 };
 
@@ -46,7 +46,13 @@ class BoolSetting : public ConcreteSetting<bool>
 {
   
   public:
-    BoolSetting(std::string name, std::string ident, bool defaultValue) : ConcreteSetting(SETTING_BOOL, name, ident, defaultValue) { }
+    BoolSetting(std::string name, std::string ident, bool value) : ConcreteSetting(SETTING_BOOL, name, ident, value) { }
+};
+  
+class PathSetting : public ConcreteSetting<std::string>
+{
+  public:
+    PathSetting(std::string name, std::string ident, std::string value) : ConcreteSetting(SETTING_PATH, name, ident, value) { }
 };
 
 template<typename T>
@@ -61,6 +67,15 @@ class EnumValue
 };
 
 template<typename T> using EnumSet = std::vector< EnumValue<T> >;
+  
+/*class EnumSetting
+{
+  private:
+  
+  public:
+    virtual size_t count() = 0;
+
+};*/
 
 template <typename T>
 class EnumSetting : public ConcreteSetting<EnumValue<T> >

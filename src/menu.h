@@ -74,6 +74,17 @@ class BoolMenuEntry : public StandardMenuEntry
     virtual void render(Gfx* gfx, int x, int y);
 };
   
+class PathMenuEntry : public StandardMenuEntry
+{
+  private:
+    PathSetting* const setting;
+  public:
+    PathMenuEntry(PathSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+  
+    virtual void action(Manager *manager, GCWKey key);
+    virtual void render(Gfx* gfx, int x, int y);
+};
+  
 /*class EnumMenuEntry : public StandardMenuEntry
 {
 private:

@@ -20,8 +20,8 @@ void Manager::init()
   
   StandardMenu *root = new StandardMenu("Root");
   root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
-  root->addEntry(new StandardMenuEntry("asdella"));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
+  root->addEntry(new PathMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes")));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager *manager){ manager->exit(); }) );
   menuView.setMenu(root);
   

@@ -17,7 +17,7 @@ void MenuEntry::render(Gfx *gfx, int x, int y)
 
 void SubMenuEntry::action(Manager *manager, GCWKey key)
 {
-  if (key == GCW_KEY_RIGHT)
+  if (key == MENU_ACTION_BUTTON)
     manager->getMenuView()->enterSubmenu(this);
 }
 
@@ -26,7 +26,7 @@ void SubMenuEntry::action(Manager *manager, GCWKey key)
 
 void BoolMenuEntry::action(Manager *manager, GCWKey key)
 {
-  if (key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT)
+  if (key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT || key == MENU_ACTION_BUTTON)
   {
     bool newValue = !setting->getValue();
     setting->setValue(newValue);
@@ -39,6 +39,30 @@ void BoolMenuEntry::render(Gfx *gfx, int x, int y)
   gfx->print(x+width+10, y, false, Font::bigFont, setting->getValue()?"Yes":"No");
 
 }
+
+#pragma mark PathMenuEntry
+
+void PathMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == MENU_ACTION_BUTTON)
+  {
+    //
+  }
+}
+
+void PathMenuEntry::render(Gfx *gfx, int x, int y)
+{
+  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  
+  string &path = setting->getValue();
+  const int MAX_LENGTH = 30;
+  
+  if (path.length() < MAX_LENGTH)
+    gfx->print(x+width, y, false, Font::bigFont, path.c_str());
+  else
+    gfx->print(x+width, y, false, Font::bigFont, (path.substr(0, MAX_LENGTH)+"...").c_str());
+}
+
 
 #pragma mark SystemMenuEntry
 

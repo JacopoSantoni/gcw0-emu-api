@@ -42,6 +42,7 @@ class DummyUtil
 class DummyCore : public CoreInterface
 {
   private:
+    std::string romName;
 
   public:
     DummyCore()
@@ -94,6 +95,7 @@ class DummyCore : public CoreInterface
     }
 
     virtual void emulationFrame();
+    virtual void loadRomByFileName(std::string name);
     virtual void run(int argc, char **argv) { /*mainEntry(argc, argv);*/ }
 };
   
@@ -126,6 +128,11 @@ void DummyCore::emulationFrame()
   
   DummyUtil::rectFill<u16>(gfxBuffer, cx - range, cy - range, 2*range + size, 2*range + size, grey );
   DummyUtil::rectFill<u16>(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, red );
+}
+  
+void DummyCore::loadRomByFileName(std::string name)
+{
+  romName = name;
 }
   
 

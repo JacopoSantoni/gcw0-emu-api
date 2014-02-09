@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0401A6E018A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
 		0401A6E118A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
+		0404124B18A7F66600674A1D /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0404124918A7F61500674A1D /* path_view.cpp */; };
 		0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0408CCAF189F451A00A036A8 /* menu_view.cpp */; };
 		043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0418A206A70015B350 /* SDL_image.framework */; };
 		043E7E0718A206A70015B350 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0518A206A70015B350 /* SDL.framework */; };
@@ -54,6 +55,8 @@
 
 /* Begin PBXFileReference section */
 		0401A6DF18A4A959005A6991 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cpp; path = ../src/view.cpp; sourceTree = SOURCE_ROOT; };
+		0404124918A7F61500674A1D /* path_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = path_view.cpp; path = ../src/path_view.cpp; sourceTree = SOURCE_ROOT; };
+		0404124A18A7F61500674A1D /* path_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = path_view.h; path = ../src/path_view.h; sourceTree = SOURCE_ROOT; };
 		0408CCAD189F40E800A036A8 /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../src/view.h; sourceTree = SOURCE_ROOT; };
 		0408CCAF189F451A00A036A8 /* menu_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu_view.cpp; path = ../src/menu_view.cpp; sourceTree = SOURCE_ROOT; };
 		0408CCB0189F451A00A036A8 /* menu_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu_view.h; path = ../src/menu_view.h; sourceTree = SOURCE_ROOT; };
@@ -129,6 +132,8 @@
 				045DA51D189CB8EA00776EFA /* core_view.cpp */,
 				0408CCB0189F451A00A036A8 /* menu_view.h */,
 				0408CCAF189F451A00A036A8 /* menu_view.cpp */,
+				0404124918A7F61500674A1D /* path_view.cpp */,
+				0404124A18A7F61500674A1D /* path_view.h */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				045DA53A189CB98200776EFA /* utils.cpp in Sources */,
 				045DA531189CB97600776EFA /* core_view.cpp in Sources */,
 				0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */,
+				0404124B18A7F66600674A1D /* path_view.cpp in Sources */,
 				045DA532189CB97800776EFA /* dummycore.cpp in Sources */,
 				045DA53D189F308700776EFA /* menu.cpp in Sources */,
 				045DA534189CB97A00776EFA /* loader.cpp in Sources */,

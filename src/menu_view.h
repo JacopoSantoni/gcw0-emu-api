@@ -1,5 +1,5 @@
-#ifndef _MENU_VIEW_H_
-#define _MENU_VIEW_H_
+#ifndef _PATH_VIEW_H_
+#define _PATH_VIEW_H_
 
 #include <SDL.h>
 #include "emu_interface.h"

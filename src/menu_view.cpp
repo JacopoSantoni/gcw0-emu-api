@@ -31,10 +31,11 @@ void MenuView::handleEvents()
           case GCW_KEY_DOWN: down(); break;
           case GCW_KEY_UP: up(); break;
             
-          case GCW_KEY_LEFT: if (!menuStack.empty()) { current = menuStack.top(); menuStack.pop(); } break;
+          case MENU_BACK_BUTTON: if (!menuStack.empty()) { current = menuStack.top(); menuStack.pop(); } break;
             
           case GCW_KEY_RIGHT:
-          case GCW_KEY_B:            
+          case GCW_KEY_LEFT:
+          case MENU_ACTION_BUTTON:
             current.menu->entryAt(current.index)->action(manager, key); break;
             
           default: break;
