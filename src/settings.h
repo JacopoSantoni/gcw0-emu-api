@@ -55,18 +55,30 @@ class PathSetting : public ConcreteSetting<std::string>
     PathSetting(std::string name, std::string ident, std::string value) : ConcreteSetting(SETTING_PATH, name, ident, value) { }
 };
 
-template<typename T>
+  
 class EnumValue
 {
   private:
     const std::string name;
-    T value;
-  
+    
   public:
-    EnumValue(std::string name, T value) : name(name), value(value) { }
+    EnumValue(std::string name) : name(name) { }
+    const std::string& getName() { return name; }
+};
+  
+template<typename T>
+class ConcreteEnumValue : public EnumValue
+{
+  private:
+    T value;
+    
+  public:
+    ConcreteEnumValue(std::string name, T value) : EnumValue(name), value(value) { }
 };
 
-template<typename T> using EnumSet = std::vector< EnumValue<T> >;
+//template<typename T> using EnumSet = std::vector< EnumValue<T> >;
+  
+typedef std::vector<EnumValue*> EnumSet;
   
 /*class EnumSetting
 {
@@ -77,14 +89,17 @@ template<typename T> using EnumSet = std::vector< EnumValue<T> >;
 
 };*/
 
-template <typename T>
-class EnumSetting : public ConcreteSetting<EnumValue<T> >
+class EnumSetting : public ConcreteSetting<EnumValue*>
 {
   private:
-    EnumSet<T> values;
+    EnumSet values;
   
   public:
-    EnumSetting(std::string name, std::string ident, EnumSet<T> values, EnumValue<T> value) : ConcreteSetting<EnumValue<T> >(SETTING_ENUM, name, ident, value), values(values)  { }
+    EnumSetting(std::string name, std::string ident, EnumSet values, EnumValue* value) : ConcreteSetting<EnumValue*>(SETTING_ENUM, name, ident, value), values(values)  { }
+  
+    void next() {
+      EnumValue *current = getValue();
+    }
 };
   
 
