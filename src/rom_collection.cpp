@@ -27,7 +27,7 @@ void RomCollection::scan()
   
   for (auto &path : paths)
   {
-    vector<string> files = Files::findFiles(path, exts, true);
+    vector<string> files = path.findFiles(exts, true);
     
     //Rom
     
@@ -57,7 +57,7 @@ void RomCollection::scan()
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
       RomEntry &entry = iit->second;
-      cout << "\t" << entry.name << " " << entry.ext << " : " << *entry.path << endl;
+      cout << "\t" << entry.name << " " << entry.ext << " : " << entry.path->value() << endl;
     }
   }
 }

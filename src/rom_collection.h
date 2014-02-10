@@ -26,7 +26,7 @@ namespace gcw {
     std::string name;
     std::string ext;
     SystemSpec *system;
-    std::string *path;
+    Path *path;
   };
   
   typedef std::unordered_multimap<SystemSpec*, RomEntry> RomMap;
@@ -41,7 +41,7 @@ namespace gcw {
       std::vector<SystemSpec> specs;
     
       Manager *manager;
-      std::vector<std::string> paths;
+      std::vector<Path> paths;
     
       RomMap roms;
     

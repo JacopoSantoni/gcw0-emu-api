@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "view.h"
+#include "utils.h"
 
 #include <vector>
 #include <string>
@@ -18,12 +19,12 @@ namespace gcw {
   {
     private:
       std::vector<std::string> folders;
-      std::string path;
+      Path* path;
 
     public:
       PathView(Manager *manager);
     
-      void init(std::string path);
+      void init(Path *path);
 
       virtual void render();
       virtual void handleEvents();

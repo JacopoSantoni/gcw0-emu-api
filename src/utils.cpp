@@ -8,6 +8,82 @@ using namespace std;
 using namespace std::chrono;
 using namespace gcw;
 
+/*
+Path(std::string path) : path(path) { }
+std::string &string() { return path; }
+void append(std::string component);
+void removeLast();
+bool isRoot();
+
+
+std::string fileInsidePath(std::string file);
+std::vector<std::string> findFiled(std::string ext, bool recursive);
+std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive);
+std::vector<std::string> subfolders();*/
+
+Path::Path(const char *path): path(path)
+{
+  if (this->path.back() == '/')
+    this->path.erase(this->path.length()-1);
+}
+
+Path::Path(std::string path) : path(path)
+{
+  if (this->path.back() == '/')
+    this->path.erase(this->path.length()-1);
+}
+
+void Path::append(string component)
+{
+  if (component.back() == '/')
+    component.erase(component.length()-1);
+  
+  if (component.front() != '/')
+    path += '/' + component;
+  else
+    path += component;
+}
+
+void Path::removeLast()
+{
+  if (path != "/")
+  {
+    if (path.back() == '/')
+      path.erase(path.length()-1);
+    
+    size_t slashPos = path.find_last_of('/');
+    
+    path = path.substr(0, slashPos);
+  }
+}
+
+bool Path::isRoot()
+{
+  return path == "/";
+}
+
+string Path::fileInsidePath(string file)
+{
+  return path+file;
+}
+
+vector<string> Path::findFiles(string ext, bool recursive)
+{
+  return Files::findFiles(path, ext, recursive);
+}
+
+vector<string> Path::findFiles(unordered_set<string> exts, bool recursive)
+{
+  return Files::findFiles(path, exts, recursive);
+}
+
+vector<string> Path::subfolders()
+{
+  return Files::findSubfolders(path);
+}
+
+
+
 vector<string> Files::findFiles(string path, string ext, bool recursive)
 {
   return findFiles(path, unordered_set<string>{ext}, recursive);
@@ -50,7 +126,7 @@ std::vector<std::string> Files::findSubfolders(std::string path)
   struct dirent *ent;
   if ((dir = opendir (path.c_str())) != NULL) {
     while ((ent = readdir (dir)) != NULL) {
-      stat(ent->d_name, &stats);
+      stat((path+"/"+ent->d_name).c_str(), &stats);
       if (S_ISDIR(stats.st_mode) && strcmp(ent->d_name, ".") != 0)
         folders.push_back(ent->d_name);
     }

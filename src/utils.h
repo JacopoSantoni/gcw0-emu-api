@@ -12,26 +12,7 @@
 
 
 namespace gcw
-{
-  class Path
-  {
-    private:
-      std::string path;
-    
-    public:
-      Path(std::string path) : path(path) { }
-      std::string &string() { return path; }
-      void append(std::string component);
-      void removeLast();
-      bool isRoot();
-    
-    
-      std::string fileInsidePath(std::string file);
-      std::vector<std::string> findFiled(std::string ext, bool recursive);
-      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive);
-      std::vector<std::string> subfolders();
-  };
-  
+{  
   class Files
   {
     public:
@@ -40,6 +21,26 @@ namespace gcw
       static std::vector<std::string> findSubfolders(std::string path);
 
     
+  };
+  
+  class Path
+  {
+    private:
+      std::string path;
+      
+    public:
+      Path(const char *path);
+      Path(std::string path);
+      std::string &value() { return path; }
+      void append(std::string component);
+      void removeLast();
+      bool isRoot();
+      
+      
+      std::string fileInsidePath(const std::string file);
+      std::vector<std::string> findFiles(std::string ext, bool recursive);
+      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive);
+      std::vector<std::string> subfolders();
   };
   
   class Timer

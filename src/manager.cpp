@@ -6,7 +6,9 @@ using namespace gcw;
 
 void Manager::init()
 {
-  std::vector<std::string> folders = gcw::Files::findSubfolders("/");
+  Path path = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/");
+  
+  std::vector<std::string> folders = path.subfolders();
   for (std::string &f : folders)
     std::cout << f << std::endl;
   
