@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include "view.h"
 
+#include <vector>
+#include <string>
 #include <stack>
 
 namespace gcw {
@@ -15,9 +17,13 @@ namespace gcw {
   class PathView : public View
   {
     private:
+      std::vector<std::string> folders;
+      std::string path;
 
     public:
       PathView(Manager *manager);
+    
+      void init(std::string path);
 
       virtual void render();
       virtual void handleEvents();

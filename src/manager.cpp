@@ -6,6 +6,10 @@ using namespace gcw;
 
 void Manager::init()
 {
+  std::vector<std::string> folders = gcw::Files::findSubfolders("/");
+  for (std::string &f : folders)
+    std::cout << f << std::endl;
+  
   loader.scan();
   collection.scan();
   
@@ -18,9 +22,18 @@ void Manager::init()
   //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
   //coreView.initGfx();
   
+  EnumSet sampleRates = {
+    new ConcreteEnumValue<int32_t>("0",0),
+    new ConcreteEnumValue<int32_t>("11025",11025),
+    new ConcreteEnumValue<int32_t>("22050",22050),
+    new ConcreteEnumValue<int32_t>("44100",44100),
+    new ConcreteEnumValue<int32_t>("48000",48000)
+  };
+
   StandardMenu *root = new StandardMenu("Root");
   root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
+  root->addEntry(new EnumMenuEntry(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3])));
   root->addEntry(new PathMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes")));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager *manager){ manager->exit(); }) );
   menuView.setMenu(root);

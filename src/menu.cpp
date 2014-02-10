@@ -40,6 +40,23 @@ void BoolMenuEntry::render(Gfx *gfx, int x, int y)
 
 }
 
+#pragma mark EnumMenuEntry
+
+void EnumMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == GCW_KEY_RIGHT || key == MENU_ACTION_BUTTON)
+    setting->next();
+  else if (key == GCW_KEY_LEFT)
+    setting->prev();
+}
+
+void EnumMenuEntry::render(Gfx *gfx, int x, int y)
+{
+  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  gfx->print(x+width+10, y, false, Font::bigFont, setting->getValue()->getName().c_str());
+  
+}
+
 #pragma mark PathMenuEntry
 
 void PathMenuEntry::action(Manager *manager, GCWKey key)

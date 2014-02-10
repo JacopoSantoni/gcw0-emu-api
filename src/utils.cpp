@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include "sys/stat.h"
+
 #include <thread>
 
 using namespace std;
@@ -11,6 +13,7 @@ vector<string> Files::findFiles(string path, string ext, bool recursive)
   return findFiles(path, unordered_set<string>{ext}, recursive);
 }
 
+// TODO: recursive not implemented
 vector<string> Files::findFiles(string path, unordered_set<string> exts, bool recursive)
 {
   vector<string> files;
@@ -36,6 +39,24 @@ vector<string> Files::findFiles(string path, unordered_set<string> exts, bool re
   }
   
   return files;
+}
+
+std::vector<std::string> Files::findSubfolders(std::string path)
+{
+  vector<string> folders;
+
+  DIR *dir;
+  struct stat stats;
+  struct dirent *ent;
+  if ((dir = opendir (path.c_str())) != NULL) {
+    while ((ent = readdir (dir)) != NULL) {
+      stat(ent->d_name, &stats);
+      if (S_ISDIR(stats.st_mode) && strcmp(ent->d_name, ".") != 0)
+        folders.push_back(ent->d_name);
+    }
+  }
+  
+  return folders;
 }
 
 

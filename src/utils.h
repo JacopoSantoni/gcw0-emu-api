@@ -13,10 +13,23 @@
 
 namespace gcw
 {
-  struct FileEntry
+  class Path
   {
-    std::string name;
-    std::string extension;
+    private:
+      std::string path;
+    
+    public:
+      Path(std::string path) : path(path) { }
+      std::string &string() { return path; }
+      void append(std::string component);
+      void removeLast();
+      bool isRoot();
+    
+    
+      std::string fileInsidePath(std::string file);
+      std::vector<std::string> findFiled(std::string ext, bool recursive);
+      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive);
+      std::vector<std::string> subfolders();
   };
   
   class Files
@@ -24,6 +37,7 @@ namespace gcw
     public:
       static std::vector<std::string> findFiles(std::string path, std::string ext, bool recursive);
       static std::vector<std::string> findFiles(std::string path, std::unordered_set<std::string> exts, bool recursive);
+      static std::vector<std::string> findSubfolders(std::string path);
 
     
   };

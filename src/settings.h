@@ -99,6 +99,24 @@ class EnumSetting : public ConcreteSetting<EnumValue*>
   
     void next() {
       EnumValue *current = getValue();
+      if (current == values.back())
+        setValue(values.front());
+      else
+      {
+        EnumSet::iterator it = find(values.begin(), values.end(), current);
+        setValue(*(++it));
+      }
+    }
+  
+    void prev() {
+      EnumValue *current = getValue();
+      if (current == values.front())
+        setValue(values.back());
+      else
+      {
+        EnumSet::iterator it = find(values.begin(), values.end(), current);
+        setValue(*(--it));
+      }
     }
 };
   
