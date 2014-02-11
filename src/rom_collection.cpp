@@ -37,7 +37,8 @@ void RomCollection::scan()
     {
       
       size_t dot = file.find_last_of(".");
-      RomEntry rom = RomEntry(file.substr(0,dot), file.substr(dot+1, string::npos), extsMapToSystem[rom.ext], &path);
+      string ext = file.substr(dot+1, string::npos);
+      RomEntry rom = RomEntry(file.substr(0,dot), ext, extsMapToSystem[ext], &path);
       
       roms.insert(std::pair<SystemSpec*,RomEntry>(rom.system,rom));
       

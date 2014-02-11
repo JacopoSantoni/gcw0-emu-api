@@ -44,7 +44,10 @@ void Manager::init()
   menuView.setMenu(root);
   
 
-  currentView = &menuView;
+  pathView.init("Select path", &persistence.getRomPaths()[0]);
+  
+  currentView = &pathView;
+  //currentView = &menuView;
 }
 
 void Manager::run()

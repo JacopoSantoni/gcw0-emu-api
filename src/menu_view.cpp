@@ -67,5 +67,5 @@ void MenuView::render()
   //gfx->blit(gfx->cache.get("data/syrstems/gba-small.png"), 100, 100);
   
   list.status().menu->render(gfx, list.currentOffset(), list.LIST_SIZE, View::TITLE_OFFSET.x, View::TITLE_OFFSET.y, View::MENU_OFFSET.x, View::MENU_OFFSET.y);
-  gfx->print(10,40+list.relativeIndex(list.current())*18, false, Font::bigFont, ">");
+  gfx->print(View::MENU_OFFSET.x-10,View::MENU_OFFSET.y+list.relativeIndex(list.current())*18, false, Font::bigFont, ">");
 }
