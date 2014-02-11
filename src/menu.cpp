@@ -107,13 +107,13 @@ void RomMenuEntry::render(Gfx *gfx, int x, int y)
 
 
 
-void Menu::render(Gfx* gfx, int tx, int ty, int x, int y)
+void Menu::render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y)
 {
   gfx->print(tx, ty, false, Font::bigFont, title().c_str());
 
   size_t count = this->count();
-  for (int i = 0; i < count; ++i)
+  for (int i = 0; i < size && i+offset < count; ++i)
   {
-    this->entryAt(i)->render(gfx, x, y+18*i);
+    this->entryAt(i+offset)->render(gfx, x, y+18*i);
   }
 }

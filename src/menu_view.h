@@ -12,6 +12,7 @@ namespace gcw {
   class Manager;
   class Menu;
   class SubMenuEntry;
+  class MenuEntry;
   
   class MenuView : public View
   {
@@ -21,20 +22,36 @@ namespace gcw {
         Menu *menu;
         u8 index;
         
+        MenuStatus() : menu(nullptr), index(0) { }
         MenuStatus(Menu *menu) : menu(menu), index(0) { }
       };
     
-      std::stack<MenuStatus> menuStack;
-      MenuStatus current;
-      Menu *root;
+      class MenuEntryList : public OffsettableList<MenuEntry*>
+      {
+        private:
+          MenuStatus currentStatus;
+          
+        public:
+          MenuEntryList() : OffsettableList(10) { }
+        
+          u32 current();
+          u32 count();
+          void set(u32 i);
+          MenuEntry* get(u32 i);
+        
+          MenuEntry* selected();
+        
+          void setStatus(MenuStatus status) { currentStatus = status; }
+          MenuStatus status() { return currentStatus; }
+      };
     
-      void down();
-      void up();
+      MenuEntryList list;
+      std::stack<MenuStatus> menuStack;
     
     public:
       MenuView(Manager *manager);
     
-      void setMenu(Menu *root) { this->root = root; current = MenuStatus(root); }
+      void setMenu(Menu *root) { /*this->root = root;*/ list.setStatus(MenuStatus(root)); }
     
       virtual void render();
       virtual void handleEvents();

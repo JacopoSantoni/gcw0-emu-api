@@ -9,7 +9,14 @@
 using namespace std;
 using namespace gcw;
 
-MenuView::MenuView(Manager *manager) : View(manager), current(nullptr)
+u32 MenuView::MenuEntryList::current() { return currentStatus.index; }
+u32 MenuView::MenuEntryList::count() { return static_cast<u32>(currentStatus.menu->count()); }
+void MenuView::MenuEntryList::set(u32 i) { currentStatus.index = i; }
+MenuEntry* MenuView::MenuEntryList::selected() { return currentStatus.menu->entryAt(currentStatus.index); }
+MenuEntry* MenuView::MenuEntryList::get(u32 i) { return currentStatus.menu->entryAt(offset+i); }
+
+
+MenuView::MenuView(Manager *manager) : View(manager)
 {
 
 }
@@ -28,15 +35,18 @@ void MenuView::handleEvents()
         GCWKey key = static_cast<GCWKey>(event.key.keysym.sym);
         switch (key)
         {
-          case GCW_KEY_DOWN: down(); break;
-          case GCW_KEY_UP: up(); break;
+          case GCW_KEY_DOWN: list.down(); break;
+          case GCW_KEY_UP: list.up(); break;
             
-          case MENU_BACK_BUTTON: if (!menuStack.empty()) { current = menuStack.top(); menuStack.pop(); } break;
+          case GCW_KEY_L: list.prevPage(); break;
+          case GCW_KEY_R: list.nextPage(); break;
+            
+          case MENU_BACK_BUTTON: if (!menuStack.empty()) { list.setStatus(menuStack.top()); menuStack.pop(); } break;
             
           case GCW_KEY_RIGHT:
           case GCW_KEY_LEFT:
           case MENU_ACTION_BUTTON:
-            current.menu->entryAt(current.index)->action(manager, key); break;
+            list.selected()->action(manager, key); break;
             
           default: break;
         }
@@ -45,22 +55,10 @@ void MenuView::handleEvents()
   }
 }
 
-void MenuView::down()
-{
-  if (current.index < current.menu->count()-1)
-    ++current.index;
-}
-
-void MenuView::up()
-{
-  if (current.index > 0)
-    --current.index;
-}
-
 void MenuView::enterSubmenu(SubMenuEntry *entry)
 {
-  menuStack.push(current);
-  current = MenuStatus(entry->subMenu());
+  menuStack.push(list.status());
+  list.setStatus(MenuStatus(entry->subMenu()));
 }
 
 
@@ -68,6 +66,6 @@ void MenuView::render()
 {
   //gfx->blit(gfx->cache.get("data/syrstems/gba-small.png"), 100, 100);
   
-  current.menu->render(gfx, View::TITLE_OFFSET.x, View::TITLE_OFFSET.y, View::MENU_OFFSET.x, View::MENU_OFFSET.y);
-  gfx->print(10,40+current.index*18, false, Font::bigFont, ">");
+  list.status().menu->render(gfx, list.currentOffset(), list.LIST_SIZE, View::TITLE_OFFSET.x, View::TITLE_OFFSET.y, View::MENU_OFFSET.x, View::MENU_OFFSET.y);
+  gfx->print(10,40+list.relativeIndex(list.current())*18, false, Font::bigFont, ">");
 }

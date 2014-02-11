@@ -144,7 +144,7 @@ class Menu
   
     virtual size_t count() const = 0;
     virtual MenuEntry* entryAt(u32 index) = 0;
-    virtual void render(Gfx* gfx, int tx, int ty, int x, int y);
+    virtual void render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y);
 
   
     const std::string& title() { return caption; }
