@@ -6,11 +6,14 @@ using namespace gcw;
 
 void Manager::init()
 {
-  Path path = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/");
+  /*Path path = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/");
   
   std::vector<std::string> folders = path.subfolders();
   for (std::string &f : folders)
-    std::cout << f << std::endl;
+    std::cout << f << std::endl;*/
+  
+  persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gba/");
+  persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/snes/");
   
   loader.scan();
   collection.scan();

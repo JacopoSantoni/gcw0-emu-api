@@ -45,7 +45,11 @@ namespace gcw
     void changeOffset(int delta) { offset += delta; }
     
     u32 minOffset() { return offset; }
-    u32 maxOffset() { return offset + LIST_SIZE - 1; }
+    u32 maxOffset() {
+      u32 maxDisplayableOffset = offset + LIST_SIZE - 1;
+      u32 maxRealOffset = count() - 1;
+      return min(maxDisplayableOffset, maxRealOffset);
+    }
     bool isSelected(u32 i) { return i + offset == current(); }
     u32 relativeIndex(u32 i) { return i - offset; }
     void reset() { offset = 0; }

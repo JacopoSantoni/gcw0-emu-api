@@ -28,7 +28,6 @@
 		045DA53D189F308700776EFA /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA53C189F305C00776EFA /* menu.cpp */; };
 		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
-		04DD937A189C170100EC0AAA /* Cocoa-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 045B2658189AC86D00DA8019 /* Cocoa-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -288,7 +287,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04DD937A189C170100EC0AAA /* Cocoa-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,12 +421,13 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
-					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\\\"",
-					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\\\"",
 					/usr/local/Cellar/sdl/1.2.15/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WARNING_CFLAGS = "-Wall";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-pedantic",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -450,12 +449,13 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Cocoa-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/,
-					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL.framework/Versions/Current\\\"",
-					"\\\"$(LOCAL_LIBRARY_DIR)/Frameworks/SDL_image.framework/Versions/Current\\\"",
 					/usr/local/Cellar/sdl/1.2.15/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WARNING_CFLAGS = "-Wall";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-pedantic",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

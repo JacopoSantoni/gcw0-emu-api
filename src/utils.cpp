@@ -23,20 +23,18 @@ std::vector<std::string> subfolders();*/
 
 Path::Path(const char *path): path(path)
 {
-  if (this->path.back() == '/')
-    this->path.erase(this->path.length()-1);
+  trimEndSlash();
 }
 
 Path::Path(std::string path) : path(path)
 {
-  if (this->path.back() == '/')
-    this->path.erase(this->path.length()-1);
+  trimEndSlash();
 }
 
 void Path::append(string component)
 {
   if (component.back() == '/')
-    component.erase(component.length()-1);
+    component.pop_back();
   
   if (component.front() != '/')
     path += '/' + component;
@@ -48,8 +46,7 @@ void Path::removeLast()
 {
   if (path != "/")
   {
-    if (path.back() == '/')
-      path.erase(path.length()-1);
+    trimEndSlash();
     
     size_t slashPos = path.find_last_of('/');
     
@@ -57,27 +54,27 @@ void Path::removeLast()
   }
 }
 
-bool Path::isRoot()
+bool Path::isRoot() const
 {
   return path == "/";
 }
 
-string Path::fileInsidePath(string file)
+string Path::fileInsidePath(string file) const
 {
   return path+file;
 }
 
-vector<string> Path::findFiles(string ext, bool recursive)
+vector<string> Path::findFiles(string ext, bool recursive) const
 {
   return Files::findFiles(path, ext, recursive);
 }
 
-vector<string> Path::findFiles(unordered_set<string> exts, bool recursive)
+vector<string> Path::findFiles(unordered_set<string> exts, bool recursive) const
 {
   return Files::findFiles(path, exts, recursive);
 }
 
-vector<string> Path::subfolders()
+vector<string> Path::subfolders() const
 {
   return Files::findSubfolders(path);
 }

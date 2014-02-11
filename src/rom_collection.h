@@ -23,10 +23,12 @@ namespace gcw {
   
   struct RomEntry
   {
-    std::string name;
-    std::string ext;
+    const std::string name;
+    const std::string ext;
     SystemSpec *system;
-    Path *path;
+    const Path *path;
+    
+    RomEntry(const std::string name, const std::string ext, SystemSpec *system, const Path* path) : name(name), ext(ext), system(system), path(path) { }
   };
   
   typedef std::unordered_multimap<SystemSpec*, RomEntry> RomMap;
@@ -41,14 +43,12 @@ namespace gcw {
       std::vector<SystemSpec> specs;
     
       Manager *manager;
-      std::vector<Path> paths;
     
       RomMap roms;
     
     
     public:
       RomCollection(Manager *manager) : manager(manager) { }
-      void addPath(std::string path) { paths.push_back(path); }
       void scan();
     
       std::vector<SystemSpec>* getSystems() { return &specs; }

@@ -11,9 +11,9 @@
 #endif
 
 #ifdef _VERBOSE_
-#define LOG(args...) printf(args);
+#define LOG(...) printf(__VA_ARGS__);
 #else
-#define LOG(args...) do { } while (false)
+#define LOG(...) do { } while (false)
 #endif
 
 typedef uint8_t u8;
@@ -110,6 +110,17 @@ struct AnalogDeadZone
   
 
 typedef u32 ButtonStatus;
+
+
+template<typename T>
+T min(T v1, T v2) {
+  return v1 < v2 ? v1 : v2;
+}
+
+template<typename T>
+T max(T v1, T v2) {
+  return v1 < v2 ? v2 : v1;
+}
 
 
 #endif

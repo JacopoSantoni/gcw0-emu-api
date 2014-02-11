@@ -27,21 +27,30 @@ namespace gcw
   {
     private:
       std::string path;
+    
+      void trimEndSlash() { if (path.back() == '/') path.pop_back(); }
+      void trimStartSlash() { if (path.front() == '/') path.erase(1); }
       
     public:
       Path(const char *path);
       Path(std::string path);
-      std::string &value() { return path; }
+      const std::string &value() const { return path; }
       void append(std::string component);
       void removeLast();
-      bool isRoot();
+      bool isRoot() const;
       
       
-      std::string fileInsidePath(const std::string file);
-      std::vector<std::string> findFiles(std::string ext, bool recursive);
-      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive);
-      std::vector<std::string> subfolders();
+      std::string fileInsidePath(const std::string file) const;
+      std::vector<std::string> findFiles(std::string ext, bool recursive) const;
+      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive) const;
+      std::vector<std::string> subfolders() const;
   };
+  
+  inline Path operator+(Path lhs, const Path& rhs) // first arg by value, second by const ref
+  {
+    lhs.append(rhs.value());
+    return lhs;
+  }
   
   class Timer
   {

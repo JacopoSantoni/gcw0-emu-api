@@ -7,7 +7,8 @@ using namespace gcw;
 
 void RomCollection::scan()
 {
-  paths = {"/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/gba", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes"};
+  vector<Path> paths = manager->getPersistence()->getRomPaths();
+  
   specs = {SystemSpec("uncat", "Uncategorized", {}), SystemSpec("snes", "Super Nintendo", {"smc","fig"}), SystemSpec("gba", "GameBoy Advance", {"gba"}), };
   
   unordered_map<std::string, SystemSpec*> extsMapToSystem;
@@ -25,7 +26,8 @@ void RomCollection::scan()
   
   //manager->getLoader()->allowedFileTypes();
   
-  for (auto &path : paths)
+  
+  for (const auto &path : paths)
   {
     vector<string> files = path.findFiles(exts, true);
     
@@ -33,13 +35,9 @@ void RomCollection::scan()
     
     for (auto &file : files)
     {
-      RomEntry rom;
       
       size_t dot = file.find_last_of(".");
-      rom.name = file.substr(0,dot);
-      rom.ext = file.substr(dot+1, string::npos);
-      rom.system = extsMapToSystem[rom.ext];
-      rom.path = &path;
+      RomEntry rom = RomEntry(file.substr(0,dot), file.substr(dot+1, string::npos), extsMapToSystem[rom.ext], &path);
       
       roms.insert(std::pair<SystemSpec*,RomEntry>(rom.system,rom));
       

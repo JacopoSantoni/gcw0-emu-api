@@ -5,6 +5,7 @@
 #include "gfx.h"
 #include "utils.h"
 #include "rom_collection.h"
+#include "persistence.h"
 
 #include "core_view.h"
 #include "menu_view.h"
@@ -16,6 +17,7 @@ class Manager
   private:
     CoreInterface *core;
     Loader loader;
+    Persistence persistence;
     RomCollection collection;
     Gfx gfx;
     Timer timer;
@@ -35,6 +37,7 @@ class Manager
     MenuView *getMenuView() { return &menuView; }
   
     Loader *getLoader() { return &loader; }
+    Persistence *getPersistence() { return &persistence; }
     RomCollection *getRomCollection() { return &collection; }
     Gfx *getGfx() { return &gfx; }
     Timer *getTimer() { return &timer; }
