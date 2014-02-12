@@ -36,7 +36,7 @@ void PathView::render()
   u32 count = list.getDisplayedAmount();
   for (int i = 0; i < count; ++i)
   {
-    string &folder = folders[i+list.getOffset()];
+    string &folder = folders[i+list.minOffset()];
     
     const int MAX_LENGTH = 30;
     

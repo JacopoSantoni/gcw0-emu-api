@@ -40,10 +40,7 @@ namespace gcw
     
   public:
     OffsettableList(u32 listSize) : offset(0), LIST_SIZE(listSize) { }
-    
-    u32 getOffset() { return offset; }
-    void changeOffset(int delta) { offset += delta; }
-    
+        
     u32 minOffset() { return offset; }
     u32 maxOffset() {
       u32 maxDisplayableOffset = offset + LIST_SIZE - 1;
@@ -97,17 +94,19 @@ namespace gcw
       }
       else
       {
-        if (offset < count()-1)
+        u32 ccount = count();
+        
+        if (offset < ccount-1)
         {
-          if (current()+LIST_SIZE <= count()-1)
+          if (current()+LIST_SIZE <= ccount-1)
           {
             offset += LIST_SIZE;
             set(current()+LIST_SIZE);
           }
           else
           {
-            offset = count() - LIST_SIZE;
-            set(count()-1);
+            offset = ccount - LIST_SIZE;
+            set(ccount-1);
           }
           return true;
         }

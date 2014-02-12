@@ -46,8 +46,8 @@ void Manager::init()
 
   pathView.init("Select path", &persistence.getRomPaths()[0]);
   
-  currentView = &pathView;
-  //currentView = &menuView;
+  //currentView = &pathView;
+  currentView = &menuView;
 }
 
 void Manager::run()
