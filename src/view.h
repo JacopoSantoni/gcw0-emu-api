@@ -53,7 +53,8 @@ namespace gcw
     bool isSelected(u32 i) { return i + offset == current(); }
     u32 relativeIndex(u32 i) { return i - offset; }
     void reset() { offset = 0; }
-    u32 currentOffset() { return offset; }
+
+    u32 getDisplayedAmount() { return min(LIST_SIZE, count() - offset); }
     
     virtual u32 current() = 0;
     virtual u32 count() = 0;

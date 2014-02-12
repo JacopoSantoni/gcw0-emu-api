@@ -32,6 +32,22 @@ void PathView::render()
     gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y+10, false, Font::bigFont, path.c_str());
   else
     gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y+10, false, Font::bigFont, (path.substr(0, MAX_LENGTH)+"...").c_str());
+  
+  u32 count = list.getDisplayedAmount();
+  for (int i = 0; i < count; ++i)
+  {
+    string &folder = folders[i+list.getOffset()];
+    
+    const int MAX_LENGTH = 30;
+    
+    if (folder.length() < MAX_LENGTH)
+      gfx->print(View::MENU_OFFSET.x, View::MENU_OFFSET.y+14*i, false, Font::bigFont, folder.c_str());
+    else
+      gfx->print(View::MENU_OFFSET.x, View::MENU_OFFSET.y+14*i, false, Font::bigFont, (folder.substr(0, MAX_LENGTH)+"...").c_str());
+  }
+  
+  gfx->print(View::MENU_OFFSET.x-10,View::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");
+  
 }
 
 void PathView::handleEvents()
@@ -47,6 +63,38 @@ void PathView::handleEvents()
       {
         GCWKey key = static_cast<GCWKey>(event.key.keysym.sym);
         
+        switch (key)
+        {
+          case GCW_KEY_DOWN: list.down(); break;
+          case GCW_KEY_UP: list.up(); break;
+            
+          case GCW_KEY_L: list.prevPage(); break;
+          case GCW_KEY_R: list.nextPage(); break;
+            
+          case MENU_BACK_BUTTON:
+            
+            break;
+            
+          //case GCW_KEY_RIGHT:
+          //case GCW_KEY_LEFT:
+          case MENU_ACTION_BUTTON:
+            if (list.selected() == ".." && !path->isRoot())
+            {
+              path->removeLast();
+              folders = path->subfolders();
+              list.reset();
+            }
+            else
+            {
+              path->append(list.selected());
+              folders = path->subfolders();
+              list.reset();
+            }
+            
+            break;
+            
+          default: break;
+        }
       }
     }
   }
