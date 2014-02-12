@@ -96,7 +96,7 @@ namespace gcw
       {
         u32 ccount = count();
         
-        if (offset < ccount-1)
+        if (current() < ccount-1)
         {
           if (current()+LIST_SIZE <= ccount-1)
           {

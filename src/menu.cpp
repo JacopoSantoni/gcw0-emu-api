@@ -72,12 +72,7 @@ void PathMenuEntry::render(Gfx *gfx, int x, int y)
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
   
   string &path = setting->getValue();
-  const int MAX_LENGTH = 30;
-  
-  if (path.length() < MAX_LENGTH)
-    gfx->print(x+width, y, false, Font::bigFont, path.c_str());
-  else
-    gfx->print(x+width, y, false, Font::bigFont, (path.substr(0, MAX_LENGTH)+"...").c_str());
+  gfx->print(x+width, y, false, Font::bigFont, Text::clipText(path, -30, "...").c_str());
 }
 
 

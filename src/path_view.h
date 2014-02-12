@@ -24,7 +24,7 @@ namespace gcw {
         PathView *view;
         
       public:
-        PathList(PathView* view) : OffsettableList(10), view(view) { }
+        PathList(PathView* view) : OffsettableList(12), view(view) { }
         
         u32 current();
         u32 count();
@@ -36,6 +36,7 @@ namespace gcw {
     
       std::vector<std::string> folders;
       Path* path;
+      std::string backupPath;
       std::string title;
     
       u32 index;
