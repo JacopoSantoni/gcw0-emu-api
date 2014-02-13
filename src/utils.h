@@ -73,7 +73,8 @@ namespace gcw
   class Text
   {
     public:
-      static std::string clipText(std::string &text, s32 length, const char *filler = nullptr);
+      static std::string clipText(const std::string &text, s32 length, const char *filler = nullptr);
+      static const char* nameForKey(GCWKey key);
   };
   
   class Uncopyable

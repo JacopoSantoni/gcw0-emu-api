@@ -39,6 +39,7 @@ void PathView::render()
   
   gfx->print(View::MENU_OFFSET.x-10,View::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");
   
+  //gfx->print(View::HELP_OFFSET.x,View::HELP_OFFSET.y, false, Font::bigFont, (string(Text::nameForKey(GCW_KEY_START)) + ": save changes").c_str());
 }
 
 void PathView::handleEvents()
@@ -62,6 +63,8 @@ void PathView::handleEvents()
           case GCW_KEY_L: list.prevPage(); break;
           case GCW_KEY_R: list.nextPage(); break;
             
+          case GCW_KEY_SELECT:
+            path->set(backupPath);
             
           //case GCW_KEY_RIGHT:
           //case GCW_KEY_LEFT:

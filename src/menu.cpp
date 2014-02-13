@@ -57,6 +57,24 @@ void EnumMenuEntry::render(Gfx *gfx, int x, int y)
   
 }
 
+#pragma mark PathSettingMenuEntry
+
+void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == MENU_ACTION_BUTTON)
+  {
+    //
+  }
+}
+
+void PathSettingMenuEntry::render(Gfx *gfx, int x, int y)
+{
+  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  
+  string &path = setting->getValue();
+  gfx->print(x+width, y, false, Font::bigFont, Text::clipText(path, -30, "...").c_str());
+}
+
 #pragma mark PathMenuEntry
 
 void PathMenuEntry::action(Manager *manager, GCWKey key)
@@ -69,10 +87,7 @@ void PathMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathMenuEntry::render(Gfx *gfx, int x, int y)
 {
-  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  
-  string &path = setting->getValue();
-  gfx->print(x+width, y, false, Font::bigFont, Text::clipText(path, -30, "...").c_str());
+  gfx->print(x, y, false, Font::bigFont, Text::clipText(path->value(), -40, "...").c_str());
 }
 
 
@@ -110,4 +125,20 @@ void Menu::render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y)
   {
     this->entryAt(i+offset)->render(gfx, x, y+18*i);
   }
+}
+
+
+void RomPathsMenu::build()
+{
+  entries.clear();
+  
+  vector<Path> &paths = persistence->getRomPaths();
+  
+  for (Path &path : paths)
+  {
+    PathMenuEntry *entry = new PathMenuEntry(&path);
+    addEntry(entry);
+  }
+  
+  addEntry(new StandardMenuEntry("Add Path"));
 }

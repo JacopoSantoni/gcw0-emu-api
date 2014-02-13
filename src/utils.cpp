@@ -176,7 +176,7 @@ void Timer::frameRateDelay()
 
 #pragma mark Text
 
-string Text::clipText(string &text, s32 length, const char *filler)
+string Text::clipText(const string &text, s32 length, const char *filler)
 {
   bool reversed = false;
   if (length < 0)
@@ -195,5 +195,24 @@ string Text::clipText(string &text, s32 length, const char *filler)
       return reversed ? filler + clipped : clipped + filler;
     else
       return clipped;
+  }
+}
+
+const char* Text::nameForKey(GCWKey key)
+{
+  switch (key) {
+    case GCW_KEY_A: return "A";
+    case GCW_KEY_B: return "B";
+    case GCW_KEY_X: return "X";
+    case GCW_KEY_Y: return "Y";
+    case GCW_KEY_DOWN: return "\x18";
+    case GCW_KEY_UP: return "\x19";
+    case GCW_KEY_RIGHT: return "\x17";
+    case GCW_KEY_LEFT: return "\x16";
+    case GCW_KEY_L: return "L";
+    case GCW_KEY_R: return "R";
+    case GCW_KEY_START: return "START";
+    case GCW_KEY_SELECT: return "SELECT";
+    default: return "UNKOWN";
   }
 }
