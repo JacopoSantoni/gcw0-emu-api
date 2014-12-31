@@ -52,7 +52,6 @@ void Manager::init()
 
 void Manager::run()
 {
-  
   while (running)
   {
     gfx.clear<u16>(gfx.ccc<u16>(0, 0, 0));
