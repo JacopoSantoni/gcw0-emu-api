@@ -27,6 +27,8 @@ struct CoreInfo
   
   CoreInfo(SystemType type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
   CoreInfo() : type(SYSTEM_UNCATEGORISED), ident(std::string()), name(std::string()), version(std::string()) { }
+  
+  const std::string title() const { return name + " (" + version + ")"; }
 };
 
 class CoreInterface
@@ -72,6 +74,12 @@ class CoreInterface
      */
     virtual void setButtonStatus(ButtonStatus status) { buttonStatus = status; }
   
+    /**
+     * Pass the current analog pad status to the core. The status contains two normalized values according
+     * to the dead zone specified through @see setAnalogDeadZone.
+     *
+     * @param status a struct containing two floats in range [0.0,1.0]
+     */
     virtual void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
   
     virtual void emulationFrame() = 0;

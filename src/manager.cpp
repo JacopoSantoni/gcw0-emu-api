@@ -39,6 +39,7 @@ void Manager::init()
   romPathsMenu->build();
 
   StandardMenu *root = new StandardMenu("Root");
+  root->addEntry(new SubMenuEntry("Cores",new CoresMenu(&loader)));
   root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));

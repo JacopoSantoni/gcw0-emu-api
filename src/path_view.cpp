@@ -14,12 +14,13 @@ const string& PathView::PathList::get(u32 i) { return view->folders[offset+view-
 
 PathView::PathView(Manager* manager) : View(manager), index(0), list(this) { }
 
-void PathView::init(string title, const Path& path, std::function<void (const Path&)> lambda)
+void PathView::init(string title, const Path& path, function<void (const Path&)> lambda, function<void(void)> clambda)
 {
   this->title = title;
   this->path = path;
   this->folders = path.subfolders();
   this->lambda = lambda;
+  this->clambda = clambda;
 }
 
 void PathView::render()
@@ -65,6 +66,7 @@ void PathView::handleEvents()
             
           case GCW_KEY_SELECT:
             // on SELECT cancel operation
+            clambda();
             break;
             
           case GCW_KEY_START:

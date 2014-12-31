@@ -39,6 +39,7 @@ namespace gcw {
       std::string title;
     
       std::function<void (const Path&)> lambda;
+      std::function<void (void)> clambda;
     
       u32 index;
       PathList list;
@@ -46,7 +47,7 @@ namespace gcw {
     public:
       PathView(Manager *manager);
     
-      void init(std::string title, const Path& path, std::function<void (const Path&)> lambda);
+      void init(std::string title, const Path& path, std::function<void (const Path&)> lambda, std::function<void(void)> clambda);
 
       virtual void render();
       virtual void handleEvents();

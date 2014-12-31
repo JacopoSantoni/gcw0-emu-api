@@ -7,6 +7,7 @@
 #include "settings.h"
 #include "rom_collection.h"
 #include "persistence.h"
+#include "loader.h"
 
 #include <string>
 #include <vector>
@@ -215,6 +216,28 @@ class SystemsMenu : public StandardMenu
 
     }
 };
+  
+  class CoreMenuEntry : public StandardMenuEntry
+  {
+    private:
+      const std::unique_ptr<CoreHandle>& core;
+    public:
+      CoreMenuEntry(const std::unique_ptr<CoreHandle>& core) : StandardMenuEntry(core->info.title()), core(core) { }
+  };
+  
+  class CoresMenu : public StandardMenu
+  {
+  private:
+    
+  public:
+    CoresMenu(Loader* loader) : StandardMenu("Cores")
+    {
+      auto& cores = loader->getCores();
+      
+      for (const std::unique_ptr<CoreHandle>& core : cores)
+        entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core)));
+    }
+  };
   
 
   

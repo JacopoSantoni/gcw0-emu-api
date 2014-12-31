@@ -40,7 +40,7 @@ class Loader
 {
   private:
     Manager* const manager;
-    std::vector<CoreHandle*> cores;
+    std::vector<std::unique_ptr<CoreHandle>> cores;
     std::map<std::string,std::vector<CoreHandle*> > handledFileTypes;
   
     void loadCoreInfo(CoreHandle *handle, CoreInterface *info);
@@ -55,6 +55,8 @@ class Loader
   
     CoreInterface* loadCore(std::string ident);
     void unload();
+  
+    const std::vector<std::unique_ptr<CoreHandle>>& getCores() { return cores; }
   
     std::vector<std::string> allowedFileTypes()
     {
