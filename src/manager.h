@@ -37,6 +37,7 @@ class Manager
     void run();
   
     MenuView *getMenuView() { return &menuView; }
+    PathView *getPathView() { return &pathView; }
   
     Loader *getLoader() { return &loader; }
     Persistence *getPersistence() { return &persistence; }

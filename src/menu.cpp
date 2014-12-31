@@ -63,7 +63,15 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == MENU_ACTION_BUTTON)
   {
-    //
+    PathView* pview = manager->getPathView();
+    
+    auto lambda = [manager, this](const Path& path) {
+      setting->setValue(path.value());
+      manager->switchView(VIEW_MENU);
+    };
+    
+    pview->init(pathViewTitle, Path(setting->getValue()), lambda);
+    manager->switchView(VIEW_PATH);
   }
 }
 
@@ -87,7 +95,7 @@ void PathMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathMenuEntry::render(Gfx *gfx, int x, int y)
 {
-  gfx->print(x, y, false, Font::bigFont, Text::clipText(path->value(), -40, "...").c_str());
+  gfx->print(x, y, false, Font::bigFont, Text::clipText(path.value(), -40, "...").c_str());
 }
 
 
@@ -136,7 +144,7 @@ void RomPathsMenu::build()
   
   for (Path &path : paths)
   {
-    PathMenuEntry *entry = new PathMenuEntry(&path);
+    PathMenuEntry *entry = new PathMenuEntry(path);
     addEntry(entry);
   }
   

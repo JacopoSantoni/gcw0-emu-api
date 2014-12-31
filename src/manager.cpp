@@ -43,12 +43,9 @@ void Manager::init()
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
   root->addEntry(new EnumMenuEntry(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3])));
-  root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes")));
-  root->addEntry(new LambdaMenuEntry("Exit",[](Manager *manager){ manager->exit(); }) );
+  root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves"), "Choose saves path"));
+  root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   menuView.setMenu(root);
-  
-
-  pathView.init("Select path", &persistence.getRomPaths()[0]);
   
   //currentView = &pathView;
   currentView = &menuView;

@@ -9,8 +9,8 @@
 using namespace std;
 using namespace gcw;
 
-u32 MenuView::MenuEntryList::current() { return currentStatus.index; }
-u32 MenuView::MenuEntryList::count() { return static_cast<u32>(currentStatus.menu->count()); }
+u32 MenuView::MenuEntryList::current() const { return currentStatus.index; }
+u32 MenuView::MenuEntryList::count() const { return static_cast<u32>(currentStatus.menu->count()); }
 void MenuView::MenuEntryList::set(u32 i) { currentStatus.index = i; }
 MenuEntry* MenuView::MenuEntryList::selected() { return currentStatus.menu->entryAt(currentStatus.index); }
 MenuEntry* MenuView::MenuEntryList::get(u32 i) { return currentStatus.menu->entryAt(offset+i); }

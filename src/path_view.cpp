@@ -6,27 +6,27 @@
 using namespace std;
 using namespace gcw;
 
-u32 PathView::PathList::current() { return view->index; }
-u32 PathView::PathList::count() { return static_cast<u32>(view->folders.size()); }
+u32 PathView::PathList::current() const { return view->index; }
+u32 PathView::PathList::count() const { return static_cast<u32>(view->folders.size()); }
 void PathView::PathList::set(u32 i) { view->index = i; }
-string& PathView::PathList::selected() { return view->folders[view->index]; }
-string& PathView::PathList::get(u32 i) { return view->folders[offset+view->index]; }
+const string& PathView::PathList::selected() { return view->folders[view->index]; }
+const string& PathView::PathList::get(u32 i) { return view->folders[offset+view->index]; }
 
 PathView::PathView(Manager* manager) : View(manager), index(0), list(this) { }
 
-void PathView::init(string title, Path *path)
+void PathView::init(string title, const Path& path, std::function<void (const Path&)> lambda)
 {
   this->title = title;
   this->path = path;
-  this->backupPath = path->value();
-  this->folders = path->subfolders();
+  this->folders = path.subfolders();
+  this->lambda = lambda;
 }
 
 void PathView::render()
 {
   gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y, false, Font::bigFont, title.c_str());
   
-  string path = this->path->value();
+  string path = this->path.value();
   gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y+10, false, Font::bigFont, Text::clipText(path, -40, "...").c_str());
   
   u32 count = list.getDisplayedAmount();
@@ -64,16 +64,22 @@ void PathView::handleEvents()
           case GCW_KEY_R: list.nextPage(); break;
             
           case GCW_KEY_SELECT:
-            path->set(backupPath);
+            // on SELECT cancel operation
+            break;
+            
+          case GCW_KEY_START:
+            // on START accept the current path
+            lambda(path);
+            break;
             
           //case GCW_KEY_RIGHT:
           //case GCW_KEY_LEFT:
           case MENU_BACK_BUTTON:
           case MENU_ACTION_BUTTON:
-            if (list.selected() == ".." && !path->isRoot())
+            if (list.selected() == ".." && !path.isRoot())
             {
-              path->removeLast();
-              folders = path->subfolders();
+              path = path.removeLast();
+              folders = path.subfolders();
               list.reset();
               
               if (list.count() <= list.current())
@@ -81,8 +87,8 @@ void PathView::handleEvents()
             }
             else
             {
-              path->append(list.selected());
-              folders = path->subfolders();
+              path = path.append(list.selected());
+              folders = path.subfolders();
               list.reset();
               
               if (list.count() <= list.current())

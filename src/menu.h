@@ -92,8 +92,9 @@ class PathSettingMenuEntry : public StandardMenuEntry
 {
   private:
     PathSetting* const setting;
+    const std::string pathViewTitle;
   public:
-    PathSettingMenuEntry(PathSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+    PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : StandardMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
   
     virtual void action(Manager *manager, GCWKey key);
     virtual void render(Gfx* gfx, int x, int y);
@@ -102,11 +103,11 @@ class PathSettingMenuEntry : public StandardMenuEntry
 class PathMenuEntry : public MenuEntry
 {
   private:
-    Path* const path;
+    Path path;
   public:
-    PathMenuEntry(Path *path) : path(path) { }
+    PathMenuEntry(const Path& path) : path(path) { }
     
-    virtual const std::string& name() { return path->value(); }
+    virtual const std::string& name() { return path.value(); }
     virtual void action(Manager *manager, GCWKey key);
     virtual void render(Gfx* gfx, int x, int y);
 };

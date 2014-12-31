@@ -48,20 +48,20 @@ namespace gcw
   public:
     OffsettableList(u32 listSize) : offset(0), LIST_SIZE(listSize) { }
         
-    u32 minOffset() { return offset; }
-    u32 maxOffset() {
+    u32 minOffset() const { return offset; }
+    u32 maxOffset() const {
       u32 maxDisplayableOffset = offset + LIST_SIZE - 1;
       u32 maxRealOffset = count() - 1;
       return min(maxDisplayableOffset, maxRealOffset);
     }
-    bool isSelected(u32 i) { return i + offset == current(); }
-    u32 relativeIndex(u32 i) { return i - offset; }
+    bool isSelected(u32 i) const { return i + offset == current(); }
+    u32 relativeIndex(u32 i) const { return i - offset; }
     void reset() { offset = 0; }
 
-    u32 getDisplayedAmount() { return min(LIST_SIZE, count() - offset); }
+    u32 getDisplayedAmount() const { return min(LIST_SIZE, count() - offset); }
     
-    virtual u32 current() = 0;
-    virtual u32 count() = 0;
+    virtual u32 current() const = 0;
+    virtual u32 count() const = 0;
     virtual void set(u32 i) = 0;
     virtual T get(u32 i) = 0;
     

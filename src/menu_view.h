@@ -34,8 +34,8 @@ namespace gcw {
         public:
           MenuEntryList() : OffsettableList(12) { }
         
-          u32 current();
-          u32 count();
+          u32 current() const;
+          u32 count() const;
           void set(u32 i);
           MenuEntry* get(u32 i);
         

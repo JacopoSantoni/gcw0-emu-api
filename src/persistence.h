@@ -11,6 +11,7 @@ class Persistence
 {
   private:
     std::vector<Path> romPaths;
+    Path savesPath;
   
   
   public:
@@ -18,6 +19,8 @@ class Persistence
     void addRomPath(Path path) { romPaths.push_back(path); }
     std::vector<Path>& getRomPaths() { return romPaths; }
   
+    void setSavesPath(Path path) { savesPath = path; }
+    const Path& getSavesPath() const { return savesPath; }
   
     const static Path ROOT_PATH;
 

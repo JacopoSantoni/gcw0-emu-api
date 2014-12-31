@@ -40,7 +40,7 @@ struct GfxBuffer
   GfxBuffer() : data(nullptr), pitch(0), width(0), height(0) { }
   //void allocate(u16 width, u16 height, u16 pitch)
   
-  void allocate(GfxBufferSpec spec)
+  void allocate(const GfxBufferSpec& spec)
   {
     if (data) delete [] data;
     
@@ -142,8 +142,8 @@ namespace gcw
     
       void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u16>(screen, buffer, offset); }
     
-      u16 print(int x, int y, bool centered, const Font &font, const char *text);
-      u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...);
+      u16 print(int x, int y, bool centered, const Font &font, const char *text) const;
+      u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...) const;
     
       void blit(SDL_Surface *src, int x, int y)
       {

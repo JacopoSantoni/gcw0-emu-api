@@ -11,7 +11,7 @@ using namespace gcw;
 
 void CoreView::initGfx()
 {
-  GfxBufferSpec gfxSpec = core->getGfxSpec();
+  const GfxBufferSpec& gfxSpec = core->getGfxSpec();
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
   offset.x = (WIDTH - buffer.width)/2;
@@ -47,7 +47,7 @@ void CoreView::initControls(CoreInterface *core, ButtonStatus suspendKeys)
 {
   this->core = core;
   
-  vector<ButtonSetting> buttons = core->supportedButtons();
+  const vector<ButtonSetting>& buttons = core->supportedButtons();
   
   // persistence->loadCustomKeysForCore(core)
   // TODO: for each keybind saved replace buttons[i].key with the saved bind if override is enabled
@@ -59,7 +59,7 @@ void CoreView::initControls(CoreInterface *core, ButtonStatus suspendKeys)
   analogMode = GCW_ANALOG_NONE;
   
   // for each available button of the emulator enable its definition and its shift amount
-  for (ButtonSetting &button : buttons)
+  for (const ButtonSetting &button : buttons)
   {
     s8 index = indexForKey(button.key);
 

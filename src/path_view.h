@@ -18,7 +18,7 @@ namespace gcw {
   class PathView : public View
   {
     private:
-      class PathList : public OffsettableList<std::string&>
+      class PathList : public OffsettableList<const std::string&>
       {
       private:
         PathView *view;
@@ -26,18 +26,19 @@ namespace gcw {
       public:
         PathList(PathView* view) : OffsettableList(12), view(view) { }
         
-        u32 current();
-        u32 count();
+        u32 current() const;
+        u32 count() const;
         void set(u32 i);
-        std::string& get(u32 i);
+        const std::string& get(u32 i);
         
-        std::string& selected();
+        const std::string& selected();
       };
     
       std::vector<std::string> folders;
-      Path* path;
-      std::string backupPath;
+      Path path;
       std::string title;
+    
+      std::function<void (const Path&)> lambda;
     
       u32 index;
       PathList list;
@@ -45,7 +46,7 @@ namespace gcw {
     public:
       PathView(Manager *manager);
     
-      void init(std::string title, Path *path);
+      void init(std::string title, const Path& path, std::function<void (const Path&)> lambda);
 
       virtual void render();
       virtual void handleEvents();

@@ -17,7 +17,7 @@ namespace gcw
   {
     public:
       static std::vector<std::string> findFiles(std::string path, std::string ext, bool recursive);
-      static std::vector<std::string> findFiles(std::string path, std::unordered_set<std::string> exts, bool recursive);
+      static std::vector<std::string> findFiles(std::string path, std::unordered_set<std::string>& exts, bool recursive);
       static std::vector<std::string> findSubfolders(std::string path);
 
     
@@ -32,25 +32,27 @@ namespace gcw
       void trimStartSlash() { if (path.front() == '/') path.erase(1); }
       
     public:
+    
+      Path() { }
       Path(const char *path);
-      Path(std::string path);
-      const std::string &value() const { return path; }
-      void set(std::string &value) { path = value; }
-      void append(std::string component);
-      void removeLast();
+      Path(const std::string& path);
+      const std::string& value() const { return path; }
+      void set(std::string& value) { path = value; }
+      void set(const Path& opath) { path = opath.path; }
+      Path append(std::string component) const;
+      Path removeLast() const;
       bool isRoot() const;
       
       
       std::string fileInsidePath(const std::string file) const;
       std::vector<std::string> findFiles(std::string ext, bool recursive) const;
-      std::vector<std::string> findFiles(std::unordered_set<std::string> exts, bool recursive) const;
+      std::vector<std::string> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
       std::vector<std::string> subfolders() const;
   };
   
-  inline Path operator+(Path lhs, const Path& rhs) // first arg by value, second by const ref
+  inline Path operator+(const Path& lhs, const Path& rhs) // first arg by value, second by const ref
   {
-    lhs.append(rhs.value());
-    return lhs;
+    return lhs.append(rhs.value());
   }
   
   class Timer

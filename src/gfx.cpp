@@ -60,7 +60,7 @@ void Gfx::clear(GfxBuffer &buffer, T color)
 }
 
 
-u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
+u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text) const
 {
   y -= font.tileHeight/2;
   
@@ -96,7 +96,7 @@ u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text)
   return out.x;
 }
 
-u16 Gfx::printf(int x, int y, bool centered, const Font &font, const char *text, ...)
+u16 Gfx::printf(int x, int y, bool centered, const Font &font, const char *text, ...) const
 {
   char buffer[64];
   va_list args;

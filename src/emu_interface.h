@@ -84,17 +84,15 @@ class CoreInterface
   
   
   
+    const CoreInfo& info() { return information; }
+		const std::vector<std::string>& supportedExtensions() { return extensions; }
+    const std::vector<std::unique_ptr<Setting>>& supportedSettings() { return settings; }
   
-    CoreInfo info() { return information; }
-		std::vector<std::string> supportedExtensions() { return extensions; }
-    std::vector<std::unique_ptr<Setting> >* supportedSettings() { return &settings; }
-  
-  
-    std::vector<ButtonSetting> supportedButtons() { return buttons; }
+    const std::vector<ButtonSetting>& supportedButtons() { return buttons; }
     AnalogDeadZone getAnalogDeadZone() { return analogDeadZone; }
     bool isAnalogJoypadUsed() { return analogJoypadEnabled; }
   
-    GfxBufferSpec getGfxSpec() { return gfxFormat; }
+    const GfxBufferSpec& getGfxSpec() { return gfxFormat; }
 };
   
 }
