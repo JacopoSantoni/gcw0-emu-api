@@ -35,6 +35,7 @@ namespace gcw
       Path(const char *path);
       Path(std::string path);
       const std::string &value() const { return path; }
+      void set(std::string &value) { path = value; }
       void append(std::string component);
       void removeLast();
       bool isRoot() const;
@@ -67,6 +68,13 @@ namespace gcw
     
       void setFrameRate(float rate);
       void frameRateDelay();
+  };
+  
+  class Text
+  {
+    public:
+      static std::string clipText(const std::string &text, s32 length, const char *filler = nullptr);
+      static const char* nameForKey(GCWKey key);
   };
   
   class Uncopyable

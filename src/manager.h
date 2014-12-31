@@ -44,6 +44,16 @@ class Manager
     Gfx *getGfx() { return &gfx; }
     Timer *getTimer() { return &timer; }
   
+    void switchView(ViewType type)
+    {
+      switch (type)
+      {
+        case VIEW_MENU: currentView = &menuView; break;
+        case VIEW_CORE: currentView = &coreView; break;
+        case VIEW_PATH: currentView = &pathView; break;
+      }
+    }
+  
     void exit() { running = false; }
   
   

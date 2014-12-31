@@ -5,6 +5,13 @@
 
 namespace gcw
 {
+  enum ViewType
+  {
+    VIEW_MENU = 0,
+    VIEW_PATH = 1,
+    VIEW_CORE = 2
+  };
+  
   struct ViewOffset
   {
     const u16 x, y;
@@ -27,9 +34,9 @@ namespace gcw
       virtual void render() = 0;
       virtual void handleEvents() = 0;
     
-    
     static const ViewOffset TITLE_OFFSET;
     static const ViewOffset MENU_OFFSET;
+    static const ViewOffset HELP_OFFSET;
   };
   
   template<class T>
@@ -96,7 +103,7 @@ namespace gcw
       {
         u32 ccount = count();
         
-        if (offset < ccount-1)
+        if (current() < ccount-1)
         {
           if (current()+LIST_SIZE <= ccount-1)
           {

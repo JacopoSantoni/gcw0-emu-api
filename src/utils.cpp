@@ -36,7 +36,7 @@ void Path::append(string component)
   if (component.back() == '/')
     component.pop_back();
   
-  if (component.front() != '/')
+  if (component.front() != '/' && !isRoot())
     path += '/' + component;
   else
     path += component;
@@ -50,7 +50,10 @@ void Path::removeLast()
     
     size_t slashPos = path.find_last_of('/');
     
-    path = path.substr(0, slashPos);
+    if (slashPos != 0)
+      path = path.substr(0, slashPos);
+    else
+      path = "/";
   }
 }
 
@@ -121,13 +124,17 @@ std::vector<std::string> Files::findSubfolders(std::string path)
   DIR *dir;
   struct stat stats;
   struct dirent *ent;
-  if ((dir = opendir (path.c_str())) != NULL) {
-    while ((ent = readdir (dir)) != NULL) {
+  if ((dir = opendir (path.c_str())) != NULL)
+  {
+    while ((ent = readdir (dir)) != NULL)
+    {
       stat((path+"/"+ent->d_name).c_str(), &stats);
-      if (S_ISDIR(stats.st_mode) && strcmp(ent->d_name, ".") != 0)
+      if (S_ISDIR(stats.st_mode) && strcmp(ent->d_name, ".") != 0 && (path != "/" || strcmp(ent->d_name, "..") != 0))
         folders.push_back(ent->d_name);
     }
   }
+  else if (path != "/")
+    folders.push_back("..");
   
   return folders;
 }
@@ -164,5 +171,48 @@ void Timer::frameRateDelay()
     base = current;
     totalFrames = 0;
     // frame required more time than requested
+  }
+}
+
+#pragma mark Text
+
+string Text::clipText(const string &text, s32 length, const char *filler)
+{
+  bool reversed = false;
+  if (length < 0)
+  {
+    length = -length;
+    reversed = true;
+  }
+  
+  if (text.length() < length)
+    return text;
+  else
+  {
+    string clipped = reversed ? text.substr(text.length()-length, string::npos) : text.substr(0,length);
+    
+    if (filler)
+      return reversed ? filler + clipped : clipped + filler;
+    else
+      return clipped;
+  }
+}
+
+const char* Text::nameForKey(GCWKey key)
+{
+  switch (key) {
+    case GCW_KEY_A: return "A";
+    case GCW_KEY_B: return "B";
+    case GCW_KEY_X: return "X";
+    case GCW_KEY_Y: return "Y";
+    case GCW_KEY_DOWN: return "\x18";
+    case GCW_KEY_UP: return "\x19";
+    case GCW_KEY_RIGHT: return "\x17";
+    case GCW_KEY_LEFT: return "\x16";
+    case GCW_KEY_L: return "L";
+    case GCW_KEY_R: return "R";
+    case GCW_KEY_START: return "START";
+    case GCW_KEY_SELECT: return "SELECT";
+    default: return "UNKOWN";
   }
 }

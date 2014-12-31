@@ -6,6 +6,7 @@
 #include "gfx.h"
 #include "settings.h"
 #include "rom_collection.h"
+#include "persistence.h"
 
 #include <string>
 #include <vector>
@@ -20,6 +21,7 @@ class MenuEntry
 {
   public:
     MenuEntry() { }
+    virtual ~MenuEntry() { }
     virtual const std::string& name() = 0;
   
     virtual void action(Manager *manager, GCWKey key) { }
@@ -86,28 +88,28 @@ class EnumMenuEntry : public StandardMenuEntry
     virtual void render(Gfx* gfx, int x, int y);
 };
   
-class PathMenuEntry : public StandardMenuEntry
+class PathSettingMenuEntry : public StandardMenuEntry
 {
   private:
     PathSetting* const setting;
   public:
-    PathMenuEntry(PathSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+    PathSettingMenuEntry(PathSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
   
     virtual void action(Manager *manager, GCWKey key);
     virtual void render(Gfx* gfx, int x, int y);
 };
   
-/*class EnumMenuEntry : public StandardMenuEntry
+class PathMenuEntry : public MenuEntry
 {
-private:
-  BoolSetting* const setting;
-  
-public:
-  BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
-  
-  virtual void action(Manager *manager, GCWKey key);
-  virtual void render(Gfx* gfx, int x, int y);
-};*/
+  private:
+    Path* const path;
+  public:
+    PathMenuEntry(Path *path) : path(path) { }
+    
+    virtual const std::string& name() { return path->value(); }
+    virtual void action(Manager *manager, GCWKey key);
+    virtual void render(Gfx* gfx, int x, int y);
+};
   
   
 class SystemMenuEntry : public SubMenuEntry
@@ -162,6 +164,18 @@ class StandardMenu : public Menu
     void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
     MenuEntry* entryAt(u32 index) { return entries[index].get(); }
 
+};
+  
+class RomPathsMenu : public StandardMenu
+{
+  private:
+    Persistence* const persistence;
+  
+  public:
+    RomPathsMenu(std::string caption, Persistence *persistence) : StandardMenu(caption), persistence(persistence) { }
+  
+    void build();
+  
 };
   
 
