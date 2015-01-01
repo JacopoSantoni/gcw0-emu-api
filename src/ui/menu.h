@@ -1,7 +1,7 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include "defines.h"
+#include "../common/defines.h"
 
 #include "gfx.h"
 #include "../data/settings.h"
