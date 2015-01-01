@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "defines.h"
+#include "../common/defines.h"
 
 namespace gcw
 {

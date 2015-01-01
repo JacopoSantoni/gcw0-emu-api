@@ -1,7 +1,7 @@
 #include "loader.h"
 
 #include "dlfcn.h"
-#include "utils.h"
+#include "../common/utils.h"
 
 const char* CORES_PATH = "cores/";
 const char* LIBRARY_EXTENSION = "dylib";

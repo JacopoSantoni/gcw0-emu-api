@@ -1,8 +1,8 @@
 #include "menu_view.h"
 
-#include "menu.h"
-#include "defines.h"
-#include "manager.h"
+#include "../ui/menu.h"
+#include "../common/defines.h"
+#include "../core/manager.h"
 
 #include <vector>
 

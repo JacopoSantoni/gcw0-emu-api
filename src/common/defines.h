@@ -25,15 +25,13 @@ typedef int8_t s8;
 typedef int16_t s16;
 typedef int32_t s32;
 
-enum SystemType : u16
+enum class System : u16
 {
-  SYSTEM_UNCATEGORISED,
+  UNCATEGORISED,
   
-  SYSTEM_GAME_BOY,
-  SYSTEM_GAME_BOY_ADVANCE,
-  SYSTEM_SUPER_NINTENDO,
-
-  SYSTEM_MULTIPLE
+  GAME_BOY,
+  GAME_BOY_ADVANCE,
+  SUPER_NINTENDO
 };
 
 
@@ -110,17 +108,6 @@ struct AnalogDeadZone
   
 
 typedef u32 ButtonStatus;
-
-
-template<typename T>
-T min(T v1, T v2) {
-  return v1 < v2 ? v1 : v2;
-}
-
-template<typename T>
-T max(T v1, T v2) {
-  return v1 < v2 ? v2 : v1;
-}
 
 
 #endif

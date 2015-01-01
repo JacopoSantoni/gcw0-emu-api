@@ -6,8 +6,8 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "utils.h"
-#include "defines.h"
+#include "../common/utils.h"
+#include "../common/defines.h"
 
 namespace gcw {
   

@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "core/manager.h"
 
 /*#ifdef MAKE
 int SDL_main(int argc, char **argv)

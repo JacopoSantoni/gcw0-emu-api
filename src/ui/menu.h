@@ -4,10 +4,10 @@
 #include "defines.h"
 
 #include "gfx.h"
-#include "settings.h"
-#include "rom_collection.h"
-#include "persistence.h"
-#include "loader.h"
+#include "../data/settings.h"
+#include "../data/rom_collection.h"
+#include "../data/persistence.h"
+#include "../core/loader.h"
 
 #include <string>
 #include <vector>

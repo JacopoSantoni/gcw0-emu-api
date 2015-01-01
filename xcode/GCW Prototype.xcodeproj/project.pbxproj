@@ -7,25 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0401A6E018A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
-		0401A6E118A4A959005A6991 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0401A6DF18A4A959005A6991 /* view.cpp */; };
-		0404124B18A7F66600674A1D /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0404124918A7F61500674A1D /* path_view.cpp */; };
-		0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0408CCAF189F451A00A036A8 /* menu_view.cpp */; };
 		043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0418A206A70015B350 /* SDL_image.framework */; };
 		043E7E0718A206A70015B350 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0518A206A70015B350 /* SDL.framework */; };
 		043E7E0918A208FE0015B350 /* libSDLmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0818A208FE0015B350 /* libSDLmain.a */; };
 		043E7E0A18A209040015B350 /* libSDLmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0818A208FE0015B350 /* libSDLmain.a */; };
-		045DA531189CB97600776EFA /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA51D189CB8EA00776EFA /* core_view.cpp */; };
-		045DA532189CB97800776EFA /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA520189CB8EA00776EFA /* dummycore.cpp */; };
-		045DA533189CB97900776EFA /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA522189CB8EA00776EFA /* gfx.cpp */; };
-		045DA534189CB97A00776EFA /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA524189CB8EA00776EFA /* loader.cpp */; };
-		045DA535189CB98200776EFA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA526189CB8EA00776EFA /* main.cpp */; };
-		045DA536189CB98200776EFA /* manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA527189CB8EA00776EFA /* manager.cpp */; };
-		045DA537189CB98200776EFA /* persistence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA529189CB8EA00776EFA /* persistence.cpp */; };
-		045DA538189CB98200776EFA /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52B189CB8EA00776EFA /* rom_collection.cpp */; };
-		045DA539189CB98200776EFA /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52D189CB8EA00776EFA /* settings.cpp */; };
-		045DA53A189CB98200776EFA /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA52F189CB8EA00776EFA /* utils.cpp */; };
-		045DA53D189F308700776EFA /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045DA53C189F305C00776EFA /* menu.cpp */; };
+		047E9A9A1A55CF140066C697 /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A781A55CF140066C697 /* utils.cpp */; };
+		047E9A9B1A55CF140066C697 /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A781A55CF140066C697 /* utils.cpp */; };
+		047E9A9C1A55CF140066C697 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A7C1A55CF140066C697 /* loader.cpp */; };
+		047E9A9D1A55CF140066C697 /* loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A7C1A55CF140066C697 /* loader.cpp */; };
+		047E9A9E1A55CF140066C697 /* manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A7E1A55CF140066C697 /* manager.cpp */; };
+		047E9A9F1A55CF140066C697 /* manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A7E1A55CF140066C697 /* manager.cpp */; };
+		047E9AA01A55CF140066C697 /* persistence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A811A55CF140066C697 /* persistence.cpp */; };
+		047E9AA11A55CF140066C697 /* persistence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A811A55CF140066C697 /* persistence.cpp */; };
+		047E9AA21A55CF140066C697 /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A831A55CF140066C697 /* rom_collection.cpp */; };
+		047E9AA31A55CF140066C697 /* rom_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A831A55CF140066C697 /* rom_collection.cpp */; };
+		047E9AA41A55CF140066C697 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A851A55CF140066C697 /* settings.cpp */; };
+		047E9AA51A55CF140066C697 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A851A55CF140066C697 /* settings.cpp */; };
+		047E9AA61A55CF140066C697 /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A881A55CF140066C697 /* dummycore.cpp */; };
+		047E9AA71A55CF140066C697 /* dummycore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A881A55CF140066C697 /* dummycore.cpp */; };
+		047E9AA81A55CF140066C697 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A891A55CF140066C697 /* main.cpp */; };
+		047E9AA91A55CF140066C697 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A891A55CF140066C697 /* main.cpp */; };
+		047E9AAA1A55CF140066C697 /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A8D1A55CF140066C697 /* gfx.cpp */; };
+		047E9AAB1A55CF140066C697 /* gfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A8D1A55CF140066C697 /* gfx.cpp */; };
+		047E9AAC1A55CF140066C697 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A8F1A55CF140066C697 /* menu.cpp */; };
+		047E9AAD1A55CF140066C697 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A8F1A55CF140066C697 /* menu.cpp */; };
+		047E9AAE1A55CF140066C697 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A911A55CF140066C697 /* view.cpp */; };
+		047E9AAF1A55CF140066C697 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A911A55CF140066C697 /* view.cpp */; };
+		047E9AB01A55CF140066C697 /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A941A55CF140066C697 /* core_view.cpp */; };
+		047E9AB11A55CF140066C697 /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A941A55CF140066C697 /* core_view.cpp */; };
+		047E9AB21A55CF140066C697 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A961A55CF140066C697 /* menu_view.cpp */; };
+		047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A961A55CF140066C697 /* menu_view.cpp */; };
+		047E9AB41A55CF140066C697 /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A981A55CF140066C697 /* path_view.cpp */; };
+		047E9AB51A55CF140066C697 /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A981A55CF140066C697 /* path_view.cpp */; };
 		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -53,12 +66,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0401A6DF18A4A959005A6991 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cpp; path = ../src/view.cpp; sourceTree = SOURCE_ROOT; };
-		0404124918A7F61500674A1D /* path_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = path_view.cpp; path = ../src/path_view.cpp; sourceTree = SOURCE_ROOT; };
-		0404124A18A7F61500674A1D /* path_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = path_view.h; path = ../src/path_view.h; sourceTree = SOURCE_ROOT; };
-		0408CCAD189F40E800A036A8 /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../src/view.h; sourceTree = SOURCE_ROOT; };
-		0408CCAF189F451A00A036A8 /* menu_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu_view.cpp; path = ../src/menu_view.cpp; sourceTree = SOURCE_ROOT; };
-		0408CCB0189F451A00A036A8 /* menu_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu_view.h; path = ../src/menu_view.h; sourceTree = SOURCE_ROOT; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
 		043E7E0418A206A70015B350 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = ../../../../../../../Library/Frameworks/SDL_image.framework; sourceTree = "<group>"; };
@@ -66,28 +73,35 @@
 		043E7E0818A208FE0015B350 /* libSDLmain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLmain.a; path = ../../../../../../../usr/local/Cellar/sdl/1.2.15/lib/libSDLmain.a; sourceTree = "<group>"; };
 		045B2658189AC86D00DA8019 /* Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		045B265A189AC89000DA8019 /* Cocoa-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		045DA51D189CB8EA00776EFA /* core_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = core_view.cpp; path = ../src/core_view.cpp; sourceTree = SOURCE_ROOT; };
-		045DA51E189CB8EA00776EFA /* core_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core_view.h; path = ../src/core_view.h; sourceTree = SOURCE_ROOT; };
-		045DA51F189CB8EA00776EFA /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../src/defines.h; sourceTree = SOURCE_ROOT; };
-		045DA520189CB8EA00776EFA /* dummycore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = dummycore.cpp; path = ../src/dummycore.cpp; sourceTree = SOURCE_ROOT; };
-		045DA521189CB8EA00776EFA /* emu_interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = emu_interface.h; path = ../src/emu_interface.h; sourceTree = SOURCE_ROOT; };
-		045DA522189CB8EA00776EFA /* gfx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = gfx.cpp; path = ../src/gfx.cpp; sourceTree = SOURCE_ROOT; };
-		045DA523189CB8EA00776EFA /* gfx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gfx.h; path = ../src/gfx.h; sourceTree = SOURCE_ROOT; };
-		045DA524189CB8EA00776EFA /* loader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = loader.cpp; path = ../src/loader.cpp; sourceTree = SOURCE_ROOT; };
-		045DA525189CB8EA00776EFA /* loader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = loader.h; path = ../src/loader.h; sourceTree = SOURCE_ROOT; };
-		045DA526189CB8EA00776EFA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../src/main.cpp; sourceTree = SOURCE_ROOT; };
-		045DA527189CB8EA00776EFA /* manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = manager.cpp; path = ../src/manager.cpp; sourceTree = SOURCE_ROOT; };
-		045DA528189CB8EA00776EFA /* manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = manager.h; path = ../src/manager.h; sourceTree = SOURCE_ROOT; };
-		045DA529189CB8EA00776EFA /* persistence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = persistence.cpp; path = ../src/persistence.cpp; sourceTree = SOURCE_ROOT; };
-		045DA52A189CB8EA00776EFA /* persistence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = persistence.h; path = ../src/persistence.h; sourceTree = SOURCE_ROOT; };
-		045DA52B189CB8EA00776EFA /* rom_collection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rom_collection.cpp; path = ../src/rom_collection.cpp; sourceTree = SOURCE_ROOT; };
-		045DA52C189CB8EA00776EFA /* rom_collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rom_collection.h; path = ../src/rom_collection.h; sourceTree = SOURCE_ROOT; };
-		045DA52D189CB8EA00776EFA /* settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = settings.cpp; path = ../src/settings.cpp; sourceTree = SOURCE_ROOT; };
-		045DA52E189CB8EA00776EFA /* settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = settings.h; path = ../src/settings.h; sourceTree = SOURCE_ROOT; };
-		045DA52F189CB8EA00776EFA /* utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../src/utils.cpp; sourceTree = SOURCE_ROOT; };
-		045DA530189CB8EA00776EFA /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../src/utils.h; sourceTree = SOURCE_ROOT; };
-		045DA53B189F305C00776EFA /* menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu.h; path = ../src/menu.h; sourceTree = SOURCE_ROOT; };
-		045DA53C189F305C00776EFA /* menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = menu.cpp; path = ../src/menu.cpp; sourceTree = SOURCE_ROOT; };
+		047E9A771A55CF140066C697 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		047E9A781A55CF140066C697 /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utils.cpp; sourceTree = "<group>"; };
+		047E9A791A55CF140066C697 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		047E9A7B1A55CF140066C697 /* emu_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = emu_interface.h; sourceTree = "<group>"; };
+		047E9A7C1A55CF140066C697 /* loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader.cpp; sourceTree = "<group>"; };
+		047E9A7D1A55CF140066C697 /* loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader.h; sourceTree = "<group>"; };
+		047E9A7E1A55CF140066C697 /* manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = manager.cpp; sourceTree = "<group>"; };
+		047E9A7F1A55CF140066C697 /* manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = manager.h; sourceTree = "<group>"; };
+		047E9A811A55CF140066C697 /* persistence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = persistence.cpp; sourceTree = "<group>"; };
+		047E9A821A55CF140066C697 /* persistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = persistence.h; sourceTree = "<group>"; };
+		047E9A831A55CF140066C697 /* rom_collection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rom_collection.cpp; sourceTree = "<group>"; };
+		047E9A841A55CF140066C697 /* rom_collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rom_collection.h; sourceTree = "<group>"; };
+		047E9A851A55CF140066C697 /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
+		047E9A861A55CF140066C697 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
+		047E9A881A55CF140066C697 /* dummycore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummycore.cpp; sourceTree = "<group>"; };
+		047E9A891A55CF140066C697 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		047E9A8B1A55CF140066C697 /* systems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = systems.h; sourceTree = "<group>"; };
+		047E9A8D1A55CF140066C697 /* gfx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gfx.cpp; sourceTree = "<group>"; };
+		047E9A8E1A55CF140066C697 /* gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gfx.h; sourceTree = "<group>"; };
+		047E9A8F1A55CF140066C697 /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		047E9A901A55CF140066C697 /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
+		047E9A911A55CF140066C697 /* view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view.cpp; sourceTree = "<group>"; };
+		047E9A921A55CF140066C697 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
+		047E9A941A55CF140066C697 /* core_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_view.cpp; sourceTree = "<group>"; };
+		047E9A951A55CF140066C697 /* core_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_view.h; sourceTree = "<group>"; };
+		047E9A961A55CF140066C697 /* menu_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu_view.cpp; sourceTree = "<group>"; };
+		047E9A971A55CF140066C697 /* menu_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_view.h; sourceTree = "<group>"; };
+		047E9A981A55CF140066C697 /* path_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = path_view.cpp; sourceTree = "<group>"; };
+		047E9A991A55CF140066C697 /* path_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path_view.h; sourceTree = "<group>"; };
 		04B6382C189C9CC40028FA74 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
 		04CB04261897669C00169B41 /* GCW Prototype */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "GCW Prototype"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04CB04421897670300169B41 /* Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cocoa.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,23 +134,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0408CCAE189F416400A036A8 /* views */ = {
-			isa = PBXGroup;
-			children = (
-				0408CCAD189F40E800A036A8 /* view.h */,
-				0401A6DF18A4A959005A6991 /* view.cpp */,
-				045DA53B189F305C00776EFA /* menu.h */,
-				045DA53C189F305C00776EFA /* menu.cpp */,
-				045DA51E189CB8EA00776EFA /* core_view.h */,
-				045DA51D189CB8EA00776EFA /* core_view.cpp */,
-				0408CCB0189F451A00A036A8 /* menu_view.h */,
-				0408CCAF189F451A00A036A8 /* menu_view.cpp */,
-				0404124918A7F61500674A1D /* path_view.cpp */,
-				0404124A18A7F61500674A1D /* path_view.h */,
-			);
-			name = views;
-			sourceTree = "<group>";
-		};
 		041DB1FE189AA36000E4AFE9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,12 +146,105 @@
 			path = "GCW Prototype";
 			sourceTree = "<group>";
 		};
+		047E9A751A55CF140066C697 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A761A55CF140066C697 /* common */,
+				047E9A7A1A55CF140066C697 /* core */,
+				047E9A801A55CF140066C697 /* data */,
+				047E9A871A55CF140066C697 /* debug */,
+				047E9A891A55CF140066C697 /* main.cpp */,
+				047E9A8A1A55CF140066C697 /* systems */,
+				047E9A8C1A55CF140066C697 /* ui */,
+				047E9A931A55CF140066C697 /* views */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		047E9A761A55CF140066C697 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A771A55CF140066C697 /* defines.h */,
+				047E9A781A55CF140066C697 /* utils.cpp */,
+				047E9A791A55CF140066C697 /* utils.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		047E9A7A1A55CF140066C697 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A7B1A55CF140066C697 /* emu_interface.h */,
+				047E9A7C1A55CF140066C697 /* loader.cpp */,
+				047E9A7D1A55CF140066C697 /* loader.h */,
+				047E9A7E1A55CF140066C697 /* manager.cpp */,
+				047E9A7F1A55CF140066C697 /* manager.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		047E9A801A55CF140066C697 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A811A55CF140066C697 /* persistence.cpp */,
+				047E9A821A55CF140066C697 /* persistence.h */,
+				047E9A831A55CF140066C697 /* rom_collection.cpp */,
+				047E9A841A55CF140066C697 /* rom_collection.h */,
+				047E9A851A55CF140066C697 /* settings.cpp */,
+				047E9A861A55CF140066C697 /* settings.h */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		047E9A871A55CF140066C697 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A881A55CF140066C697 /* dummycore.cpp */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
+		047E9A8A1A55CF140066C697 /* systems */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A8B1A55CF140066C697 /* systems.h */,
+			);
+			path = systems;
+			sourceTree = "<group>";
+		};
+		047E9A8C1A55CF140066C697 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A8D1A55CF140066C697 /* gfx.cpp */,
+				047E9A8E1A55CF140066C697 /* gfx.h */,
+				047E9A8F1A55CF140066C697 /* menu.cpp */,
+				047E9A901A55CF140066C697 /* menu.h */,
+				047E9A911A55CF140066C697 /* view.cpp */,
+				047E9A921A55CF140066C697 /* view.h */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		047E9A931A55CF140066C697 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				047E9A941A55CF140066C697 /* core_view.cpp */,
+				047E9A951A55CF140066C697 /* core_view.h */,
+				047E9A961A55CF140066C697 /* menu_view.cpp */,
+				047E9A971A55CF140066C697 /* menu_view.h */,
+				047E9A981A55CF140066C697 /* path_view.cpp */,
+				047E9A991A55CF140066C697 /* path_view.h */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
 		04CB041D1897669C00169B41 = {
 			isa = PBXGroup;
 			children = (
 				043E7E0818A208FE0015B350 /* libSDLmain.a */,
 				04B6382C189C9CC40028FA74 /* data */,
-				04CB04281897669C00169B41 /* GCW Prototype */,
+				047E9A751A55CF140066C697 /* src */,
 				041DB1FE189AA36000E4AFE9 /* Supporting Files */,
 				04CB04431897670300169B41 /* Frameworks */,
 				04CB04271897669C00169B41 /* Products */,
@@ -168,32 +258,6 @@
 				04CB04421897670300169B41 /* Cocoa.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		04CB04281897669C00169B41 /* GCW Prototype */ = {
-			isa = PBXGroup;
-			children = (
-				0408CCAE189F416400A036A8 /* views */,
-				045DA51F189CB8EA00776EFA /* defines.h */,
-				045DA520189CB8EA00776EFA /* dummycore.cpp */,
-				045DA521189CB8EA00776EFA /* emu_interface.h */,
-				045DA522189CB8EA00776EFA /* gfx.cpp */,
-				045DA523189CB8EA00776EFA /* gfx.h */,
-				045DA524189CB8EA00776EFA /* loader.cpp */,
-				045DA525189CB8EA00776EFA /* loader.h */,
-				045DA526189CB8EA00776EFA /* main.cpp */,
-				045DA527189CB8EA00776EFA /* manager.cpp */,
-				045DA528189CB8EA00776EFA /* manager.h */,
-				045DA529189CB8EA00776EFA /* persistence.cpp */,
-				045DA52A189CB8EA00776EFA /* persistence.h */,
-				045DA52B189CB8EA00776EFA /* rom_collection.cpp */,
-				045DA52C189CB8EA00776EFA /* rom_collection.h */,
-				045DA52D189CB8EA00776EFA /* settings.cpp */,
-				045DA52E189CB8EA00776EFA /* settings.h */,
-				045DA52F189CB8EA00776EFA /* utils.cpp */,
-				045DA530189CB8EA00776EFA /* utils.h */,
-			);
-			path = "GCW Prototype";
 			sourceTree = "<group>";
 		};
 		04CB04431897670300169B41 /* Frameworks */ = {
@@ -297,7 +361,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0401A6E018A4A959005A6991 /* view.cpp in Sources */,
+				047E9A9E1A55CF140066C697 /* manager.cpp in Sources */,
+				047E9A9C1A55CF140066C697 /* loader.cpp in Sources */,
+				047E9AA81A55CF140066C697 /* main.cpp in Sources */,
+				047E9AAA1A55CF140066C697 /* gfx.cpp in Sources */,
+				047E9AB21A55CF140066C697 /* menu_view.cpp in Sources */,
+				047E9A9A1A55CF140066C697 /* utils.cpp in Sources */,
+				047E9AB41A55CF140066C697 /* path_view.cpp in Sources */,
+				047E9AA21A55CF140066C697 /* rom_collection.cpp in Sources */,
+				047E9AAC1A55CF140066C697 /* menu.cpp in Sources */,
+				047E9AA61A55CF140066C697 /* dummycore.cpp in Sources */,
+				047E9AAE1A55CF140066C697 /* view.cpp in Sources */,
+				047E9AB01A55CF140066C697 /* core_view.cpp in Sources */,
+				047E9AA01A55CF140066C697 /* persistence.cpp in Sources */,
+				047E9AA41A55CF140066C697 /* settings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,20 +382,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				045DA535189CB98200776EFA /* main.cpp in Sources */,
-				0401A6E118A4A959005A6991 /* view.cpp in Sources */,
-				045DA536189CB98200776EFA /* manager.cpp in Sources */,
-				045DA537189CB98200776EFA /* persistence.cpp in Sources */,
-				045DA538189CB98200776EFA /* rom_collection.cpp in Sources */,
-				045DA539189CB98200776EFA /* settings.cpp in Sources */,
-				045DA53A189CB98200776EFA /* utils.cpp in Sources */,
-				045DA531189CB97600776EFA /* core_view.cpp in Sources */,
-				0408CCB1189F455D00A036A8 /* menu_view.cpp in Sources */,
-				0404124B18A7F66600674A1D /* path_view.cpp in Sources */,
-				045DA532189CB97800776EFA /* dummycore.cpp in Sources */,
-				045DA53D189F308700776EFA /* menu.cpp in Sources */,
-				045DA534189CB97A00776EFA /* loader.cpp in Sources */,
-				045DA533189CB97900776EFA /* gfx.cpp in Sources */,
+				047E9A9F1A55CF140066C697 /* manager.cpp in Sources */,
+				047E9A9D1A55CF140066C697 /* loader.cpp in Sources */,
+				047E9AA91A55CF140066C697 /* main.cpp in Sources */,
+				047E9AAB1A55CF140066C697 /* gfx.cpp in Sources */,
+				047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */,
+				047E9A9B1A55CF140066C697 /* utils.cpp in Sources */,
+				047E9AB51A55CF140066C697 /* path_view.cpp in Sources */,
+				047E9AA31A55CF140066C697 /* rom_collection.cpp in Sources */,
+				047E9AAD1A55CF140066C697 /* menu.cpp in Sources */,
+				047E9AA71A55CF140066C697 /* dummycore.cpp in Sources */,
+				047E9AAF1A55CF140066C697 /* view.cpp in Sources */,
+				047E9AB11A55CF140066C697 /* core_view.cpp in Sources */,
+				047E9AA11A55CF140066C697 /* persistence.cpp in Sources */,
+				047E9AA51A55CF140066C697 /* settings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

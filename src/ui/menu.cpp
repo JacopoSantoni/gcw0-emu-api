@@ -1,7 +1,7 @@
 #include "menu.h"
 
-#include "menu_view.h"
-#include "manager.h"
+#include "../views/menu_view.h"
+#include "../core/manager.h"
 
 using namespace std;
 using namespace gcw;

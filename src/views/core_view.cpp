@@ -1,6 +1,6 @@
 #include "core_view.h"
 
-#include "manager.h"
+#include "../core/manager.h"
 
 #include <vector>
 

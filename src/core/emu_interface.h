@@ -7,9 +7,9 @@
 #include <stdint.h>
 #include <SDL.h>
 
-#include "defines.h"
-#include "gfx.h"
-#include "settings.h"
+#include "../common/defines.h"
+#include "../ui/gfx.h"
+#include "../data/settings.h"
 
 
 
@@ -20,13 +20,13 @@ class CoreInterface;
 
 struct CoreInfo
 {
-  SystemType type;
+  std::vector<System> type;
   std::string ident;
   std::string name;
   std::string version;
   
-  CoreInfo(SystemType type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
-  CoreInfo() : type(SYSTEM_UNCATEGORISED), ident(std::string()), name(std::string()), version(std::string()) { }
+  CoreInfo(std::initializer_list<System> type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
+  CoreInfo() : type({System::UNCATEGORISED}), ident(std::string()), name(std::string()), version(std::string()) { }
   
   const std::string title() const { return name + " (" + version + ")"; }
 };
@@ -49,7 +49,8 @@ class CoreInterface
     CoreInterface() : analogJoypadEnabled(false) { }
   
 		void registerExtension(std::string ext) { extensions.push_back(ext); }
-    void registerInformations(SystemType type, std::string ident, std::string name, std::string version) { information = CoreInfo(type,ident,name,version); }
+    void registerInformations(std::initializer_list<System> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
+    void registerInformations(System type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }

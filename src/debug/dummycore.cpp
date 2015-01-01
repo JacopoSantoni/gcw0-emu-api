@@ -1,6 +1,6 @@
-#include "emu_interface.h"
+#include "../core/emu_interface.h"
 
-#include "gfx.h"
+#include "../ui/gfx.h"
 
 using namespace std;
 using namespace gcw;
@@ -47,7 +47,7 @@ class DummyCore : public CoreInterface
   public:
     DummyCore()
     {
-      registerInformations(SYSTEM_SUPER_NINTENDO, "dummy", "dummy", "1.0");
+      registerInformations(System::SUPER_NINTENDO, "dummy", "dummy", "1.0");
       registerExtension("smc");
       registerExtension("gba");
       

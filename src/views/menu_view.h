@@ -2,8 +2,8 @@
 #define _PATH_VIEW_H_
 
 #include <SDL.h>
-#include "emu_interface.h"
-#include "view.h"
+#include "../core/emu_interface.h"
+#include "../ui/view.h"
 
 #include <stack>
 

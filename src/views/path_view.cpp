@@ -1,7 +1,7 @@
 #include "path_view.h"
 
-#include "utils.h"
-#include "gfx.h"
+#include "../common/utils.h"
+#include "../ui/gfx.h"
 
 using namespace std;
 using namespace gcw;

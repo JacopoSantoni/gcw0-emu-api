@@ -1,7 +1,7 @@
 #ifndef _PERSISTENCE_H_
 #define _PERSISTENCE_H_
 
-#include "utils.h"
+#include "../common/utils.h"
 
 #include <vector>
 

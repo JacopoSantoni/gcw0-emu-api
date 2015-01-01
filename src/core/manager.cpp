@@ -1,6 +1,6 @@
 #include "manager.h"
 
-#include "menu.h"
+#include "../ui/menu.h"
 
 using namespace gcw;
 

@@ -1,8 +1,8 @@
 #ifndef _GFX_H_
 #define _GFX_H_
 
-#include "defines.h"
-#include "utils.h"
+#include "../common/defines.h"
+#include "../common/utils.h"
 
 #include <vector>
 #include <map>

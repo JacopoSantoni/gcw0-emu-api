@@ -1,7 +1,8 @@
 #ifndef _VIEW_H_
 #define _VIEW_H_
 
-#include "defines.h"
+#include "../common/defines.h"
+#include <algorithm>
 
 namespace gcw
 {
@@ -52,13 +53,13 @@ namespace gcw
     u32 maxOffset() const {
       u32 maxDisplayableOffset = offset + LIST_SIZE - 1;
       u32 maxRealOffset = count() - 1;
-      return min(maxDisplayableOffset, maxRealOffset);
+      return std::min(maxDisplayableOffset, maxRealOffset);
     }
     bool isSelected(u32 i) const { return i + offset == current(); }
     u32 relativeIndex(u32 i) const { return i - offset; }
     void reset() { offset = 0; }
 
-    u32 getDisplayedAmount() const { return min(LIST_SIZE, count() - offset); }
+    u32 getDisplayedAmount() const { return std::min(LIST_SIZE, count() - offset); }
     
     virtual u32 current() const = 0;
     virtual u32 count() const = 0;

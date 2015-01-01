@@ -1,6 +1,6 @@
 #include "rom_collection.h"
 
-#include "manager.h"
+#include "../core/manager.h"
 
 using namespace std;
 using namespace gcw;

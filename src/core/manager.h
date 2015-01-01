@@ -2,14 +2,14 @@
 #define _MANAGER_H_
 
 #include "loader.h"
-#include "gfx.h"
-#include "utils.h"
-#include "rom_collection.h"
-#include "persistence.h"
+#include "../ui/gfx.h"
+#include "../common/utils.h"
+#include "../data/rom_collection.h"
+#include "../data/persistence.h"
 
-#include "core_view.h"
-#include "menu_view.h"
-#include "path_view.h"
+#include "../views/core_view.h"
+#include "../views/menu_view.h"
+#include "../views/path_view.h"
 
 namespace gcw {
   

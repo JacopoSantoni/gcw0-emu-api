@@ -2,8 +2,8 @@
 #define _MENU_VIEW_H_
 
 #include <SDL.h>
-#include "view.h"
-#include "utils.h"
+#include "../ui/view.h"
+#include "../common/utils.h"
 
 #include <vector>
 #include <string>

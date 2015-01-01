@@ -1,5 +1,5 @@
 
-#include "manager.h"
+#include "../core/manager.h"
 #include "view.h"
 
 using namespace gcw;
