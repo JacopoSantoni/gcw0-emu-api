@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <stack>
+#include <functional>
 
 namespace gcw {
 

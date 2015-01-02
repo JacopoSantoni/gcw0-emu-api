@@ -42,5 +42,5 @@ opk: $(EXECUTABLE)
 	mksquashfs .opk_data $(EXECUTABLE).opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
 	
 send: opk
-  scp gcwemu.opk root@10.1.1.2.:/media/SD/apps
+  scp gcwemu.opk root@10.1.1.2:/media/SD/apps
 

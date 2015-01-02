@@ -5,6 +5,8 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <functional>
+#include <algorithm>
 
 #include "../common/utils.h"
 #include "../common/defines.h"
