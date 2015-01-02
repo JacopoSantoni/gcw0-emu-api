@@ -2,9 +2,9 @@
 
 CC = mipsel-linux-g++
 
-SYSROOT:= $(shell $(CC) -print-sysroot)
-SDL_INCLUDES = $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
-SDL_LIBS = $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
+SYSROOT := $(shell $(CC) --print-sysroot)
+SDL_INCLUDES := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIBS := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
 
 CCFLAGS = -std=c++11 $(SDL_INCLUDES)
 LDFLAGS += $(SDL_LIBS) -lSDL_image
@@ -25,18 +25,12 @@ all opt debug: $(EXECUTABLE)
 $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 	$(CC) $(CCFLAGS) $^ -o $@ $(LDFLAGS)
 
-#$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
-
-$(BINARIES): | $(BINDIR)
-
-$(BINDIR):
-	mkdir -p $(BINDIR)
-
 clean:
-rm -f gcw-emu
-rm -rf $(BINDIR)
+	rm -f gcwemu
+	rm -rf $(BINDIR)
 
-$(BINDIR)/%.o : $(SRCDIR)/%.cpp
+$(BINDIR)/%.o : $(BASESRC)/%.cpp
+	@test -d $(@D) || mkdir -p $(@D)
 	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
 	
 opk: $(EXECUTABLE)

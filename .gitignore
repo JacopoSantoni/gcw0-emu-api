@@ -1,6 +1,7 @@
 .cproject
 .project
 *.o
+*.*~
 zelda.gbc
 mario.smc
 cores
