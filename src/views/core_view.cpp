@@ -33,11 +33,13 @@ s8 CoreView::indexForKey(GCWKey key)
     case GCW_KEY_R: return 9;
     case GCW_KEY_START: return 10;
     case GCW_KEY_SELECT: return 11;
+    case GCW_KEY_PAUSE: return 12;
+    case GCW_KEY_HOME: return 13;
       
-    case GCW_ANALOG_LEFT: return 12;
-    case GCW_ANALOG_RIGHT: return 13;
-    case GCW_ANALOG_UP: return 14;
-    case GCW_ANALOG_DOWN: return 15;
+    case GCW_ANALOG_LEFT: return 14;
+    case GCW_ANALOG_RIGHT: return 15;
+    case GCW_ANALOG_UP: return 16;
+    case GCW_ANALOG_DOWN: return 17;
       
     default: return SDL_INVALID_KEY;
   }

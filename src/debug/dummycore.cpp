@@ -138,7 +138,7 @@ void DummyCore::emulationFrame()
   DummyUtil::rectFill(gfxBuffer, 185, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? red : grey);
   
   DummyUtil::rectFill(gfxBuffer, 225, 30, 10, 30, buttonStatus & (1<<KEY_HOME_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 225, 70, 10, 30, buttonStatus & (1<<KEY_HOME_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 225, 70, 10, 30, buttonStatus & (1<<KEY_PAUSE_SHIFT) ? red : grey);
   
   int size = 10;
   int cx = 45-size/2, cy = 140-size/2;
