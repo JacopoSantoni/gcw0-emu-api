@@ -18,14 +18,10 @@ void Manager::init()
   loader.scan();
   collection.scan();
   
-  core = loader.loadCore("dummy");
+  core = loader.loadCore("dummy1");
   
   gfx.init();
   timer.setFrameRate(60.0f);
-  
-  //currentView = &coreView;
-  //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
-  //coreView.initGfx();
   
   EnumSet sampleRates = {
     new ConcreteEnumValue<int32_t>("0",0),
@@ -49,7 +45,10 @@ void Manager::init()
   menuView.setMenu(root);
   
   //currentView = &pathView;
-  currentView = &menuView;
+  //currentView = &menuView;
+  currentView = &coreView;
+  coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
+  coreView.initGfx();
 }
 
 void Manager::run()

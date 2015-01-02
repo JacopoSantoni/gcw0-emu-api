@@ -21,7 +21,10 @@ enum KeyShiftAmount : u8
   KEY_R_SHIFT = 9,
   
   KEY_START_SHIFT = 10,
-  KEY_SELECT_SHIFT = 11
+  KEY_SELECT_SHIFT = 11,
+  
+  KEY_HOME_SHIFT = 12,
+  KEY_PAUSE_SHIFT = 13
   
 };
   
@@ -86,6 +89,9 @@ class DummyCore : public CoreInterface
       registerButton(ButtonSetting("Left", GCW_KEY_LEFT, KEY_LEFT_SHIFT, true));
       registerButton(ButtonSetting("Down", GCW_KEY_DOWN, KEY_DOWN_SHIFT, true));
       
+      registerButton(ButtonSetting("Pause", GCW_KEY_PAUSE, KEY_PAUSE_SHIFT, true));
+      registerButton(ButtonSetting("Home", GCW_KEY_HOME, KEY_HOME_SHIFT, true));
+      
       // this enables a joypad direction as a digital button
       /*registerButton(ButtonSetting("LeftA", GCW_ANALOG_LEFT, KEY_LEFT_SHIFT, true));
        registerButton(ButtonSetting("RightA", GCW_ANALOG_RIGHT, KEY_RIGHT_SHIFT, true));
@@ -115,10 +121,10 @@ void DummyCore::emulationFrame()
   u16 red = Gfx::ccc<u16>(200,0,0);
   u16 grey = Gfx::ccc<u16>(160,160,160);
 
-  DummyUtil::rectFill(gfxBuffer, 210, 60, 20, 20, buttonStatus & (1<<KEY_A_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 185, 85, 20, 20, buttonStatus & (1<<KEY_B_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 160, 60, 20, 20, buttonStatus & (1<<KEY_X_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 185, 35, 20, 20, buttonStatus & (1<<KEY_Y_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 195, 60, 20, 20, buttonStatus & (1<<KEY_A_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 170, 85, 20, 20, buttonStatus & (1<<KEY_B_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 145, 60, 20, 20, buttonStatus & (1<<KEY_X_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 170, 35, 20, 20, buttonStatus & (1<<KEY_Y_SHIFT) ? red : grey);
 
   DummyUtil::rectFill(gfxBuffer, 60, 60, 20, 20, buttonStatus & (1<<KEY_RIGHT_SHIFT) ? red : grey);
   DummyUtil::rectFill(gfxBuffer, 35, 85, 20, 20, buttonStatus & (1<<KEY_DOWN_SHIFT) ? red : grey);
@@ -126,10 +132,13 @@ void DummyCore::emulationFrame()
   DummyUtil::rectFill(gfxBuffer, 35, 35, 20, 20, buttonStatus & (1<<KEY_UP_SHIFT) ? red : grey);
   
   DummyUtil::rectFill(gfxBuffer, 10, 10, 30, 10, buttonStatus & (1<<KEY_L_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 200, 10, 30, 10, buttonStatus & (1<<KEY_R_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 185, 10, 30, 10, buttonStatus & (1<<KEY_R_SHIFT) ? red : grey);
   
-  DummyUtil::rectFill(gfxBuffer, 200, 120, 30, 10, buttonStatus & (1<<KEY_SELECT_SHIFT) ? red : grey);
-  DummyUtil::rectFill(gfxBuffer, 200, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 185, 120, 30, 10, buttonStatus & (1<<KEY_SELECT_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 185, 140, 30, 10, buttonStatus & (1<<KEY_START_SHIFT) ? red : grey);
+  
+  DummyUtil::rectFill(gfxBuffer, 225, 30, 10, 30, buttonStatus & (1<<KEY_HOME_SHIFT) ? red : grey);
+  DummyUtil::rectFill(gfxBuffer, 225, 70, 10, 30, buttonStatus & (1<<KEY_HOME_SHIFT) ? red : grey);
   
   int size = 10;
   int cx = 45-size/2, cy = 140-size/2;
