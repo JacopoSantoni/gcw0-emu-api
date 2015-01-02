@@ -1,0 +1,57 @@
+.PHONY: all clean opk send debug geekboy
+
+CC = mipsel-linux-g++
+STRIP = mipsel-linux-strip
+
+SYSROOT := $(shell $(CC) --print-sysroot)
+SDL_INCLUDES := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIBS := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
+
+CCFLAGS = -std=c++11 $(SDL_INCLUDES)
+LDFLAGS += $(SDL_LIBS) -lSDL_image -ldl
+
+all opt debug:
+opk opt: CCFLAGS += -O3 -ffast-math
+debug: CCFLAGS += -g
+
+BINDIR := obj
+BASESRC := src
+SOURCE := $(BASESRC) $(BASESRC)/common $(BASESRC)/core $(BASESRC)/data $(BASESRC)/debug $(BASESRC)/systems $(BASESRC)/ui $(BASESRC)/views
+SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(dir)/*.cpp)))
+BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
+EXECUTABLE := gcwemu
+
+CORES := geekboy
+
+# ohboy PocketSNES
+
+all opt debug: $(EXECUTABLE) $(CORES)
+
+$(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
+	$(CC) $(CCFLAGS) $^ -o $@ $(LDFLAGS)
+	#$(STRIP) $@
+
+geekboy:
+	$(MAKE) -f Makefile.gcw -C geekboy $(MAKEFLAGS)
+	mv geekboy/geekboy.so cores/geekboy.so
+
+clean:
+	rm -f gcwemu
+	rm -rf $(BINDIR)
+	rm -f cores/*.so
+
+$(BINDIR)/%.o : $(BASESRC)/%.cpp
+	@test -d $(@D) || mkdir -p $(@D)
+	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
+	
+opk: $(EXECUTABLE)
+	rm -rf .opk_data
+	mkdir -p .opk_data/data/
+	cp -r data/* .opk_data/data/
+	cp -r gcw/* .opk_data/
+	cp $< .opk_data/gcwemu
+	mksquashfs .opk_data $(EXECUTABLE).opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
+	
+send: opk
+  scp gcwemu.opk root@10.1.1.2:/media/SD/apps
+
