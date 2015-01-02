@@ -12,17 +12,7 @@
 
 
 namespace gcw
-{  
-  class Files
-  {
-    public:
-      static std::vector<std::string> findFiles(std::string path, std::string ext, bool recursive);
-      static std::vector<std::string> findFiles(std::string path, std::unordered_set<std::string>& exts, bool recursive);
-      static std::vector<std::string> findSubfolders(std::string path);
-
-    
-  };
-  
+{
   class Path
   {
     private:
@@ -40,20 +30,37 @@ namespace gcw
       void set(std::string& value) { path = value; }
       void set(const Path& opath) { path = opath.path; }
       Path append(std::string component) const;
+      Path append(const Path& path) const;
       Path removeLast() const;
       bool isRoot() const;
+    
+      std::string extension() const;
+      std::string plainName() const;
+      std::tuple<std::string, std::string> split() const;
+    
       
-      
-      std::string fileInsidePath(const std::string file) const;
-      std::vector<std::string> findFiles(std::string ext, bool recursive) const;
-      std::vector<std::string> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
-      std::vector<std::string> subfolders() const;
+      std::string fileInsidePath(const std::string& file) const;
+      std::vector<Path> findFiles(const std::string& ext, bool recursive) const;
+      std::vector<Path> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
+      std::vector<Path> subfolders() const;
+    
+    bool operator==(const std::string& rhs) const { return path == rhs; }
+    bool operator==(const Path& rhs) const { return path == rhs.path; }
+    bool operator==(const char* rhs) const { return path == std::string(rhs); }
   };
   
   inline Path operator+(const Path& lhs, const Path& rhs) // first arg by value, second by const ref
   {
     return lhs.append(rhs.value());
   }
+  
+  class Files
+  {
+  public:
+    static std::vector<Path> findFiles(const std::string& path, const std::string& ext, bool recursive);
+    static std::vector<Path> findFiles(const std::string& path, std::unordered_set<std::string>& exts, bool recursive);
+    static std::vector<Path> findSubfolders(const std::string& path);
+  };
   
   class Timer
   {

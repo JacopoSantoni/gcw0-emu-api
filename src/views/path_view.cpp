@@ -9,8 +9,8 @@ using namespace gcw;
 u32 PathView::PathList::current() const { return view->index; }
 u32 PathView::PathList::count() const { return static_cast<u32>(view->folders.size()); }
 void PathView::PathList::set(u32 i) { view->index = i; }
-const string& PathView::PathList::selected() { return view->folders[view->index]; }
-const string& PathView::PathList::get(u32 i) { return view->folders[offset+view->index]; }
+const Path& PathView::PathList::selected() { return view->folders[view->index]; }
+const Path& PathView::PathList::get(u32 i) { return view->folders[offset+view->index]; }
 
 PathView::PathView(Manager* manager) : View(manager), index(0), list(this) { }
 
@@ -33,9 +33,9 @@ void PathView::render()
   u32 count = list.getDisplayedAmount();
   for (int i = 0; i < count; ++i)
   {
-    string &folder = folders[i+list.minOffset()];
+    Path &folder = folders[i+list.minOffset()];
     
-    gfx->print(View::MENU_OFFSET.x, View::MENU_OFFSET.y+14*i, false, Font::bigFont, Text::clipText(folder, 30).c_str());
+    gfx->print(View::MENU_OFFSET.x, View::MENU_OFFSET.y+14*i, false, Font::bigFont, Text::clipText(folder.value(), 30).c_str());
   }
   
   gfx->print(View::MENU_OFFSET.x-10,View::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");

@@ -31,6 +31,38 @@ Path::Path(const std::string& path) : path(path)
   trimEndSlash();
 }
 
+std::string Path::extension() const
+{
+  size_t dot = path.find_last_of(".");
+  
+  if (dot != string::npos)
+    return path.substr(dot+1, string::npos);
+  else
+    return string();
+}
+
+std::string Path::plainName() const
+{
+  size_t dot = path.find_last_of(".");
+  
+  if (dot != string::npos)
+    return path.substr(0, dot);
+  else
+    return path;
+}
+
+tuple<string, string> Path::split() const
+{
+  size_t dot = path.find_last_of(".");
+
+  if (dot != string::npos)
+    return make_tuple(path.substr(0, dot), path.substr(dot+1, string::npos));
+  else
+    return make_tuple(path, "");
+}
+
+Path Path::append(const Path& path) const { return append(path.value()); }
+
 Path Path::append(string component) const
 {
   if (component.back() == '/')
@@ -67,38 +99,38 @@ bool Path::isRoot() const
   return path == "/";
 }
 
-string Path::fileInsidePath(string file) const
+string Path::fileInsidePath(const string& file) const
 {
   return path+file;
 }
 
-vector<string> Path::findFiles(string ext, bool recursive) const
+vector<Path> Path::findFiles(const string& ext, bool recursive) const
 {
   return Files::findFiles(path, ext, recursive);
 }
 
-vector<string> Path::findFiles(unordered_set<string>& exts, bool recursive) const
+vector<Path> Path::findFiles(unordered_set<string>& exts, bool recursive) const
 {
   return Files::findFiles(path, exts, recursive);
 }
 
-vector<string> Path::subfolders() const
+vector<Path> Path::subfolders() const
 {
   return Files::findSubfolders(path);
 }
 
 
 
-vector<string> Files::findFiles(string path, string ext, bool recursive)
+vector<Path> Files::findFiles(const string& path, const string& ext, bool recursive)
 {
   auto set = unordered_set<string>{ext};
   return findFiles(path, set, recursive);
 }
 
 // TODO: recursive not implemented
-vector<string> Files::findFiles(string path, unordered_set<string>& exts, bool recursive)
+vector<Path> Files::findFiles(const string& path, unordered_set<string>& exts, bool recursive)
 {
-  vector<string> files;
+  vector<Path> files;
   
   DIR *dir;
   struct dirent *ent;
@@ -123,9 +155,9 @@ vector<string> Files::findFiles(string path, unordered_set<string>& exts, bool r
   return files;
 }
 
-std::vector<std::string> Files::findSubfolders(std::string path)
+vector<Path> Files::findSubfolders(const string& path)
 {
-  vector<string> folders;
+  vector<Path> folders;
 
   DIR *dir;
   struct stat stats;

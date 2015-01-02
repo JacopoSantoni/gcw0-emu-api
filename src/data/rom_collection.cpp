@@ -33,16 +33,16 @@ void RomCollection::scan()
   
   for (const auto &path : paths)
   {
-    vector<string> files = path.findFiles(exts, true);
+    vector<Path> files = path.findFiles(exts, true);
     
     //Rom
     
     for (auto &file : files)
     {
-      
-      size_t dot = file.find_last_of(".");
-      string ext = file.substr(dot+1, string::npos);
-      RomEntry rom = RomEntry(file.substr(0,dot), ext, extsMapToSystem.find(ext)->second, path);
+      std::string name = file.plainName();
+      std::string extension = file.extension();
+
+      RomEntry rom = RomEntry(name, extension, extsMapToSystem.find(extension)->second, path);
       
       roms.insert(pair<reference_wrapper<const SystemSpec>,RomEntry>(rom.system,rom));
     }
