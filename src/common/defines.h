@@ -36,7 +36,7 @@ enum class System : u16
 
 
 const s8 SDL_INVALID_KEY = -1;
-const int GCW_KEY_COUNT = 12;
+const int GCW_KEY_COUNT = 14;
 const int GCW_ANALOG_COUNT = 4;
 const int GCW_ANALOG_MAP_SHIFT = GCW_KEY_COUNT;
 
@@ -54,6 +54,9 @@ enum GCWKey : s16
   
   GCW_KEY_L = SDLK_TAB,
   GCW_KEY_R = SDLK_BACKSPACE,
+  
+  GCW_KEY_PAUSE = SDLK_PAUSE,
+  GCW_KEY_HOME = SDLK_HOME,
   
   GCW_KEY_SELECT = SDLK_ESCAPE,
   GCW_KEY_START = SDLK_RETURN,
