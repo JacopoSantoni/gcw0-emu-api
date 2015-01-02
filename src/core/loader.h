@@ -14,15 +14,16 @@
 namespace gcw {
   
 #ifdef _DUMMY_CORE_
-  extern "C" CoreInterface *retrieve();
+  extern "C" CoreInterface *retrieve1();
+  extern "C" CoreInterface *retrieve2();
 #endif
 
 struct CoreHandle
 {
   const CoreInfo info;
-  void *handle;
+  void* handle;
   std::string fileName;
-  CoreInterface *core;
+  CoreInterface* core;
   
 	CoreHandle(std::string fileName, CoreInfo info) :
   info(info),
@@ -54,7 +55,7 @@ class Loader
     CoreHandle* coreForFile(std::string fileName);
   
     CoreInterface* loadCore(std::string ident);
-    void unload();
+    void unload(CoreInterface* core);
   
     const std::vector<std::unique_ptr<CoreHandle>>& getCores() { return cores; }
   
@@ -62,7 +63,7 @@ class Loader
     {
       std::vector<std::string> extensions;
       std::transform(handledFileTypes.begin(), handledFileTypes.end(), std::back_inserter(extensions),
-        [](const std::map<std::string,std::vector<CoreHandle*> >::value_type &pair){return pair.first;});
+        [](const std::map<std::string,std::vector<CoreHandle*>>::value_type &pair){ return pair.first; });
       
       return extensions;
     }

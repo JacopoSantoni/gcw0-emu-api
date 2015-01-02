@@ -9,19 +9,23 @@ void RomCollection::scan()
 {
   vector<Path> paths = manager->getPersistence()->getRomPaths();
   
-  specs = {SystemSpec("uncat", "Uncategorized", {}), SystemSpec("snes", "Super Nintendo", {"smc","fig"}), SystemSpec("gba", "GameBoy Advance", {"gba"}), };
+  specs = {
+    SystemSpec("uncat", "Uncategorized", {}),
+    SystemSpec("snes", "Super Nintendo", {"smc","fig"}),
+    SystemSpec("gba", "GameBoy Advance", {"gba"})
+  };
   
-  unordered_map<std::string, SystemSpec*> extsMapToSystem;
-  unordered_set<std::string> exts;
-  for (auto &spec : specs)
-    for (auto &ext : spec.extensions)
+  unordered_map<string, reference_wrapper<const SystemSpec>> extsMapToSystem;
+  unordered_set<string> exts;
+  for (const SystemSpec& spec : specs)
+    for (const auto& ext : spec.extensions)
     {
       exts.insert(ext);
       
       if (extsMapToSystem.find(ext) == extsMapToSystem.end())
-        extsMapToSystem[ext] = &spec;
+        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const SystemSpec>(spec)));
       else
-        extsMapToSystem[ext] = &specs[0];
+        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const SystemSpec>(specs[0])));
     }
   
   //manager->getLoader()->allowedFileTypes();
@@ -38,25 +42,24 @@ void RomCollection::scan()
       
       size_t dot = file.find_last_of(".");
       string ext = file.substr(dot+1, string::npos);
-      RomEntry rom = RomEntry(file.substr(0,dot), ext, extsMapToSystem[ext], &path);
+      RomEntry rom = RomEntry(file.substr(0,dot), ext, extsMapToSystem.find(ext)->second, path);
       
-      roms.insert(std::pair<SystemSpec*,RomEntry>(rom.system,rom));
-      
+      roms.insert(pair<reference_wrapper<const SystemSpec>,RomEntry>(rom.system,rom));
     }
   }
   
   RomMap::iterator it;
   
-  for (SystemSpec& spec : specs)
+  for (const SystemSpec& spec : specs)
   {
-    pair<RomIterator, RomIterator> it = roms.equal_range(&spec);
+    pair<RomIterator, RomIterator> it = roms.equal_range(reference_wrapper<const SystemSpec>(spec));
     
     cout << "System: " << spec.name << "(" << spec.ident << ")" << endl;
     
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
       RomEntry &entry = iit->second;
-      cout << "\t" << entry.name << " " << entry.ext << " : " << entry.path->value() << endl;
+      cout << "\t" << entry.name << " " << entry.ext << " : " << entry.path.value() << endl;
     }
   }
 }

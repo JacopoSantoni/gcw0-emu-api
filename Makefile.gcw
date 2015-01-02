@@ -13,18 +13,17 @@ all opt debug:
 opk opt: CCFLAGS += -O3 -ffast-math
 debug: CCFLAGS += -g
 
-#SOURCES:= $(wildcard *.cpp)
-#BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
-BINDIR:= obj
-SRCDIR:= src
-SOURCES:= $(wildcard $(SRCDIR)/*.cpp)
-BINARIES:= $(patsubst $(SRCDIR)/%.cpp,obj/%.o,$(SOURCES))
-EXECUTABLE:= gcwemu
+BINDIR := obj
+BASESRC := src
+SOURCE := $(BASESRC) $(BASESRC)/common $(BASESRC)/core $(BASESRC)/data $(BASESRC)/debug $(BASESRC)/systems $(BASESRC)/ui $(BASESRC)/views
+SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(dir)/*.cpp)))
+BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
+EXECUTABLE := gcwemu
 
 all opt debug: $(EXECUTABLE)
 
-$(EXECUTABLE): $(BINARIES)
-	$(CC) $(CCFLAGS) $(BINARIES) -o $@ $(LDFLAGS)
+$(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
+	$(CC) $(CCFLAGS) $^ -o $@ $(LDFLAGS)
 
 #$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
 
@@ -34,8 +33,8 @@ $(BINDIR):
 	mkdir -p $(BINDIR)
 
 clean:
-	rm -f gcw-emu $(BINDIR)/*.o
-	rmdir $(BINDIR)
+rm -f gcw-emu
+rm -rf $(BINDIR)
 
 $(BINDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@

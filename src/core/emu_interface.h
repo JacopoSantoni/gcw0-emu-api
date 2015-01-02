@@ -84,7 +84,9 @@ class CoreInterface
     virtual void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
   
     virtual void emulationFrame() = 0;
-    virtual void loadRomByFileName(std::string name) = 0;
+    virtual void loadRomByFileName(const std::string& name) = 0;
+  
+    virtual void emulationSuspended() = 0;
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

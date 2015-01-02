@@ -22,12 +22,16 @@ void Loader::loadCoreInfo(CoreHandle *handle, CoreInterface *info)
 void Loader::scan()
 {
   #ifdef _DUMMY_CORE_
-    CoreInterface *core = retrieve();
-    CoreHandle *handle = new CoreHandle("dummy", core->info());
+    CoreInterface *core = retrieve1();
+    CoreHandle *handle = new CoreHandle("dummy1", core->info());
     loadCoreInfo(handle, core);
+  
+    CoreInterface* core2 = retrieve2();
+    CoreHandle* handle2 = new CoreHandle("dummy2", core2->info());
+    loadCoreInfo(handle2, core2);
     return;
   #else  
-    vector<string> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION);
+    vector<string> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION,false);
     
     LOG("Cores folder: %s\n",CORES_PATH);
 
@@ -54,16 +58,16 @@ void Loader::scan()
   #endif
 }
 
-void Loader::unload()
+void Loader::unload(CoreInterface* core)
 {
   #ifndef _DUMMY_CORE_  
     if (core)
     {
-      vector<CoreHandle*>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle* handle) { return handle->core == core; });
+      vector<unique_ptr<CoreHandle>>::iterator it = find_if(cores.begin(), cores.end(), [&](const unique_ptr<CoreHandle>& handle) { return handle->core == core; });
       
       if (it != cores.end())
       {
-        CoreHandle *handle = *it;
+        unique_ptr<CoreHandle>& handle = *it;
         LOG("Unloading core: %s\n", handle->info.ident.c_str());
         handle->core = nullptr;
         dlclose(handle->handle);
@@ -80,13 +84,23 @@ CoreInterface* Loader::loadCore(std::string ident)
 
   if (it != cores.end()/* && core != (*it)->core*/)
   {
-    unload();
+    unload((*it)->core);
     CoreHandle *handle = it->get();
     
     LOG("Loading core %s at %s\n",handle->info.ident.c_str(),handle->fileName.c_str());
     
     #ifdef _DUMMY_CORE_
-      handle->core = retrieve();
+      if (ident == "dummy1")
+      {
+        handle->core = retrieve1();
+        return handle->core;
+      }
+      else
+      {
+        handle->core = retrieve2();
+        return handle->core;
+      }
+
       return handle->core;
     #else
       void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);

@@ -117,11 +117,11 @@ class PathMenuEntry : public MenuEntry
 class SystemMenuEntry : public SubMenuEntry
 {
 private:
-  SystemSpec* const system;
+  const SystemSpec& system;
   SDL_Surface* const icon;
   
 public:
-  SystemMenuEntry(SystemSpec *system, Menu *menu);
+  SystemMenuEntry(const SystemSpec& system, Menu *menu);
   virtual void render(Gfx* gfx, int x, int y);
 };
 
@@ -202,16 +202,16 @@ class SystemsMenu : public StandardMenu
   public:
     SystemsMenu(std::string caption, RomCollection *collection) : StandardMenu(caption)
     {
-      std::vector<SystemSpec>* systems = collection->getSystems();
-      std::vector<SystemSpec>::iterator it;
+      const std::vector<SystemSpec>& systems = collection->getSystems();
+      std::vector<SystemSpec>::const_iterator it;
       
-      for (it = systems->begin(); it != systems->end(); ++it)
+      for (it = systems.begin(); it != systems.end(); ++it)
       {
-        SystemSpec *system = &(*it);
+        const SystemSpec& system = *it;
         RomIteratorRange roms = collection->getRomsForSystem(system);
         
         if (roms.first != roms.second)
-          entries.push_back(std::unique_ptr<MenuEntry>(new SystemMenuEntry(system, new RomsMenu(system->name, roms))));
+          entries.push_back(std::unique_ptr<MenuEntry>(new SystemMenuEntry(system, new RomsMenu(system.name, roms))));
       }
 
     }

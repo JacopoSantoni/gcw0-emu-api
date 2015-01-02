@@ -43,14 +43,16 @@ class DummyCore : public CoreInterface
 {
   private:
     std::string romName;
-
-  public:
+  
+  protected:
     DummyCore()
     {
-      registerInformations(System::SUPER_NINTENDO, "dummy", "dummy", "1.0");
-      registerExtension("smc");
-      registerExtension("gba");
-      
+      initDummy();
+    }
+
+  public:
+    void initDummy()
+    {
       registerSetting(new BoolSetting("Auto Save SRAM", "auto-save-sram", false));
       registerSetting(new BoolSetting("Sound", "enable-sound", false));
       
@@ -66,11 +68,11 @@ class DummyCore : public CoreInterface
       registerSetting(new BoolSetting("Stereo", "enable-sound-stereo", false));
       
       /*EnumSet<int32_t> frameSkip = {EnumValue<int32_t>("AUTO",-1),EnumValue<int32_t>("0",0),EnumValue<int32_t>("1",1),EnumValue<int32_t>("2",2),EnumValue<int32_t>("3",3),EnumValue<int32_t>("4",4),EnumValue<int32_t>("5",5)};
-      registerSetting(new EnumSetting<int32_t>("Frameskip", "frameskip", frameSkip, frameSkip[0]));*/
+       registerSetting(new EnumSetting<int32_t>("Frameskip", "frameskip", frameSkip, frameSkip[0]));*/
       
       registerSetting(new BoolSetting("Transparency", "transparency", false));
       registerSetting(new BoolSetting("Show FPS", "show-fps", false));
-            
+      
       registerButton(ButtonSetting("A", GCW_KEY_A, KEY_A_SHIFT, true));
       registerButton(ButtonSetting("B", GCW_KEY_B, KEY_B_SHIFT, true));
       registerButton(ButtonSetting("X", GCW_KEY_X, KEY_X_SHIFT, true));
@@ -86,9 +88,9 @@ class DummyCore : public CoreInterface
       
       // this enables a joypad direction as a digital button
       /*registerButton(ButtonSetting("LeftA", GCW_ANALOG_LEFT, KEY_LEFT_SHIFT, true));
-      registerButton(ButtonSetting("RightA", GCW_ANALOG_RIGHT, KEY_RIGHT_SHIFT, true));
-      registerButton(ButtonSetting("UpA", GCW_ANALOG_UP, KEY_UP_SHIFT, true));
-      registerButton(ButtonSetting("DownA", GCW_ANALOG_DOWN, KEY_DOWN_SHIFT, true));*/
+       registerButton(ButtonSetting("RightA", GCW_ANALOG_RIGHT, KEY_RIGHT_SHIFT, true));
+       registerButton(ButtonSetting("UpA", GCW_ANALOG_UP, KEY_UP_SHIFT, true));
+       registerButton(ButtonSetting("DownA", GCW_ANALOG_DOWN, KEY_DOWN_SHIFT, true));*/
       
       // this instead enables the joypad for normal analog use, of course they can't be both active!
       enableNormalAnalogJoypad();
@@ -97,11 +99,12 @@ class DummyCore : public CoreInterface
       setAnalogDeadZone(0.20f, 1.0f);
       
       setGfxFormat(240, 160, FORMAT_565);
-
     }
+  
+    void emulationSuspended() override { }
 
     virtual void emulationFrame();
-    virtual void loadRomByFileName(std::string name);
+    virtual void loadRomByFileName(const std::string& name);
     virtual void run(int argc, char **argv) { /*mainEntry(argc, argv);*/ }
 };
   
@@ -136,17 +139,39 @@ void DummyCore::emulationFrame()
   DummyUtil::rectFill<u16>(gfxBuffer, cx+range*analogStatus.x, cy+range*analogStatus.y, 10, 10, red );
 }
   
-void DummyCore::loadRomByFileName(std::string name)
+void DummyCore::loadRomByFileName(const std::string& name)
 {
   romName = name;
 }
-  
 
-static DummyCore emulator;
 
-extern "C" CoreInterface* retrieve()
+class DummyCore1 : public DummyCore
 {
-	return &emulator;
+public:
+  DummyCore1() : DummyCore()
+  {
+    registerInformations(System::SUPER_NINTENDO, "dummy1", "Dummy Core 1", "1.0");
+    registerExtension("smc");
+  }
+};
+
+class DummyCore2 : public DummyCore
+{
+public:
+  DummyCore2() : DummyCore()
+  {
+    registerInformations(System::GAME_BOY_ADVANCE, "dummy2", "Dummy Core 2", "1.0");
+    registerExtension("gba");
+  }
+};
+
+static DummyCore1 dummy1;
+static DummyCore2 dummy2;
+
+extern "C" {
+  CoreInterface* retrieve1() { return &dummy1; }
+  CoreInterface* retrieve2() { return &dummy2; }
 }
 
-DummyCore core;
+
+

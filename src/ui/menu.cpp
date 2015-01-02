@@ -101,7 +101,7 @@ void PathMenuEntry::render(Gfx *gfx, int x, int y)
 
 #pragma mark SystemMenuEntry
 
-SystemMenuEntry::SystemMenuEntry(SystemSpec *system, Menu *menu) : SubMenuEntry(system->ident, menu), system(system), icon(Gfx::cache.getFallback("data/consoles/"+system->ident+"-small.png","data/consoles/system-small.png"))
+SystemMenuEntry::SystemMenuEntry(const SystemSpec& system, Menu *menu) : SubMenuEntry(system.ident, menu), system(system), icon(Gfx::cache.getFallback("data/consoles/"+system.ident+"-small.png","data/consoles/system-small.png"))
 {
   
 }
@@ -109,7 +109,7 @@ SystemMenuEntry::SystemMenuEntry(SystemSpec *system, Menu *menu) : SubMenuEntry(
 void SystemMenuEntry::render(Gfx *gfx, int x, int y)
 {
   gfx->blitCentered(icon, x+5, y);
-  gfx->print(x+5+icon->w, y, false, Font::bigFont, system->name.c_str());
+  gfx->print(x+5+icon->w, y, false, Font::bigFont, system.name.c_str());
 }
 
 #pragma mark RomMenuEntry

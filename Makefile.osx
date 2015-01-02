@@ -2,7 +2,7 @@
 
 CC = clang++
 
-SDL_CONFIG = /usr/local/Cellar/sdl/1.2.15/bin/sdl-config
+SDL_CONFIG = sdl-config
 
 SDL_INCLUDES = $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS = $(shell $(SDL_CONFIG) --libs)

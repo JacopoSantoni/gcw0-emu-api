@@ -6,13 +6,16 @@ SDL_INCLUDES = $(shell sdl-config --cflags)
 SDL_LIBS = $(shell sdl-config --libs)
 
 CCFLAGS = -std=c++11 -stdlib=libc++ $(SDL_INCLUDES)
-LDFLAGS += -arch x86_64 $(SDL_LIBS)
+LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
 
 #SOURCES:= $(wildcard *.cpp)
 #BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
-SOURCES:= main.cpp utils.cpp loader.cpp
-BINARIES:= main.o utils.o loader.o
-EXECUTABLE:= gcwemu
+BINDIR := obj
+BASESRC := src
+SOURCE := $(BASESRC) $(BASESRC)/common $(BASESRC)/core $(BASESRC)/data $(BASESRC)/debug $(BASESRC)/systems $(BASESRC)/ui $(BASESRC)/views
+SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(dir)/*.cpp)))
+BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
+EXECUTABLE := gcwemu
 
 CORES:= ohboy PocketSNES
 
@@ -26,14 +29,16 @@ PocketSNES:
 	$(MAKE) -f Makefile.osx_lib -C PocketSNES
 	mv PocketSNES/PocketSNES.dylib cores/pocketsnes.dylib
 
-$(EXECUTABLE): $(BINARIES)
-	$(CC) $(CCFLAGS) $(BINARIES) -o $@ $(LDFLAGS)
+$(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
+	$(CC) $(CCFLAGS) $^ -o $@ $(LDFLAGS)
 
 #$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
 
 clean:
-	rm -f gcw-emu *.o
+	rm -f gcw-emu
+	rm -rf $(BINDIR)
 	$(foreach var,$(CORES),$(MAKE) -f Makefile.osx_lib -C $(var) clean;)
 
-.cpp.o:
-	$(CC) -c $(CCFLAGS) $< -o $@
+$(BINDIR)/%.o : $(BASESRC)/%.cpp
+	@test -d $(@D) || mkdir -p $(@D)
+	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
