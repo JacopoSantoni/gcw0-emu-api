@@ -33,26 +33,19 @@ template<typename T>
 namespace gcw {
   
   
-  struct SystemSpec
-  {
-    std::string ident;
-    std::string name;
-    std::vector<std::string> extensions;
-    
-    SystemSpec(std::string&& ident, std::string &&name, std::vector<std::string> &&extensions) : ident(ident), name(name), extensions(extensions) { }
-  };
+
   
   struct RomEntry
   {
     const std::string name;
     const std::string ext;
-    const SystemSpec& system;
+    const System::Spec& system;
     const Path path;
     
-    RomEntry(const std::string& name, const std::string& ext, const SystemSpec& system, const Path path) : name(name), ext(ext), system(system), path(path) { }
+    RomEntry(const std::string& name, const std::string& ext, const System::Spec& system, const Path path) : name(name), ext(ext), system(system), path(path) { }
   };
   
-  typedef std::unordered_multimap<std::reference_wrapper<const SystemSpec>, RomEntry> RomMap;
+  typedef std::unordered_multimap<std::reference_wrapper<const System::Spec>, RomEntry> RomMap;
   typedef RomMap::iterator RomIterator;
   typedef std::pair<RomIterator, RomIterator> RomIteratorRange;
   
@@ -63,8 +56,6 @@ namespace gcw {
   class RomCollection
   {
     private:
-      std::vector<SystemSpec> specs;
-    
       Manager *manager;
     
       RomMap roms;
@@ -74,8 +65,7 @@ namespace gcw {
       RomCollection(Manager *manager) : manager(manager) { }
       void scan();
     
-      const std::vector<SystemSpec>& getSystems() { return specs; }
-      RomIteratorRange getRomsForSystem(const SystemSpec& spec) { return roms.equal_range(std::reference_wrapper<const SystemSpec>(spec)); }
+      RomIteratorRange getRomsForSystem(const System::Spec& spec) { return roms.equal_range(std::reference_wrapper<const System::Spec>(spec)); }
   };
   
 }

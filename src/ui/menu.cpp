@@ -101,7 +101,7 @@ void PathMenuEntry::render(Gfx *gfx, int x, int y)
 
 #pragma mark SystemMenuEntry
 
-SystemMenuEntry::SystemMenuEntry(const SystemSpec& system, Menu *menu) : SubMenuEntry(system.ident, menu), system(system), icon(Gfx::cache.getFallback("data/consoles/"+system.ident+"-small.png","data/consoles/system-small.png"))
+SystemMenuEntry::SystemMenuEntry(const System::Spec& system, Menu *menu) : SubMenuEntry(system.ident, menu), system(system), icon(Gfx::cache.getFallback("data/consoles/"+system.ident+"-small.png","data/consoles/system-small.png"))
 {
   
 }

@@ -159,7 +159,7 @@ class DummyCore1 : public DummyCore
 public:
   DummyCore1() : DummyCore()
   {
-    registerInformations(System::SUPER_NINTENDO, "dummy1", "Dummy Core 1", "1.0");
+    registerInformations(System::Type::SUPER_NINTENDO, "dummy1", "Dummy Core 1", "1.0");
     registerExtension("smc");
   }
 };
@@ -169,7 +169,7 @@ class DummyCore2 : public DummyCore
 public:
   DummyCore2() : DummyCore()
   {
-    registerInformations(System::GAME_BOY_ADVANCE, "dummy2", "Dummy Core 2", "1.0");
+    registerInformations(System::Type::GAME_BOY_ADVANCE, "dummy2", "Dummy Core 2", "1.0");
     registerExtension("gba");
   }
 };

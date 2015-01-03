@@ -45,10 +45,10 @@ void Manager::init()
   menuView.setMenu(root);
   
   //currentView = &pathView;
-  //currentView = &menuView;
-  currentView = &coreView;
-  coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
-  coreView.initGfx();
+  currentView = &menuView;
+  //currentView = &coreView;
+  //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
+  //coreView.initGfx();
 }
 
 void Manager::run()

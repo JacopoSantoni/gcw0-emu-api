@@ -8,24 +8,19 @@ using namespace gcw;
 void RomCollection::scan()
 {
   vector<Path> paths = manager->getPersistence()->getRomPaths();
-  
-  specs = {
-    SystemSpec("uncat", "Uncategorized", {}),
-    SystemSpec("snes", "Super Nintendo", {"smc","fig"}),
-    SystemSpec("gba", "GameBoy Advance", {"gba"})
-  };
-  
-  unordered_map<string, reference_wrapper<const SystemSpec>> extsMapToSystem;
+
+  unordered_map<string, reference_wrapper<const System::Spec>> extsMapToSystem;
   unordered_set<string> exts;
-  for (const SystemSpec& spec : specs)
-    for (const auto& ext : spec.extensions)
+  
+  for (auto it = System::getIterator(); System::hasNext(it); ++it)
+    for (const auto& ext : it->extensions)
     {
       exts.insert(ext);
       
       if (extsMapToSystem.find(ext) == extsMapToSystem.end())
-        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const SystemSpec>(spec)));
+        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(*it)));
       else
-        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const SystemSpec>(specs[0])));
+        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(System::getSystems()[0])));
     }
   
   //manager->getLoader()->allowedFileTypes();
@@ -44,17 +39,17 @@ void RomCollection::scan()
 
       RomEntry rom = RomEntry(name, extension, extsMapToSystem.find(extension)->second, path);
       
-      roms.insert(pair<reference_wrapper<const SystemSpec>,RomEntry>(rom.system,rom));
+      roms.insert(pair<reference_wrapper<const System::Spec>,RomEntry>(rom.system,rom));
     }
   }
   
   RomMap::iterator it;
   
-  for (const SystemSpec& spec : specs)
+  for (auto spec = System::getIterator(); System::hasNext(spec); ++spec)
   {
-    pair<RomIterator, RomIterator> it = roms.equal_range(reference_wrapper<const SystemSpec>(spec));
+    pair<RomIterator, RomIterator> it = roms.equal_range(reference_wrapper<const System::Spec>(*spec));
     
-    cout << "System: " << spec.name << "(" << spec.ident << ")" << endl;
+    cout << "System: " << spec->name << "(" << spec->ident << ")" << endl;
     
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
