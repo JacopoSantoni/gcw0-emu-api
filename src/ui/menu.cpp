@@ -140,9 +140,9 @@ void RomPathsMenu::build()
 {
   entries.clear();
   
-  vector<Path> &paths = persistence->getRomPaths();
+  const vector<Path>& paths = persistence->getRomPaths();
   
-  for (Path &path : paths)
+  for (const Path &path : paths)
   {
     PathMenuEntry *entry = new PathMenuEntry(path);
     addEntry(entry);

@@ -86,7 +86,7 @@ namespace gcw
     public:
       ImageCache() { }
     
-      SDL_Surface *getFallback(std::string name, std::string fallback)
+      SDL_Surface *getFallback(const std::string& name, std::string fallback)
       {
         SDL_Surface *icon = get(name);
         

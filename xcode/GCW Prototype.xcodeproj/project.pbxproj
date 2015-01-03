@@ -39,6 +39,8 @@
 		047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A961A55CF140066C697 /* menu_view.cpp */; };
 		047E9AB41A55CF140066C697 /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A981A55CF140066C697 /* path_view.cpp */; };
 		047E9AB51A55CF140066C697 /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A981A55CF140066C697 /* path_view.cpp */; };
+		0497E2C41A5795E800CAC445 /* systems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0497E2C31A5795E800CAC445 /* systems.cpp */; };
+		0497E2C51A5795E800CAC445 /* systems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0497E2C31A5795E800CAC445 /* systems.cpp */; };
 		04B6382F189C9DF50028FA74 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04B6382C189C9CC40028FA74 /* data */; };
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -102,6 +104,8 @@
 		047E9A971A55CF140066C697 /* menu_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_view.h; sourceTree = "<group>"; };
 		047E9A981A55CF140066C697 /* path_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = path_view.cpp; sourceTree = "<group>"; };
 		047E9A991A55CF140066C697 /* path_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path_view.h; sourceTree = "<group>"; };
+		0497E2C31A5795E800CAC445 /* systems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = systems.cpp; sourceTree = "<group>"; };
+		04B60DB61A584AA000DCFDBD /* manager_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = manager_interface.h; sourceTree = "<group>"; };
 		04B6382C189C9CC40028FA74 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = "<group>"; };
 		04CB04261897669C00169B41 /* GCW Prototype */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "GCW Prototype"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04CB04421897670300169B41 /* Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cocoa.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,10 +157,10 @@
 				047E9A7A1A55CF140066C697 /* core */,
 				047E9A801A55CF140066C697 /* data */,
 				047E9A871A55CF140066C697 /* debug */,
-				047E9A891A55CF140066C697 /* main.cpp */,
 				047E9A8A1A55CF140066C697 /* systems */,
 				047E9A8C1A55CF140066C697 /* ui */,
 				047E9A931A55CF140066C697 /* views */,
+				047E9A891A55CF140066C697 /* main.cpp */,
 			);
 			name = src;
 			path = ../src;
@@ -175,6 +179,7 @@
 		047E9A7A1A55CF140066C697 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				04B60DB61A584AA000DCFDBD /* manager_interface.h */,
 				047E9A7B1A55CF140066C697 /* emu_interface.h */,
 				047E9A7C1A55CF140066C697 /* loader.cpp */,
 				047E9A7D1A55CF140066C697 /* loader.h */,
@@ -208,6 +213,7 @@
 		047E9A8A1A55CF140066C697 /* systems */ = {
 			isa = PBXGroup;
 			children = (
+				0497E2C31A5795E800CAC445 /* systems.cpp */,
 				047E9A8B1A55CF140066C697 /* systems.h */,
 			);
 			path = systems;
@@ -363,6 +369,7 @@
 			files = (
 				047E9A9E1A55CF140066C697 /* manager.cpp in Sources */,
 				047E9A9C1A55CF140066C697 /* loader.cpp in Sources */,
+				0497E2C41A5795E800CAC445 /* systems.cpp in Sources */,
 				047E9AA81A55CF140066C697 /* main.cpp in Sources */,
 				047E9AAA1A55CF140066C697 /* gfx.cpp in Sources */,
 				047E9AB21A55CF140066C697 /* menu_view.cpp in Sources */,
@@ -384,6 +391,7 @@
 			files = (
 				047E9A9F1A55CF140066C697 /* manager.cpp in Sources */,
 				047E9A9D1A55CF140066C697 /* loader.cpp in Sources */,
+				0497E2C51A5795E800CAC445 /* systems.cpp in Sources */,
 				047E9AA91A55CF140066C697 /* main.cpp in Sources */,
 				047E9AAB1A55CF140066C697 /* gfx.cpp in Sources */,
 				047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */,

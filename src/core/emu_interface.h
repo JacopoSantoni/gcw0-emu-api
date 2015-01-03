@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <SDL.h>
 
+#include "manager_interface.h"
 #include "../common/defines.h"
 #include "../ui/gfx.h"
 #include "../data/settings.h"
@@ -17,24 +18,32 @@ namespace gcw {
 
 class CoreInterface;
 
+struct CoreIdentifier
+{
+  std::string ident;
+  std::string version;
+  
+  CoreIdentifier() = default;
+  CoreIdentifier(const std::string& ident, const std::string& version) : ident(ident), version(version) { }
+};
 
 struct CoreInfo
 {
   std::vector<System::Type> type;
-  std::string ident;
+  CoreIdentifier ident;
   std::string name;
-  std::string version;
   
-  CoreInfo(std::initializer_list<System::Type> type, std::string ident, std::string name, std::string version) :  type(type), ident(ident), name(name), version(version) { }
-  CoreInfo() : type({System::Type::UNCATEGORISED}), ident(std::string()), name(std::string()), version(std::string()) { }
+  CoreInfo(std::initializer_list<System::Type> type, std::string ident, std::string name, std::string version) :  type(type), ident(CoreIdentifier(ident,version)), name(name) { }
+  CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()), name(std::string()) { }
   
-  const std::string title() const { return name + " (" + version + ")"; }
+  const std::string title() const { return name + " (" + ident.version + ")"; }
 };
-
-class CoreInterface
-{
-	private:
-		std::vector<std::string> extensions;
+  
+  
+  
+  class CoreInterface
+  {
+  private:
     CoreInfo information;
   
     std::vector<std::unique_ptr<Setting> > settings;
@@ -44,11 +53,12 @@ class CoreInterface
   
     GfxBufferSpec gfxFormat;
   
+    ManagerInterface* manager;
   
-	protected:
+  
+  protected:
     CoreInterface() : analogJoypadEnabled(false) { }
   
-		void registerExtension(std::string ext) { extensions.push_back(ext); }
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
@@ -62,9 +72,9 @@ class CoreInterface
     ButtonStatus buttonStatus;
     AnalogStatus analogStatus;
 
-	public:
-		virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
-		
+  public:
+    virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
+    
     virtual void run(int argc, char **argv) = 0;
   
     /**
@@ -83,6 +93,14 @@ class CoreInterface
      */
     virtual void setAnalogStatus(AnalogStatus status) { analogStatus = status; }
   
+    /**
+     * Sets the manager to the core interface, so that it is possible for the core to communicate things to it.
+     * This method is called by the manager when the core is effectively loaded to be used.
+     *
+     * @param manager the manager of the cores
+     */
+    void setManager(ManagerInterface* manager) { this->manager = manager; }
+    
     virtual void emulationFrame() = 0;
     virtual void loadRomByFileName(const std::string& name) = 0;
   
@@ -96,7 +114,6 @@ class CoreInterface
   
   
     const CoreInfo& info() { return information; }
-		const std::vector<std::string>& supportedExtensions() { return extensions; }
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() { return settings; }
   
     const std::vector<ButtonSetting>& supportedButtons() { return buttons; }
@@ -104,7 +121,7 @@ class CoreInterface
     bool isAnalogJoypadUsed() { return analogJoypadEnabled; }
   
     const GfxBufferSpec& getGfxSpec() { return gfxFormat; }
-};
+  };
   
 }
 

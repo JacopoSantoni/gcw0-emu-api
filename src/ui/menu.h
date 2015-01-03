@@ -128,11 +128,11 @@ public:
 class RomMenuEntry : public MenuEntry
 {
   private:
-    RomEntry* const rom;
+    const RomEntry& rom;
   
   public:
-    RomMenuEntry(RomEntry *rom) : rom(rom) { }
-    virtual const std::string& name() { return rom->name; }
+    RomMenuEntry(const RomEntry& rom) : rom(rom) { }
+    virtual const std::string& name() { return rom.name; }
     virtual void render(Gfx* gfx, int x, int y);
 };
 
@@ -188,7 +188,7 @@ public:
   {
     for (RomIterator it = roms.first; it != roms.second; ++it)
     {
-      RomEntry *rom = &it->second;
+      const RomEntry& rom = it->second;
       entries.push_back(std::unique_ptr<MenuEntry>(new RomMenuEntry(rom)));
     }
   }
@@ -219,10 +219,10 @@ class SystemsMenu : public StandardMenu
   
   class CoreMenuEntry : public StandardMenuEntry
   {
-    private:
-      const std::unique_ptr<CoreHandle>& core;
-    public:
-      CoreMenuEntry(const std::unique_ptr<CoreHandle>& core) : StandardMenuEntry(core->info.title()), core(core) { }
+  private:
+    const std::unique_ptr<CoreHandle>& core;
+  public:
+    CoreMenuEntry(const std::unique_ptr<CoreHandle>& core) : StandardMenuEntry(core->info.title()), core(core) { }
   };
   
   class CoresMenu : public StandardMenu
@@ -238,9 +238,7 @@ class SystemsMenu : public StandardMenu
         entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core)));
     }
   };
-  
-
-  
+    
 }
 
 #endif

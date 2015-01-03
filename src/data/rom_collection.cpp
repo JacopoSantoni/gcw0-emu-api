@@ -7,7 +7,7 @@ using namespace gcw;
 
 void RomCollection::scan()
 {
-  vector<Path> paths = manager->getPersistence()->getRomPaths();
+  const vector<Path>& paths = manager->getPersistence()->getRomPaths();
 
   unordered_map<string, reference_wrapper<const System::Spec>> extsMapToSystem;
   unordered_set<string> exts;
@@ -20,7 +20,7 @@ void RomCollection::scan()
       if (extsMapToSystem.find(ext) == extsMapToSystem.end())
         extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(*it)));
       else
-        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(System::getSystems()[0])));
+        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(System::getSpecForSystem(System::Type::UNCATEGORISED))));
     }
   
   //manager->getLoader()->allowedFileTypes();

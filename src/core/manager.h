@@ -13,8 +13,8 @@
 
 namespace gcw {
   
-class Manager
-{
+  class Manager : public ManagerInterface
+  {
   private:
     CoreInterface *core;
     Loader loader;
@@ -44,6 +44,9 @@ class Manager
     RomCollection *getRomCollection() { return &collection; }
     Gfx *getGfx() { return &gfx; }
     Timer *getTimer() { return &timer; }
+    
+    void reportRomLoading(float percent) override { }
+    void reportRomLoaded() override { }
   
     void switchView(ViewType type)
     {
@@ -56,10 +59,7 @@ class Manager
     }
   
     void exit() { running = false; }
-  
-  
-  
-};
+  };
 
 }
 

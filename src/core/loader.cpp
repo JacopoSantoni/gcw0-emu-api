@@ -2,6 +2,7 @@
 
 #include "dlfcn.h"
 #include "../common/utils.h"
+#include "manager.h"
 
 const char* CORES_PATH = "cores/";
 const char* LIBRARY_EXTENSION = "dylib";
@@ -12,11 +13,16 @@ using namespace gcw;
 void Loader::loadCoreInfo(CoreHandle *handle, CoreInterface *info)
 {
   cores.push_back(std::unique_ptr<CoreHandle>(handle));
-  vector<string> extensions = info->supportedExtensions();
-  for (string ext : extensions)
-    handledFileTypes[ext].push_back(handle);
   
-  LOG("Found core: %s ident: %s\n",handle->info.name.c_str(), handle->info.ident.c_str());
+  for (const System::Type& type : handle->info.type)
+  {
+    const vector<string>& extensions = System::getSpecForSystem(type).extensions;
+    
+    for (const string& ext : extensions)
+      handledFileTypes[ext].push_back(handle);
+  }
+  
+  LOG("Found core: %s ident: %s\n",handle->info.name.c_str(), handle->info.ident.version.c_str());
 }
 
 void Loader::scan()
@@ -80,24 +86,26 @@ void Loader::unload(CoreInterface* core)
 
 CoreInterface* Loader::loadCore(std::string ident)
 {  
-  vector<unique_ptr<CoreHandle>>::iterator it = find_if(cores.begin(), cores.end(), [&](const unique_ptr<CoreHandle>& handle) { return handle->info.ident == ident; });
+  vector<unique_ptr<CoreHandle>>::iterator it = find_if(cores.begin(), cores.end(), [&](const unique_ptr<CoreHandle>& handle) { return handle->info.ident.ident == ident; });
 
   if (it != cores.end()/* && core != (*it)->core*/)
   {
     unload((*it)->core);
     CoreHandle *handle = it->get();
     
-    LOG("Loading core %s at %s\n",handle->info.ident.c_str(),handle->fileName.c_str());
+    LOG("Loading core %s at %s\n",handle->info.ident.ident.c_str(),handle->fileName.c_str());
     
     #ifdef _DUMMY_CORE_
       if (ident == "dummy1")
       {
         handle->core = retrieve1();
+        handle->core->setManager(manager);
         return handle->core;
       }
       else
       {
         handle->core = retrieve2();
+        handle->core->setManager(manager);
         return handle->core;
       }
 
@@ -109,6 +117,7 @@ CoreInterface* Loader::loadCore(std::string ident)
       
       handle->handle = dlhandle;
       handle->core = retrieve();
+      handle->core->setManager(manager);
       return handle->core;
     #endif
   }

@@ -41,6 +41,11 @@ namespace gcw
     static std::vector<Spec> specs;
     
   public:
+    static const Spec& getSpecForSystem(Type type)
+    {
+      return *std::find_if(specs.begin(), specs.end(), [&](const Spec& spec){ return spec.system == type; });
+    }
+    
     static const std::vector<Spec>& getSystems() { return specs; }
     static std::vector<Spec>::const_iterator getIterator() { return specs.begin(); }
     static bool hasNext(std::vector<Spec>::const_iterator& it) { return it != specs.end(); }
