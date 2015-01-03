@@ -220,9 +220,9 @@ class SystemsMenu : public StandardMenu
   class CoreMenuEntry : public StandardMenuEntry
   {
   private:
-    const std::unique_ptr<CoreHandle>& core;
+    const CoreHandle& core;
   public:
-    CoreMenuEntry(const std::unique_ptr<CoreHandle>& core) : StandardMenuEntry(core->info.title()), core(core) { }
+    CoreMenuEntry(const CoreHandle& core) : StandardMenuEntry(core.info.title()), core(core) { }
   };
   
   class CoresMenu : public StandardMenu
@@ -234,7 +234,7 @@ class SystemsMenu : public StandardMenu
     {
       auto& cores = loader->getCores();
       
-      for (const std::unique_ptr<CoreHandle>& core : cores)
+      for (const CoreHandle& core : cores)
         entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core)));
     }
   };

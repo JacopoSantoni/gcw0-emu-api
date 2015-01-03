@@ -85,16 +85,25 @@ namespace gcw
       static std::string clipText(const std::string &text, s32 length, const char *filler = nullptr);
       static const char* nameForKey(GCWKey key);
   };
-  
-  class Uncopyable
+}
+
+namespace std {
+  template<typename T>
+  struct hash<reference_wrapper<T>>
   {
-    private:
-      Uncopyable( const Uncopyable& other ) = delete; // non construction-copyable
-      Uncopyable& operator=( const Uncopyable& ) = delete; // non copyable
-    
-    public:
-      Uncopyable() { }
+    std::size_t operator()(const std::reference_wrapper<T>& k) const
+    {
+      return hash<T*>()(&k.get());
+    }
   };
+}
+
+namespace std {
+  template<typename T>
+  bool operator==(const std::reference_wrapper<T>& r1, const std::reference_wrapper<T>& r2)
+  {
+    return &(r1.get()) == &(r2.get());
+  }
 }
 
 #endif

@@ -15,7 +15,7 @@ void LoadingView::handleEvents()
 
 void LoadingView::render()
 {
-  percent = std::min(1.0f, percent + 0.005f);
+  //percent = std::min(1.0f, percent + 0.005f);
   
   static const Size barSize = Size(WIDTH*0.80f,30);
   static const Offset barOffset = Offset((WIDTH - barSize.x)/2, (HEIGHT - barSize.y)/2);

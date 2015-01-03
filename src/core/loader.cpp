@@ -10,11 +10,11 @@ const char* LIBRARY_EXTENSION = "dylib";
 using namespace std;
 using namespace gcw;
 
-void Loader::loadCoreInfo(CoreHandle *handle, CoreInterface *info)
+void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
 {
-  cores.push_back(std::unique_ptr<CoreHandle>(handle));
+  cores.push_back(handle);
   
-  for (const System::Type& type : handle->info.type)
+  for (const System::Type& type : handle.info.type)
   {
     const vector<string>& extensions = System::getSpecForSystem(type).extensions;
     
@@ -22,29 +22,29 @@ void Loader::loadCoreInfo(CoreHandle *handle, CoreInterface *info)
       handledFileTypes[ext].push_back(handle);
   }
   
-  LOG("Found core: %s ident: %s\n",handle->info.name.c_str(), handle->info.ident.version.c_str());
+  LOG("Found core: %s ident: %s\n",handle.info.name.c_str(), handle.info.identifier().c_str());
 }
 
 void Loader::scan()
 {
   #ifdef _DUMMY_CORE_
     CoreInterface *core = retrieve1();
-    CoreHandle *handle = new CoreHandle("dummy1", core->info());
+    CoreHandle handle = CoreHandle("dummy1", core->info());
     loadCoreInfo(handle, core);
   
     CoreInterface* core2 = retrieve2();
-    CoreHandle* handle2 = new CoreHandle("dummy2", core2->info());
+    CoreHandle handle2 = CoreHandle("dummy2", core2->info());
     loadCoreInfo(handle2, core2);
     return;
   #else  
-    vector<string> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION,false);
+    vector<Path> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION,false);
     
     LOG("Cores folder: %s\n",CORES_PATH);
 
 
-    for (string file : files)
+    for (const Path& file : files)
     {    
-      void *handle = dlopen((CORES_PATH+file).c_str(), RTLD_LOCAL|RTLD_NOW);
+      void *handle = dlopen((CORES_PATH+file.value()).c_str(), RTLD_LOCAL|RTLD_NOW);
       CoreInterface* (*retrieve)();
       *(void**) (&retrieve) = dlsym(handle, "retrieve");
       
@@ -54,9 +54,8 @@ void Loader::scan()
         
         // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
         // function since we're just scanning 
-        CoreHandle *coreHandle = new CoreHandle(CORES_PATH+file, interface->info());
+        CoreHandle coreHandle = CoreHandle(CORES_PATH+file.value(), interface->info());
         loadCoreInfo(coreHandle, interface);
-        
       }
       
       dlclose(handle);
@@ -69,64 +68,59 @@ void Loader::unload(CoreInterface* core)
   #ifndef _DUMMY_CORE_  
     if (core)
     {
-      vector<unique_ptr<CoreHandle>>::iterator it = find_if(cores.begin(), cores.end(), [&](const unique_ptr<CoreHandle>& handle) { return handle->core == core; });
+      vector<CoreHandle>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle& handle) { return handle.core == core; });
       
       if (it != cores.end())
       {
-        unique_ptr<CoreHandle>& handle = *it;
-        LOG("Unloading core: %s\n", handle->info.ident.c_str());
-        handle->core = nullptr;
-        dlclose(handle->handle);
-        handle->handle = nullptr;
+        CoreHandle& handle = *it;
+        LOG("Unloading core: %s\n", handle.info.identifier().c_str());
+        handle.core = nullptr;
+        dlclose(handle.handle);
+        handle.handle = nullptr;
         core = nullptr;
       }
     }
   #endif
 }
 
-CoreInterface* Loader::loadCore(std::string ident)
+CoreInterface* Loader::loadCore(const CoreIdentifier& ident)
 {  
-  vector<unique_ptr<CoreHandle>>::iterator it = find_if(cores.begin(), cores.end(), [&](const unique_ptr<CoreHandle>& handle) { return handle->info.ident.ident == ident; });
+  vector<CoreHandle>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle& handle) { return handle.info.ident == ident; });
 
   if (it != cores.end()/* && core != (*it)->core*/)
   {
-    unload((*it)->core);
-    CoreHandle *handle = it->get();
+    unload(it->core);
+    CoreHandle& handle = *it;
     
-    LOG("Loading core %s at %s\n",handle->info.ident.ident.c_str(),handle->fileName.c_str());
+    LOG("Loading core %s at %s\n",handle.info.ident.ident.c_str(),handle.fileName.c_str());
     
     #ifdef _DUMMY_CORE_
-      if (ident == "dummy1")
-      {
-        handle->core = retrieve1();
-        handle->core->setManager(manager);
-        return handle->core;
-      }
+      if (ident.ident == "dummy1")
+        handle.core = retrieve1();
       else
-      {
-        handle->core = retrieve2();
-        handle->core->setManager(manager);
-        return handle->core;
-      }
+        handle.core = retrieve2();
+    
+      handle.core->setManager(manager);
+      return handle.core;
 
-      return handle->core;
+
     #else
-      void *dlhandle = dlopen(handle->fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
+      void *dlhandle = dlopen(handle.fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
       CoreInterface* (*retrieve)();
       *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
       
-      handle->handle = dlhandle;
-      handle->core = retrieve();
-      handle->core->setManager(manager);
-      return handle->core;
+      handle.handle = dlhandle;
+      handle.core = retrieve();
+      handle.core->setManager(manager);
+      return handle.core;
     #endif
   }
   
   return nullptr;
 }
 
-
-CoreHandle* Loader::coreForFile(std::string fileName)
+/*
+const CoreHandle& Loader::coreForFile(std::string fileName)
 {
   LOG("Searching for a core to load %s\n", fileName.c_str());
   
@@ -137,12 +131,12 @@ CoreHandle* Loader::coreForFile(std::string fileName)
   {
     std::string extension = fileName.substr(idx+1);
   
-    map<string, vector<CoreHandle*> >::iterator it = handledFileTypes.find(extension);
+    map<string, vector<std::reference_wrapper<const CoreHandle>> >::iterator it = handledFileTypes.find(extension);
     
     if (it != handledFileTypes.end())
     {
-      CoreHandle *handle = it->second[0];
-      LOG("Found core %s that manages %s files\n", handle->info.name.c_str(), extension.c_str());
+      const CoreHandle& handle = it->second[0];
+      LOG("Found core %s that manages %s files\n", handle.info.name.c_str(), extension.c_str());
       return handle;
     }
     else
@@ -151,6 +145,6 @@ CoreHandle* Loader::coreForFile(std::string fileName)
     }
   }
   
-  return nullptr;
-}
+  return std::reference_wrapper<const CoreHandle>(CoreHandle());
+}*/
 

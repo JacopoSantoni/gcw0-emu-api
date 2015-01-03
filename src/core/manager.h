@@ -63,6 +63,9 @@ namespace gcw {
     }
   
     void exit() { running = false; }
+    
+    
+    void launchRom(const RomEntry& entry, CoreHandle* handle);
   };
 
 }

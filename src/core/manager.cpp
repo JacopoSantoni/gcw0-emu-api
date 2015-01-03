@@ -18,7 +18,7 @@ void Manager::init()
   loader.scan();
   collection.scan();
   
-  core = loader.loadCore("dummy1");
+  core = loader.loadCore("dummy1","1.0");
   
   gfx.init();
   timer.setFrameRate(60.0f);
@@ -78,5 +78,25 @@ void Manager::run()
     
     gfx.flip();
     timer.frameRateDelay();
+  }
+}
+
+void Manager::launchRom(const RomEntry& entry, CoreHandle* handle)
+{
+  if (!handle->core)
+  {
+
+  }
+  
+  if (this->core)
+  {
+    /* if manager already has a core but it is different from the one required we need to unload resources and unload core */
+    if (core->info() != handle->core->info())
+    {
+      core->releaseResources();
+      loader.unload(core);
+    }
+    /* if instead the loaded core is the same that is required we need to reset it */
+    //else
   }
 }

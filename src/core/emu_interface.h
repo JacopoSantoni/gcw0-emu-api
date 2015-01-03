@@ -25,6 +25,11 @@ struct CoreIdentifier
   
   CoreIdentifier() = default;
   CoreIdentifier(const std::string& ident, const std::string& version) : ident(ident), version(version) { }
+  
+  bool operator==(const CoreIdentifier& other) const { return ident == other.ident && version == other.version; }
+  bool operator!=(const CoreIdentifier& other) const { return !(*this == other); }
+  
+  const std::string identifier() const { return ident + "-" + version; }
 };
 
 struct CoreInfo
@@ -36,7 +41,11 @@ struct CoreInfo
   CoreInfo(std::initializer_list<System::Type> type, std::string ident, std::string name, std::string version) :  type(type), ident(CoreIdentifier(ident,version)), name(name) { }
   CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()), name(std::string()) { }
   
+  const std::string identifier() const { return ident.identifier(); }
   const std::string title() const { return name + " (" + ident.version + ")"; }
+  
+  bool operator==(const CoreInfo& other) const { return ident == other.ident; }
+  bool operator!=(const CoreInfo& other) const { return ident != other.ident; }
 };
   
   
@@ -46,6 +55,7 @@ struct CoreInfo
   private:
     CoreInfo information;
   
+    bool requiresMultithreadRomLoading;
     std::vector<std::unique_ptr<Setting> > settings;
     std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
@@ -57,7 +67,7 @@ struct CoreInfo
   
   
   protected:
-    CoreInterface() : analogJoypadEnabled(false) { }
+    CoreInterface() : requiresMultithreadRomLoading(false), analogJoypadEnabled(false) { }
   
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
@@ -65,6 +75,7 @@ struct CoreInfo
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
+    void enableMultithreadedRomLoading() { requiresMultithreadRomLoading = true; }
   
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
   
@@ -105,6 +116,9 @@ struct CoreInfo
     virtual void loadRomByFileName(const std::string& name) = 0;
   
     virtual void emulationSuspended() = 0;
+    
+    virtual void releaseResources() = 0;
+    virtual void resetCore() = 0;
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

@@ -11,25 +11,6 @@
 #include "../common/utils.h"
 #include "../common/defines.h"
 
-namespace std {
-  template<typename T>
-  struct hash<reference_wrapper<T>>
-  {
-    std::size_t operator()(const std::reference_wrapper<T>& k) const
-    {
-      return hash<T*>()(&k.get());
-    }
-  };
-}
-
-namespace std {
-template<typename T>
-  bool operator==(const std::reference_wrapper<T>& r1, const std::reference_wrapper<T>& r2)
-  {
-    return &(r1.get()) == &(r2.get());
-  }
-}
-
 namespace gcw {
   
   
