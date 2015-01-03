@@ -6,11 +6,12 @@
 
 namespace gcw
 {
-  enum ViewType
+  enum ViewType : u8
   {
-    VIEW_MENU = 0,
-    VIEW_PATH = 1,
-    VIEW_CORE = 2
+    VIEW_MENU,
+    VIEW_PATH,
+    VIEW_CORE,
+    VIEW_LOADING
   };
   
   struct ViewOffset

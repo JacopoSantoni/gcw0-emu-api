@@ -44,8 +44,9 @@ void Manager::init()
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   menuView.setMenu(root);
   
+  currentView = &loadingView;
   //currentView = &pathView;
-  currentView = &menuView;
+  //currentView = &menuView;
   //currentView = &coreView;
   //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
   //coreView.initGfx();

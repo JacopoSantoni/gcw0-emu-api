@@ -66,7 +66,12 @@ struct Offset
 {
   u16 x;
   u16 y;
+  
+  Offset() = default;
+  Offset(u16 x, u16 y) : x(x), y(y) { }
 };
+
+typedef Offset Size;
 
 namespace gcw
 {
@@ -139,6 +144,13 @@ namespace gcw
         SDL_Rect rect = {0,0,static_cast<Uint16>(screen->w),static_cast<u16>(screen->h)};
         SDL_FillRect(screen, &rect, color);
       }
+    
+      template<typename T>
+      void line(u16 x1, u16 y1, u16 x2, u16 y2, T color);
+      template<typename T>
+      void rect(u16 x, u16 y, u16 w, u16 h, T color);
+      template<typename T>
+      void rectFill(s16 x1, s16 y1, u16 w, u16 h, T color);
     
       void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u16>(screen, buffer, offset); }
     

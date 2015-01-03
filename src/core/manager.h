@@ -10,6 +10,7 @@
 #include "../views/core_view.h"
 #include "../views/menu_view.h"
 #include "../views/path_view.h"
+#include "../views/loading_view.h"
 
 namespace gcw {
   
@@ -26,12 +27,14 @@ namespace gcw {
     CoreView coreView;
     MenuView menuView;
     PathView pathView;
+    LoadingView loadingView;
+    
     View *currentView;
   
     bool running;
 
   public:
-    Manager() : core(nullptr), loader(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), pathView(this), currentView(nullptr), running(true) { }
+    Manager() : core(nullptr), loader(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), pathView(this), loadingView(this), currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();
@@ -55,6 +58,7 @@ namespace gcw {
         case VIEW_MENU: currentView = &menuView; break;
         case VIEW_CORE: currentView = &coreView; break;
         case VIEW_PATH: currentView = &pathView; break;
+        case VIEW_LOADING: currentView = &loadingView; break;
       }
     }
   

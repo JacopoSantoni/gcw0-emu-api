@@ -59,6 +59,36 @@ void Gfx::clear(GfxBuffer &buffer, T color)
       p[h*buffer.pitch + w] = color;
 }
 
+template <typename T>
+void Gfx::line(u16 x1, u16 y1, u16 x2, u16 y2, T color)
+{
+  bool hor = y1 == y2;
+  T* p = static_cast<T*>(screen->pixels);
+  
+  if (hor)
+    for (u16 x = x1; x <= x2; ++x)
+      p[y1*screen->w + x] = color;
+  else
+    for (u16 y = y1; y <= y2; ++y)
+      p[y*screen->w + x1] = color;
+}
+
+template <typename T>
+void Gfx::rect(u16 x, u16 y, u16 w, u16 h, T color)
+{
+  line(x, y, x, y+h, color);
+  line(x, y, x+w, y, color);
+  line(x+w, y, x+w, y+h, color);
+  line(x, y+h, x+w, y+h, color);
+}
+
+template <typename T>
+void Gfx::rectFill(s16 x1, s16 y1, u16 w, u16 h, T color)
+{
+  SDL_Rect rect = {x1,y1,w,h};
+  SDL_FillRect(screen, &rect, color);
+}
+
 
 u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text) const
 {
@@ -138,3 +168,11 @@ template void Gfx::clear(GfxBuffer &buffer, u16 color);
 template void Gfx::rawBlit<u32>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
 template void Gfx::rawBlit<u16>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
 
+template void Gfx::rectFill<u16>(s16 x1, s16 y1, u16 w, u16 h, u16 color);
+template void Gfx::rectFill<u32>(s16 x1, s16 y1, u16 w, u16 h, u32 color);
+
+template void Gfx::rect<u16>(u16 x, u16 y, u16 w, u16 h, u16 color);
+template void Gfx::rect<u32>(u16 x, u16 y, u16 w, u16 h, u32 color);
+
+template void Gfx::line<u16>(u16 x1, u16 y1, u16 x2, u16 y2, u16 color);
+template void Gfx::line<u32>(u16 x1, u16 y1, u16 x2, u16 y2, u32 color);
