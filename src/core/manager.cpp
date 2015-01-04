@@ -2,6 +2,7 @@
 
 #include "../ui/menu.h"
 
+using namespace std;
 using namespace gcw;
 
 void Manager::init()
@@ -109,7 +110,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
 }
 
-void Manager::launchRom(const gcw::RomEntry &entry)
+void Manager::launchRom(const RomEntry& entry)
 {
   const auto cores = loader.findCoresForSystem(entry.system.type);
   
@@ -126,7 +127,16 @@ void Manager::launchRom(const gcw::RomEntry &entry)
   /* if more cores are found we should find if a default one is forced, otherwise let user choose one */
   else
   {
+    CoreIdentifier identifier = persistence.coreForcedForFolder(entry.folder());
     
+    // we found a core that has been forced on specified folder, we use it if it's still there
+    if (identifier)
+    {
+      auto core = find_if(cores.begin(), cores.end(), [&](const reference_wrapper<CoreHandle>& handle) { return handle.get().info.ident == identifier; });
+      
+      if (core != cores.end())
+        launchRom(entry, *core);
+    }
   }
 }
 

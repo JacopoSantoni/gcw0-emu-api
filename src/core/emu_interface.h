@@ -18,20 +18,6 @@ namespace gcw {
 
 class CoreInterface;
 
-struct CoreIdentifier
-{
-  std::string ident;
-  std::string version;
-  
-  CoreIdentifier() = default;
-  CoreIdentifier(const std::string& ident, const std::string& version) : ident(ident), version(version) { }
-  
-  bool operator==(const CoreIdentifier& other) const { return ident == other.ident && version == other.version; }
-  bool operator!=(const CoreIdentifier& other) const { return !(*this == other); }
-  
-  const std::string identifier() const { return ident + "-" + version; }
-};
-
 struct CoreInfo
 {
   std::vector<System::Type> type;

@@ -104,5 +104,21 @@ struct AnalogDeadZone
 
 typedef u32 ButtonStatus;
 
+struct CoreIdentifier
+{
+  std::string ident;
+  std::string version;
+  
+  CoreIdentifier() = default;
+  CoreIdentifier(const std::string& ident, const std::string& version) : ident(ident), version(version) { }
+  
+  bool isValid() const { return !ident.empty(); }
+  operator bool() const { return isValid(); }
+  bool operator==(const CoreIdentifier& other) const { return ident == other.ident && version == other.version; }
+  bool operator!=(const CoreIdentifier& other) const { return !(*this == other); }
+  
+  const std::string identifier() const { return ident + "-" + version; }
+};
+
 
 #endif

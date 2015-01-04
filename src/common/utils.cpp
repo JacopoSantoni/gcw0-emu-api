@@ -31,6 +31,16 @@ Path::Path(const std::string& path) : path(path)
   trimEndSlash();
 }
 
+Path Path::folder() const
+{
+  size_t dot = path.find_last_of("/");
+  
+  if (dot != string::npos)
+    return path.substr(0, dot);
+  else
+    return path;
+}
+
 std::string Path::extension() const
 {
   size_t dot = path.find_last_of(".");

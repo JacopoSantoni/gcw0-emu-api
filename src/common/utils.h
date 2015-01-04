@@ -15,34 +15,35 @@ namespace gcw
 {
   class Path
   {
-    private:
-      std::string path;
+  private:
+    std::string path;
+  
+    void trimEndSlash() { if (path.back() == '/') path.pop_back(); }
+    void trimStartSlash() { if (path.front() == '/') path.erase(1); }
     
-      void trimEndSlash() { if (path.back() == '/') path.pop_back(); }
-      void trimStartSlash() { if (path.front() == '/') path.erase(1); }
-      
-    public:
+  public:
+  
+    Path() { }
+    Path(const char *path);
+    Path(const std::string& path);
+    const std::string& value() const { return path; }
+    void set(std::string& value) { path = value; }
+    void set(const Path& opath) { path = opath.path; }
+    Path append(std::string component) const;
+    Path append(const Path& path) const;
+    Path removeLast() const;
+    bool isRoot() const;
+  
+    Path folder() const;
+    std::string extension() const;
+    std::string plainName() const;
+    std::tuple<std::string, std::string> split() const;
+  
     
-      Path() { }
-      Path(const char *path);
-      Path(const std::string& path);
-      const std::string& value() const { return path; }
-      void set(std::string& value) { path = value; }
-      void set(const Path& opath) { path = opath.path; }
-      Path append(std::string component) const;
-      Path append(const Path& path) const;
-      Path removeLast() const;
-      bool isRoot() const;
-    
-      std::string extension() const;
-      std::string plainName() const;
-      std::tuple<std::string, std::string> split() const;
-    
-      
-      std::string fileInsidePath(const std::string& file) const;
-      std::vector<Path> findFiles(const std::string& ext, bool recursive) const;
-      std::vector<Path> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
-      std::vector<Path> subfolders() const;
+    std::string fileInsidePath(const std::string& file) const;
+    std::vector<Path> findFiles(const std::string& ext, bool recursive) const;
+    std::vector<Path> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
+    std::vector<Path> subfolders() const;
     
     bool operator==(const std::string& rhs) const { return path == rhs; }
     bool operator==(const Path& rhs) const { return path == rhs.path; }

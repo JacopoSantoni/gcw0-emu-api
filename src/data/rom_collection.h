@@ -19,11 +19,14 @@ namespace gcw {
   struct RomEntry
   {
     const std::string name;
-    const std::string ext;
-    const System::Spec& system;
     const Path path;
+    const System::Spec& system;
     
-    RomEntry(const std::string& name, const std::string& ext, const System::Spec& system, const Path path) : name(name), ext(ext), system(system), path(path) { }
+    RomEntry(const std::string& name, const System::Spec& system, const Path& path) : name(name), path(path), system(system) { }
+    
+    std::string extension() const { return path.extension(); }
+    std::string folder() const { return path.folder().value(); }
+    std::string fileName() const { return path.plainName(); }
   };
   
   typedef std::unordered_multimap<std::reference_wrapper<const System::Spec>, RomEntry> RomMap;

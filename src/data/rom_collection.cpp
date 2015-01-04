@@ -18,9 +18,9 @@ void RomCollection::scan()
       exts.insert(ext);
       
       if (extsMapToSystem.find(ext) == extsMapToSystem.end())
-        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(*it)));
+        extsMapToSystem.insert(make_pair(ext, ref(*it)));
       else
-        extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(System::getSpecForSystem(System::Type::UNCATEGORISED))));
+        extsMapToSystem.insert(make_pair(ext, ref(System::getSpecForSystem(System::Type::UNCATEGORISED))));
     }
   
   for (const auto &path : paths)
@@ -34,7 +34,7 @@ void RomCollection::scan()
       std::string name = file.plainName();
       std::string extension = file.extension();
 
-      RomEntry rom = RomEntry(name, extension, extsMapToSystem.find(extension)->second, path);
+      RomEntry rom = RomEntry(name, extsMapToSystem.find(extension)->second, path.append(file));
       
       roms.insert(pair<reference_wrapper<const System::Spec>,RomEntry>(rom.system,rom));
     }
@@ -51,7 +51,7 @@ void RomCollection::scan()
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
       RomEntry &entry = iit->second;
-      cout << "\t" << entry.name << " " << entry.ext << " : " << entry.path.value() << endl;
+      cout << "\t" << entry.name << " " << entry.extension() << " : " << entry.path.value() << endl;
     }
   }
 }
