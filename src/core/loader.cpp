@@ -83,40 +83,32 @@ void Loader::unload(CoreInterface* core)
   #endif
 }
 
-CoreInterface* Loader::loadCore(const CoreIdentifier& ident)
-{  
-  vector<CoreHandle>::iterator it = find_if(cores.begin(), cores.end(), [&](const CoreHandle& handle) { return handle.info.ident == ident; });
+CoreInterface* Loader::loadCore(CoreHandle& handle)
+{
+  unload(handle.core);
 
-  if (it != cores.end()/* && core != (*it)->core*/)
-  {
-    unload(it->core);
-    CoreHandle& handle = *it;
-    
-    LOG("Loading core %s at %s\n",handle.info.ident.ident.c_str(),handle.fileName.c_str());
-    
-    #ifdef _DUMMY_CORE_
-      if (ident.ident == "dummy1")
-        handle.core = retrieve1();
-      else
-        handle.core = retrieve2();
-    
-      handle.core->setManager(manager);
-      return handle.core;
-
-
-    #else
-      void *dlhandle = dlopen(handle.fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
-      CoreInterface* (*retrieve)();
-      *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
-      
-      handle.handle = dlhandle;
-      handle.core = retrieve();
-      handle.core->setManager(manager);
-      return handle.core;
-    #endif
-  }
+  LOG("Loading core %s at %s\n",handle.info.ident.ident.c_str(),handle.fileName.c_str());
   
-  return nullptr;
+  #ifdef _DUMMY_CORE_
+    if (handle.info.ident.ident == "dummy1")
+      handle.core = retrieve1();
+    else
+      handle.core = retrieve2();
+  
+    handle.core->setManager(manager);
+    return handle.core;
+
+
+  #else
+    void *dlhandle = dlopen(handle.fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
+    CoreInterface* (*retrieve)();
+    *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
+    
+    handle.handle = dlhandle;
+    handle.core = retrieve();
+    handle.core->setManager(manager);
+    return handle.core;
+  #endif
 }
 
 /*

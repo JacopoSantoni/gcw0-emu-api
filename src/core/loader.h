@@ -57,7 +57,12 @@ class Loader
     void scan();
   
     CoreInterface* loadCore(const std::string& ident, const std::string& version) { return loadCore(CoreIdentifier(ident, version)); }
-    CoreInterface* loadCore(const CoreIdentifier& ident);
+    CoreInterface* loadCore(const CoreIdentifier& ident) {
+      auto it = find_if(cores.begin(), cores.end(), [&](const CoreHandle& handle) { return handle.info.ident == ident; });
+      return loadCore(*it);
+    }
+    CoreInterface* loadCore(CoreHandle& handle);
+  
     void unload(CoreInterface* core);
   
     const std::vector<CoreHandle>& getCores() { return cores; }

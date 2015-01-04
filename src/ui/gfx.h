@@ -59,6 +59,14 @@ struct GfxBuffer
 
   }
   
+  void release()
+  {
+    delete [] data;
+    data = nullptr;
+  }
+  
+  //virtual ~GfxBuffer() { delete [] data; }
+  
   //~GfxBuffer() { if (data) delete [] data; }
 };
 

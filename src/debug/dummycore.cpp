@@ -110,7 +110,8 @@ class DummyCore : public CoreInterface
     void emulationSuspended() override { }
   
     void releaseResources() override { }
-    void resetCore() override { }
+    void reset() override { }
+    void initialize() override { }
 
     virtual void emulationFrame();
     virtual void loadRomByFileName(const std::string& name);

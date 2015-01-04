@@ -39,8 +39,10 @@ class CoreView : public View
   public:
     CoreView(Manager *manager) : View(manager) { }
   
-    void initControls(CoreInterface *core, ButtonStatus suspendKeys);
+    void initForCore(CoreInterface* core, ButtonStatus suspendKeys);
+    void initControls(ButtonStatus suspendKeys);
     void initGfx();
+    void reset();
   
     virtual void render();
     virtual void handleEvents();

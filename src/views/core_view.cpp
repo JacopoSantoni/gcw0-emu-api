@@ -18,6 +18,21 @@ void CoreView::initGfx()
   offset.y = (HEIGHT - buffer.height)/2;
 }
 
+void CoreView::reset()
+{
+  buffer.release();
+  
+}
+
+void CoreView::initForCore(CoreInterface *core, ButtonStatus suspendKeys)
+{
+  reset();
+  this->core = core;
+  
+  initControls(suspendKeys);
+  initGfx();
+}
+
 s8 CoreView::indexForKey(GCWKey key)
 {
   switch (key) {
@@ -45,10 +60,8 @@ s8 CoreView::indexForKey(GCWKey key)
   }
 }
 
-void CoreView::initControls(CoreInterface *core, ButtonStatus suspendKeys)
+void CoreView::initControls(ButtonStatus suspendKeys)
 {
-  this->core = core;
-  
   const vector<ButtonSetting>& buttons = core->supportedButtons();
   
   // persistence->loadCustomKeysForCore(core)

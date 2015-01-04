@@ -117,8 +117,9 @@ struct CoreInfo
   
     virtual void emulationSuspended() = 0;
     
+    virtual void initialize() = 0;
     virtual void releaseResources() = 0;
-    virtual void resetCore() = 0;
+    virtual void reset() = 0;
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

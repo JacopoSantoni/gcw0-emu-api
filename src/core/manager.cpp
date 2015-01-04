@@ -18,8 +18,6 @@ void Manager::init()
   loader.scan();
   collection.scan();
   
-  core = loader.loadCore("dummy1","1.0");
-  
   gfx.init();
   timer.setFrameRate(60.0f);
   
@@ -62,7 +60,6 @@ void Manager::run()
     currentView->render();
 
     
-    
     //gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
     //gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");
     
@@ -81,22 +78,33 @@ void Manager::run()
   }
 }
 
-void Manager::launchRom(const RomEntry& entry, CoreHandle* handle)
+void Manager::loadCoreAndWarmUp(CoreHandle& handle)
 {
-  if (!handle->core)
-  {
-
-  }
-  
-  if (this->core)
+  if (core)
   {
     /* if manager already has a core but it is different from the one required we need to unload resources and unload core */
-    if (core->info() != handle->core->info())
+    if (core->info() != handle.core->info())
     {
       core->releaseResources();
       loader.unload(core);
+      core = nullptr;
     }
     /* if instead the loaded core is the same that is required we need to reset it */
-    //else
+    else if (handle.isLoaded() && core->info() == handle.core->info())
+    {
+      core->reset();
+    }
   }
+  else
+  {
+    core = loader.loadCore(handle);
+    core->initialize();
+  }
+  
+  coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
+}
+
+void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
+{
+  loadCoreAndWarmUp(handle);
 }
