@@ -42,9 +42,9 @@ void Manager::init()
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   menuView.setMenu(root);
   
-  currentView = &loadingView;
+  //currentView = &loadingView;
   //currentView = &pathView;
-  //currentView = &menuView;
+  currentView = &menuView;
   //currentView = &coreView;
   //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
   //coreView.initGfx();
@@ -82,19 +82,24 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
 {
   if (core)
   {
+    /* if the loaded core is the same that is required we need to reset it */
+    if (handle.isLoaded() && core->info() == handle.core->info())
+    {
+      core->reset();
+    }
     /* if manager already has a core but it is different from the one required we need to unload resources and unload core */
-    if (core->info() != handle.core->info())
+    else
     {
       core->releaseResources();
       loader.unload(core);
       core = nullptr;
+      
+      core = loader.loadCore(handle);
+      core->initialize();
     }
-    /* if instead the loaded core is the same that is required we need to reset it */
-    else if (handle.isLoaded() && core->info() == handle.core->info())
-    {
-      core->reset();
-    }
+
   }
+  /* otherwise load core and initialize it */
   else
   {
     core = loader.loadCore(handle);
@@ -104,7 +109,41 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
 }
 
+void Manager::launchRom(const gcw::RomEntry &entry)
+{
+  const auto cores = loader.findCoresForSystem(entry.system.type);
+  
+  /* if no cores are found for the system we should prompt the user and let him choose a core in case */
+  if (cores.size() == 0)
+  {
+    
+  }
+  /* if just a core is found there is no doubt */
+  else if (cores.size() == 1)
+  {
+    launchRom(entry, cores[0]);
+  }
+  /* if more cores are found we should find if a default one is forced, otherwise let user choose one */
+  else
+  {
+    
+  }
+}
+
 void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
 {
   loadCoreAndWarmUp(handle);
+  
+  if (!handle.core->doesRequireProgressForLoading())
+  {
+    handle.core->loadRomByFileName(entry.path.value());
+    switchView(VIEW_CORE);
+  }
+  
+}
+
+void Manager::pauseEmulation()
+{
+  core->emulationSuspended();
+  switchView(VIEW_MENU);
 }

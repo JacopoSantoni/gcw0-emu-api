@@ -132,8 +132,10 @@ class RomMenuEntry : public MenuEntry
   
   public:
     RomMenuEntry(const RomEntry& rom) : rom(rom) { }
-    virtual const std::string& name() { return rom.name; }
-    virtual void render(Gfx* gfx, int x, int y);
+    const std::string& name() override { return rom.name; }
+    void render(Gfx* gfx, int x, int y) override;
+    void action(Manager *manager, GCWKey key) override;
+
 };
 
 

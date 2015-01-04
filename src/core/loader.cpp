@@ -111,6 +111,19 @@ CoreInterface* Loader::loadCore(CoreHandle& handle)
   #endif
 }
 
+const vector<reference_wrapper<CoreHandle>> Loader::findCoresForSystem(const System::Type system)
+{
+  vector<reference_wrapper<CoreHandle>> scores;
+  
+  for (CoreHandle& handle : cores)
+  {
+    if (find(handle.info.type.begin(), handle.info.type.end(), system) != handle.info.type.end())
+      scores.push_back(handle);
+  }
+  
+  return scores;
+}
+
 /*
 const CoreHandle& Loader::coreForFile(std::string fileName)
 {

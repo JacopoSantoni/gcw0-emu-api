@@ -55,7 +55,7 @@ struct CoreInfo
   private:
     CoreInfo information;
   
-    bool requiresMultithreadRomLoading;
+    bool requiresProgressForLoading;
     std::vector<std::unique_ptr<Setting> > settings;
     std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
@@ -67,7 +67,7 @@ struct CoreInfo
   
   
   protected:
-    CoreInterface() : requiresMultithreadRomLoading(false), analogJoypadEnabled(false) { }
+    CoreInterface() : requiresProgressForLoading(false), analogJoypadEnabled(false) { }
   
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
@@ -75,7 +75,8 @@ struct CoreInfo
     void registerButton(ButtonSetting button) { buttons.push_back(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
-    void enableMultithreadedRomLoading() { requiresMultithreadRomLoading = true; }
+    
+    void enableProgressForLoading() { requiresProgressForLoading = true; }
   
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
   
@@ -128,14 +129,16 @@ struct CoreInfo
   
   
   
-    const CoreInfo& info() { return information; }
-    const std::vector<std::unique_ptr<Setting>>& supportedSettings() { return settings; }
+    bool doesRequireProgressForLoading() const { return requiresProgressForLoading; }
+
+    const CoreInfo& info() const { return information; }
+    const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
   
-    const std::vector<ButtonSetting>& supportedButtons() { return buttons; }
-    AnalogDeadZone getAnalogDeadZone() { return analogDeadZone; }
-    bool isAnalogJoypadUsed() { return analogJoypadEnabled; }
+    const std::vector<ButtonSetting>& supportedButtons() const { return buttons; }
+    AnalogDeadZone getAnalogDeadZone() const { return analogDeadZone; }
+    bool isAnalogJoypadUsed() const { return analogJoypadEnabled; }
   
-    const GfxBufferSpec& getGfxSpec() { return gfxFormat; }
+    const GfxBufferSpec& getGfxSpec() const { return gfxFormat; }
   };
   
 }

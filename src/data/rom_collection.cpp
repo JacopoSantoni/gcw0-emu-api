@@ -23,9 +23,6 @@ void RomCollection::scan()
         extsMapToSystem.insert(make_pair(ext, reference_wrapper<const System::Spec>(System::getSpecForSystem(System::Type::UNCATEGORISED))));
     }
   
-  //manager->getLoader()->allowedFileTypes();
-  
-  
   for (const auto &path : paths)
   {
     vector<Path> files = path.findFiles(exts, true);

@@ -119,6 +119,10 @@ void RomMenuEntry::render(Gfx *gfx, int x, int y)
   gfx->print(x, y, false, Font::bigFont, name().c_str());
 }
 
+void RomMenuEntry::action(Manager *manager, GCWKey key)
+{
+  manager->launchRom(rom);
+}
 
 
 

@@ -27,12 +27,12 @@ namespace gcw
     
     struct Spec
     {
-      Type system;
+      Type type;
       std::string ident;
       std::string name;
       std::vector<std::string> extensions;
       
-      Spec(Type system, std::string&& ident, std::string &&name, std::vector<std::string> &&extensions) : system(system), ident(ident), name(name), extensions(extensions) { }
+      Spec(Type type, std::string&& ident, std::string &&name, std::vector<std::string> &&extensions) : type(type), ident(ident), name(name), extensions(extensions) { }
     };
     
     
@@ -43,7 +43,7 @@ namespace gcw
   public:
     static const Spec& getSpecForSystem(Type type)
     {
-      return *std::find_if(specs.begin(), specs.end(), [&](const Spec& spec){ return spec.system == type; });
+      return *std::find_if(specs.begin(), specs.end(), [&](const Spec& spec){ return spec.type == type; });
     }
     
     static const std::vector<Spec>& getSystems() { return specs; }

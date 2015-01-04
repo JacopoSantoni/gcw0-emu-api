@@ -238,7 +238,8 @@ void CoreView::handleEvents()
   
   if (suspendShortcut == status)
   {
-    manager->exit();
+    manager->pauseEmulation();
+    return;
   }
   
   core->setButtonStatus(status);
