@@ -1,4 +1,4 @@
-.PHONY: all ohboy PocketSNES clean
+.PHONY: all ohboy PocketSNES geekboy clean
 
 CC = clang++
 
@@ -17,9 +17,14 @@ SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(di
 BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
 EXECUTABLE := gcwemu
 
-CORES:= ohboy PocketSNES
+CORES:= geekboy
+	# ohboy PocketSNES
 
 all: $(EXECUTABLE) $(CORES)
+
+geekboy:
+	$(MAKE) -f Makefile.osx_lib -C geekboy
+	mv geekboy/geekboy.dylib cores/geekboy.dylib
 
 ohboy:
 	$(MAKE) -f Makefile.osx_lib -C ohboy
@@ -35,8 +40,9 @@ $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 #$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
 
 clean:
-	rm -f gcw-emu
+	rm -f gcwemu
 	rm -rf $(BINDIR)
+	rm -rf cores/*.dylib
 	$(foreach var,$(CORES),$(MAKE) -f Makefile.osx_lib -C $(var) clean;)
 
 $(BINDIR)/%.o : $(BASESRC)/%.cpp
