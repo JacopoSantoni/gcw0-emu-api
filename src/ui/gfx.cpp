@@ -56,7 +56,7 @@ void Gfx::clear(GfxBuffer &buffer, T color)
   
   for (int w = 0; w < buffer.width; ++w)
     for (int h = 0; h < buffer.height; ++h)
-      p[h*buffer.pitch + w] = color;
+      p[h*buffer.width + w] = color;
 }
 
 template <typename T>

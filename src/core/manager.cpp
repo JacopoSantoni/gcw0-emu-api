@@ -106,11 +106,10 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   else
   {
     core = loader.loadCore(handle);
+    coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
     core->initialize();
   }
-  
-  coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
-}
+  }
 
 void Manager::launchRom(const RomEntry& entry)
 {

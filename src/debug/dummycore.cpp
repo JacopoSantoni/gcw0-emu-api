@@ -38,7 +38,7 @@ class DummyUtil
     
     for (int i = x; i < x+w; ++i)
       for (int j = y; j < y+h; ++j)
-        data[i + j*buffer.pitch] = color;
+        data[i + j*buffer.width] = color;
   }
 };
   

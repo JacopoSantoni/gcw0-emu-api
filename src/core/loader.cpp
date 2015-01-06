@@ -4,10 +4,13 @@
 #include "../common/utils.h"
 #include "manager.h"
 
-// TODO gcw vvvv
-//const char* CORES_PATH = "cores/";
+#ifdef __APPLE__
 const char* CORES_PATH = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores/";
 const char* LIBRARY_EXTENSION = "dylib";
+#else
+const char* CORES_PATH = "cores/";
+const char* LIBRARY_EXTENSION = "so";
+#endif
 
 using namespace std;
 using namespace gcw;

@@ -136,11 +136,11 @@ struct GfxBufferSpec
 struct GfxBuffer
 {
   u8 *data;
-  u16 pitch;
+  //u16 pitch;
   u16 width;
   u16 height;
   
-  GfxBuffer() : data(nullptr), pitch(0), width(0), height(0) { }
+  GfxBuffer() : data(nullptr), /*pitch(0),*/ width(0), height(0) { }
   //void allocate(u16 width, u16 height, u16 pitch)
   
   void allocate(const GfxBufferSpec& spec)
@@ -148,7 +148,7 @@ struct GfxBuffer
     if (data) delete [] data;
     
     u32 bufferSize;
-    pitch = spec.width;
+    //pitch = spec.width;
     width = spec.width;
     height = spec.height;
     
