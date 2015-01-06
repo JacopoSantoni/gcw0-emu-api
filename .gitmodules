@@ -7,3 +7,7 @@
 [submodule "gambatte"]
 	path = gambatte
 	url = git@github.com:Jakz/gambatte.git
+[submodule "geekboy"]
+	path = geekboy
+	url = git@github.com:Jakz/geekboy.git
+	branch = gcw0
