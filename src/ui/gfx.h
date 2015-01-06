@@ -17,69 +17,7 @@
 #define WIDTH (320)
 #define HEIGHT (240)
 
-enum GfxBufferFormat
-{
-  FORMAT_8888,
-  FORMAT_565
-};
 
-struct GfxBufferSpec
-{
-  u16 width;
-  u16 height;
-  GfxBufferFormat format;
-};
-
-struct GfxBuffer
-{
-  u8 *data;
-  u16 pitch;
-  u16 width;
-  u16 height;
-  
-  GfxBuffer() : data(nullptr), pitch(0), width(0), height(0) { }
-  //void allocate(u16 width, u16 height, u16 pitch)
-  
-  void allocate(const GfxBufferSpec& spec)
-  {
-    if (data) delete [] data;
-    
-    u32 bufferSize;
-    pitch = spec.width;
-    width = spec.width;
-    height = spec.height;
-    
-    switch (spec.format)
-    {
-      case FORMAT_8888: bufferSize = width*height*sizeof(u32); break;
-      case FORMAT_565: bufferSize = width*height*sizeof(u16); break;
-    }
-    
-    data = new u8[bufferSize];
-
-  }
-  
-  void release()
-  {
-    delete [] data;
-    data = nullptr;
-  }
-  
-  //virtual ~GfxBuffer() { delete [] data; }
-  
-  //~GfxBuffer() { if (data) delete [] data; }
-};
-
-struct Offset
-{
-  u16 x;
-  u16 y;
-  
-  Offset() = default;
-  Offset(u16 x, u16 y) : x(x), y(y) { }
-};
-
-typedef Offset Size;
 
 namespace gcw
 {

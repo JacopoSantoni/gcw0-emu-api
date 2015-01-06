@@ -9,7 +9,7 @@
 
 #include "manager_interface.h"
 #include "../common/defines.h"
-#include "../ui/gfx.h"
+//#include "../ui/gfx.h"
 #include "../data/settings.h"
 
 
@@ -73,7 +73,7 @@ struct CoreInfo
   public:
     virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
     
-    virtual void run(int argc, char **argv) = 0;
+    //virtual void run(int argc, char **argv) = 0;
   
     /**
      * Pass the current button status to the core. The status is built according to the button specification
@@ -102,6 +102,7 @@ struct CoreInfo
     virtual void emulationFrame() = 0;
     virtual void loadRomByFileName(const std::string& name) = 0;
   
+    virtual void emulationStarted() = 0;
     virtual void emulationSuspended() = 0;
     
     virtual void initialize() = 0;

@@ -4,7 +4,9 @@
 #include "../common/utils.h"
 #include "manager.h"
 
-const char* CORES_PATH = "cores/";
+// TODO gcw vvvv
+//const char* CORES_PATH = "cores/";
+const char* CORES_PATH = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores/";
 const char* LIBRARY_EXTENSION = "dylib";
 
 using namespace std;

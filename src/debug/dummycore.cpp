@@ -108,6 +108,7 @@ class DummyCore : public CoreInterface
     }
   
     void emulationSuspended() override { }
+    void emulationStarted() override { }
   
     void releaseResources() override { }
     void reset() override { }

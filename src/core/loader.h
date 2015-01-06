@@ -9,7 +9,7 @@
 
 #include "emu_interface.h"
 
-#define _DUMMY_CORE_
+//#define _DUMMY_CORE_
 
 namespace gcw {
   
