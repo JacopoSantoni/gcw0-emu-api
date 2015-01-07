@@ -23,15 +23,15 @@ CORES:= geekboy
 all: $(EXECUTABLE) $(CORES)
 
 geekboy:
-	$(MAKE) -f Makefile.osx_lib -C geekboy
+	$(MAKE) -f Makefile.osx_lib -C geekboy $(MAKECMDGOALS)
 	mv geekboy/geekboy.dylib cores/geekboy.dylib
 
 ohboy:
-	$(MAKE) -f Makefile.osx_lib -C ohboy
+	$(MAKE) -f Makefile.osx_lib -C ohboy $(MAKECMDGOALS)
 	mv ohboy/ohboy.dylib cores/ohboy.dylib
 
 PocketSNES:
-	$(MAKE) -f Makefile.osx_lib -C PocketSNES
+	$(MAKE) -f Makefile.osx_lib -C PocketSNES $(MAKECMDGOALS)
 	mv PocketSNES/PocketSNES.dylib cores/pocketsnes.dylib
 
 $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
@@ -40,6 +40,7 @@ $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 #$(LD) $(LDFLAGS) main.o -o $@ $(LIBS)
 
 clean:
+	$(MAKE) -f Makefile.osx_lib -C geekboy $(MAKECMDGOALS)
 	rm -f gcwemu
 	rm -rf $(BINDIR)
 	rm -rf cores/*.dylib

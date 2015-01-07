@@ -8,7 +8,7 @@
 const char* CORES_PATH = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores/";
 const char* LIBRARY_EXTENSION = "dylib";
 #else
-const char* CORES_PATH = "/media/SD/cores/";
+const char* CORES_PATH = "cores/";
 const char* LIBRARY_EXTENSION = "so";
 #endif
 

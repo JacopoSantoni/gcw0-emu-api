@@ -121,7 +121,10 @@ void RomMenuEntry::render(Gfx *gfx, int x, int y)
 
 void RomMenuEntry::action(Manager *manager, GCWKey key)
 {
-  manager->launchRom(rom);
+  if (manager->getCurrentRom() != &rom)
+    manager->launchRom(rom);
+  else
+    manager->resumeEmulation();
 }
 
 

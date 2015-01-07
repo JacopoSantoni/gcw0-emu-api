@@ -64,6 +64,16 @@
 		04CB04451897670300169B41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB04441897670300169B41 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0486FA3E1A5CF06500453A29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04CB041E1897669C00169B41 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04BE23391A5B9E5100F61BD1;
+			remoteInfo = geekboy;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		04B6382E189C9DEF0028FA74 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -484,6 +494,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0486FA3F1A5CF06500453A29 /* PBXTargetDependency */,
 			);
 			name = Cocoa;
 			productName = Cocoa;
@@ -597,6 +608,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0486FA3F1A5CF06500453A29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04BE23391A5B9E5100F61BD1 /* geekboy */;
+			targetProxy = 0486FA3E1A5CF06500453A29 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		04BE233B1A5B9E5100F61BD1 /* Debug */ = {
@@ -799,6 +818,7 @@
 				04BE233C1A5B9E5100F61BD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04CB04211897669C00169B41 /* Build configuration list for PBXProject "GCW Prototype" */ = {
 			isa = XCConfigurationList;

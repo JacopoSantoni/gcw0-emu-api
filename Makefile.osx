@@ -1,4 +1,4 @@
-.PHONY: all ohboy PocketSNES clean
+.PHONY: all ohboy PocketSNES clean opt debug profile
 
 CC = clang++
 
@@ -13,6 +13,7 @@ LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
 all opt debug:
 opt: CCFLAGS += -O3 -ffast-math
 debug: CCFLAGS += -g
+profile: CCFLAGS += -pg
 	
 VPATH = src
 

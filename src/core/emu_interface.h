@@ -104,6 +104,7 @@ struct CoreInfo
   
     virtual void emulationStarted() = 0;
     virtual void emulationSuspended() = 0;
+    virtual void emulationResumed() = 0;
     
     virtual void initialize() = 0;
     virtual void releaseResources() = 0;

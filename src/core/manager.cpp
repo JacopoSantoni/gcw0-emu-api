@@ -143,6 +143,8 @@ void Manager::launchRom(const RomEntry& entry)
 
 void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
 {
+  rom = &entry;
+  
   loadCoreAndWarmUp(handle);
   
   if (!handle.core->doesRequireProgressForLoading())
@@ -157,4 +159,10 @@ void Manager::pauseEmulation()
 {
   core->emulationSuspended();
   switchView(VIEW_MENU);
+}
+
+void Manager::resumeEmulation()
+{
+  core->emulationResumed();
+  switchView(VIEW_CORE);
 }

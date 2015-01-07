@@ -19,6 +19,7 @@ namespace gcw
       UNCATEGORISED,
       
       GAME_BOY,
+      GAME_BOY_COLOR,
       GAME_BOY_ADVANCE,
       SUPER_NINTENDO,
       

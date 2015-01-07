@@ -18,6 +18,8 @@ namespace gcw {
   {
   private:
     CoreInterface *core;
+    const RomEntry *rom;
+    
     Loader loader;
     Persistence persistence;
     RomCollection collection;
@@ -30,6 +32,8 @@ namespace gcw {
     LoadingView loadingView;
     
     View *currentView;
+    
+
   
     bool running;
 
@@ -64,11 +68,14 @@ namespace gcw {
   
     void exit() { running = false; }
     
+    const RomEntry* getCurrentRom() { return rom; }
+    
     void loadCoreAndWarmUp(CoreHandle& handle);
     void launchRom(const RomEntry& entry);
     void launchRom(const RomEntry& entry, CoreHandle& handle);
     
     void pauseEmulation();
+    void resumeEmulation();
   };
 
 }

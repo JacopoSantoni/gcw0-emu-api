@@ -1,4 +1,4 @@
-.PHONY: all clean opk send debug geekboy
+.PHONY: all clean opk send debug geekboy profile
 
 CC = mipsel-linux-g++
 STRIP = mipsel-linux-strip
@@ -13,6 +13,7 @@ LDFLAGS += $(SDL_LIBS) -lSDL_image -ldl
 all opt debug:
 opk opt: CCFLAGS += -O3 -ffast-math
 debug: CCFLAGS += -g
+profile: CCFLAGS += -pg
 
 BINDIR := obj
 BASESRC := src
@@ -25,17 +26,18 @@ CORES := geekboy
 
 # ohboy PocketSNES
 
-all opt debug: $(EXECUTABLE) $(CORES)
+all opt debug profile: $(EXECUTABLE) $(CORES)
 
 $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 	$(CC) $(CCFLAGS) $^ -o $@ $(LDFLAGS)
 	#$(STRIP) $@
 
 geekboy:
-	$(MAKE) -f Makefile.gcw -C geekboy $(MAKEFLAGS)
+	$(MAKE) -f Makefile.gcw -C geekboy $(MAKECMDGOALS)
 	mv geekboy/geekboy.so cores/geekboy.so
 
 clean:
+	$(MAKE) -f Makefile.gcw -C geekboy $(MAKECMDGOALS)
 	rm -f gcwemu
 	rm -rf $(BINDIR)
 	rm -f cores/*.so
