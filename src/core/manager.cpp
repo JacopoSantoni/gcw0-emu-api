@@ -164,5 +164,6 @@ void Manager::pauseEmulation()
 void Manager::resumeEmulation()
 {
   core->emulationResumed();
+  coreView.initControls(GCW_KEY_L | GCW_KEY_R);
   switchView(VIEW_CORE);
 }
