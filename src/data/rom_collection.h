@@ -30,7 +30,7 @@ namespace gcw {
   };
   
   typedef std::unordered_multimap<std::reference_wrapper<const System::Spec>, RomEntry> RomMap;
-  typedef RomMap::iterator RomIterator;
+  typedef RomMap::const_iterator RomIterator;
   typedef std::pair<RomIterator, RomIterator> RomIteratorRange;
   
 

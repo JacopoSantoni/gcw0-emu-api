@@ -4,14 +4,29 @@
 #include "../common/utils.h"
 
 #include <vector>
+#include <map>
 
 namespace gcw {
+  
+struct Keybind
+{
+  std::string name;
+  GCWKey key;
+  
+  bool isValid() { return !name.empty(); }
+};
+  
+  typedef std::multimap<CoreIdentifier, Keybind> KeybindMap;
+  typedef KeybindMap::const_iterator KeybindIterator;
+  typedef std::pair<KeybindIterator, KeybindIterator> KeybindIteratorRange;
 
 class Persistence
 {
 private:
   std::vector<Path> romPaths;
   Path savesPath;
+  
+  KeybindMap keybinds;
 
 public:
 
@@ -22,6 +37,9 @@ public:
   const Path& getSavesPath() const { return savesPath; }
   
   CoreIdentifier coreForcedForFolder(const Path& folder) { return CoreIdentifier(); }
+  
+  Keybind keyBindOveriddenFor(const CoreIdentifier& identifier, const std::string& keyName);
+  
   
   const static Path ROOT_PATH;
 

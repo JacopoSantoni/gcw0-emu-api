@@ -50,7 +50,7 @@ void RomCollection::scan()
     
     for (RomIterator iit = it.first; iit != it.second; ++iit)
     {
-      RomEntry &entry = iit->second;
+      const RomEntry &entry = iit->second;
       cout << "\t" << entry.name << " " << entry.extension() << " : " << entry.path.value() << endl;
     }
   }
