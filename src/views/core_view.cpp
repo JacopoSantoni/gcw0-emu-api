@@ -76,7 +76,15 @@ void CoreView::initControls(ButtonStatus suspendKeys)
   // for each available button of the emulator enable its definition and its shift amount
   for (const ButtonSetting &button : buttons)
   {
-    s8 index = indexForKey(button.key);
+    // retrieve overridden controls if they are present
+    optional<const Keybind&> bind = manager->getPersistence()->keyBindOveriddenFor(core->info().ident, button.name);
+    
+    s8 index = -1;
+    
+    if (bind)
+      index = indexForKey(bind->key);
+    else
+      index = indexForKey(button.key);
 
     mapping[index].enabled = true;
     mapping[index].mask = 1 << button.shiftAmount;

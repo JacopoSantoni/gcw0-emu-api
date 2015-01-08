@@ -128,7 +128,7 @@ void Manager::launchRom(const RomEntry& entry)
   /* if more cores are found we should find if a default one is forced, otherwise let user choose one */
   else
   {
-    CoreIdentifier identifier = persistence.coreForcedForFolder(entry.folder());
+    optional<const CoreIdentifier&> identifier = persistence.coreForcedForFolder(entry.folder());
     
     // we found a core that has been forced on specified folder, we use it if it's still there
     if (identifier)

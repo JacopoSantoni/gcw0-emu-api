@@ -107,6 +107,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		040A9A1B1A5EFFCD00413237 /* optional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = optional.h; sourceTree = "<group>"; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
 		043E7E0418A206A70015B350 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
@@ -257,6 +258,7 @@
 				047E9A771A55CF140066C697 /* defines.h */,
 				047E9A781A55CF140066C697 /* utils.cpp */,
 				047E9A791A55CF140066C697 /* utils.h */,
+				040A9A1B1A5EFFCD00413237 /* optional.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
