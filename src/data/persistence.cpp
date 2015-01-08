@@ -28,3 +28,13 @@ optional<const Keybind&> Persistence::keyBindOveriddenFor(const CoreIdentifier& 
   else
     return std::nullopt;
 }
+
+void Persistence::setKeybind(const CoreIdentifier& identifier, const string& name, GCWKey key)
+{
+  KeybindMap::iterator it = std::find_if(keybinds.begin(), keybinds.end(), [&](KeybindMap::value_type& pair) { return pair.second.name == name && pair.first == identifier; });
+  
+  if (it != keybinds.end())
+    it->second.key = key;
+  else
+    keybinds.insert(make_pair(identifier, Keybind(name, key)));
+}

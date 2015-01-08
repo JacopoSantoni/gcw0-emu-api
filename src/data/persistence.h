@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <map>
-#include "optional.h"
+#include "../common/optional.h"
 
 namespace gcw {
   
@@ -15,6 +15,7 @@ struct Keybind
   GCWKey key;
   
   Keybind(const std::string&& name, GCWKey key) : name(name), key(key) { }
+  Keybind(const std::string& name, GCWKey key) : name(name), key(key) { }
   
   bool isValid() { return !name.empty(); }
 };
@@ -42,6 +43,7 @@ public:
   std::optional<const CoreIdentifier&> coreForcedForFolder(const Path& folder) { return std::nullopt; }
   
   std::optional<const Keybind&> keyBindOveriddenFor(const CoreIdentifier& identifier, const std::string& keyName);
+  void setKeybind(const CoreIdentifier& identifier, const std::string& name, GCWKey key);
   
   
   const static Path ROOT_PATH;

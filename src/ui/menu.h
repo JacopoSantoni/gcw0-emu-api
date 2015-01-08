@@ -240,7 +240,16 @@ class SystemsMenu : public StandardMenu
         entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core)));
     }
   };
+  
+  
+  class KeybindMenuEntry : public StandardMenuEntry
+  {
+  private:
+    GCWKey key;
     
+  public:
+    KeybindMenuEntry(const std::string& name, GCWKey key) : StandardMenuEntry(name), key(key) { }
+  };
 }
 
 #endif
