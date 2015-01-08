@@ -10,4 +10,4 @@
 [submodule "geekboy"]
 	path = geekboy
 	url = git@github.com:Jakz/geekboy.git
-	branch = gcw0
+	branch = gcw0-opt
