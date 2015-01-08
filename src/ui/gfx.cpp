@@ -7,6 +7,12 @@ using namespace gcw;
 ImageCache Gfx::cache;
 SDL_PixelFormat *Gfx::format;
 
+#ifdef SDL_TRIPLEBUF
+  #define BUFFERING_POLICY SDL_TRIPLEBUF
+#else
+  #define BUFFERING_POLICY SDL_DOUBLEBUF
+#endif
+
 void Gfx::init()
 {
   SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK);
@@ -18,7 +24,7 @@ void Gfx::init()
   const int bpp = 16;
   
 	//SDL_ShowCursor(SDL_DISABLE);
-  screen = SDL_SetVideoMode(WIDTH, HEIGHT, bpp, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  screen = SDL_SetVideoMode(WIDTH, HEIGHT, bpp, SDL_HWSURFACE | BUFFERING_POLICY);
   
 	if (screen->format->BitsPerPixel != bpp) {
     fprintf(stderr, "ERROR: Did not get 32 bpp, got %u bpp instead.\n",
