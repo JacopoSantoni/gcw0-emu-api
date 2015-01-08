@@ -7,7 +7,7 @@ SYSROOT := $(shell $(CC) --print-sysroot)
 SDL_INCLUDES := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
 SDL_LIBS := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
 
-CCFLAGS = -std=c++11 $(SDL_INCLUDES)
+CCFLAGS = -std=c++11 $(SDL_INCLUDES) -fno-exceptions -fno-rtti
 LDFLAGS += $(SDL_LIBS) -lSDL_image -ldl
 
 all opt debug:
