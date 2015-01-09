@@ -1,6 +1,8 @@
 #include "utils.h"
 
 #include "sys/stat.h"
+//TODO: required for ~ expansion
+//#include "wordexp.h"
 
 #include <thread>
 
@@ -185,6 +187,17 @@ vector<Path> Files::findSubfolders(const string& path)
     folders.push_back("..");
   
   return folders;
+}
+
+bool Files::createFolder(const std::string& path)
+{
+  //TODO: use expansion
+  /*wordexp_t p;
+  wordexp(path.c_str(), &p, 0);
+  mkdir(p.we_wordv[0], 0755);
+  wordfree(&p);*/
+  mkdir(path.c_str(), 0755);
+  return true;
 }
 
 

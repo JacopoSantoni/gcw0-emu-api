@@ -8,7 +8,9 @@
 const char* CORES_PATH = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores/";
 const char* LIBRARY_EXTENSION = "dylib";
 #else
-const char* CORES_PATH = "cores/";
+const char* CORES_PATH = "/usr/local/home/.cores/";
+//TODO: use wordexp
+//const char* CORES_PATH = "~/.cores/";
 const char* LIBRARY_EXTENSION = "so";
 #endif
 
@@ -42,6 +44,9 @@ void Loader::scan()
     loadCoreInfo(handle2, core2);
     return;
   #else  
+    Files::createFolder(CORES_PATH);
+  
+  
     vector<Path> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION,false);
     
     LOG("Cores folder: %s\n",CORES_PATH);

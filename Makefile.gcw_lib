@@ -1,4 +1,5 @@
-.PHONY: all clean opk send debug geekboy profile
+.PHONY: all clean opk send debug profile
+.PHONY: geekboy gambatte
 
 CC = mipsel-linux-g++
 STRIP = mipsel-linux-strip
@@ -22,7 +23,7 @@ SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(di
 BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
 EXECUTABLE := gcwemu
 
-CORES := geekboy
+CORES := geekboy gambatte
 
 # ohboy PocketSNES
 
@@ -35,9 +36,14 @@ $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 geekboy:
 	$(MAKE) -f Makefile.gcw -C geekboy $(MAKECMDGOALS)
 	mv geekboy/geekboy.so cores/geekboy.so
+	
+gambatte:
+	$(MAKE) -f Makefile.gcw -C gambatte/libgambatte $(MAKECMDGOALS)
+	mv gambatte/libgambatte/gambatte.so cores/gambatte.so
 
 clean:
 	$(MAKE) -f Makefile.gcw -C geekboy $(MAKECMDGOALS)
+	$(MAKE) -f Makefile.gcw -C gambatte/libgambatte $(MAKECMDGOALS)
 	rm -f gcwemu
 	rm -rf $(BINDIR)
 	rm -f cores/*.so

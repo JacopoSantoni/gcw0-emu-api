@@ -61,6 +61,7 @@ namespace gcw
     static std::vector<Path> findFiles(const std::string& path, const std::string& ext, bool recursive);
     static std::vector<Path> findFiles(const std::string& path, std::unordered_set<std::string>& exts, bool recursive);
     static std::vector<Path> findSubfolders(const std::string& path);
+    static bool createFolder(const std::string& path);
   };
   
   class Timer

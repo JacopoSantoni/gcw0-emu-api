@@ -1,4 +1,4 @@
-.PHONY: all ohboy PocketSNES geekboy clean
+.PHONY: all geekboy clean gambatte
 
 CC = clang++
 
@@ -17,7 +17,7 @@ SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(di
 BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
 EXECUTABLE := gcwemu
 
-CORES:= geekboy
+CORES:= geekboy gambatte
 	# ohboy PocketSNES
 
 all: $(EXECUTABLE) $(CORES)
@@ -25,6 +25,10 @@ all: $(EXECUTABLE) $(CORES)
 geekboy:
 	$(MAKE) -f Makefile.osx_lib -C geekboy $(MAKECMDGOALS)
 	mv geekboy/geekboy.dylib cores/geekboy.dylib
+	
+gambatte:
+	$(MAKE) -f Makefile.osx_lib -C gambatte/libgambatte $(MAKECMDGOALS)
+	mv gambatte/libgambatte/gambatte.dylib cores/gambatte.dylib
 
 ohboy:
 	$(MAKE) -f Makefile.osx_lib -C ohboy $(MAKECMDGOALS)
@@ -41,10 +45,12 @@ $(EXECUTABLE): $(addprefix $(BINDIR)/, $(BINARIES))
 
 clean:
 	$(MAKE) -f Makefile.osx_lib -C geekboy $(MAKECMDGOALS)
+	$(MAKE) -f Makefile.osx_lib -C gambatte/libgambatte $(MAKECMDGOALS)
+	
 	rm -f gcwemu
 	rm -rf $(BINDIR)
 	rm -rf cores/*.dylib
-	$(foreach var,$(CORES),$(MAKE) -f Makefile.osx_lib -C $(var) clean;)
+#	$(foreach var,$(CORES),$(MAKE) -f Makefile.osx_lib -C $(var) clean;)
 
 $(BINDIR)/%.o : $(BASESRC)/%.cpp
 	@test -d $(@D) || mkdir -p $(@D)
