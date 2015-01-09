@@ -186,4 +186,17 @@ struct Offset
 typedef Offset Size;
 
 
+struct SfxAudioSpec
+{
+  u32 bufferElementSize;
+  u32 bufferSize;
+
+  u16 sampleRate;
+  
+  SfxAudioSpec(u32 bufferElementSize, u32 bufferSize, u16 sampleRate) : bufferElementSize(bufferElementSize), bufferSize(bufferSize), sampleRate(sampleRate) { }
+  
+  u32 totalBufferSize() const { return bufferSize * bufferElementSize; }
+};
+
+
 #endif

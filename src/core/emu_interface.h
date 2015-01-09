@@ -9,9 +9,8 @@
 
 #include "manager_interface.h"
 #include "../common/defines.h"
-//#include "../ui/gfx.h"
+#include "../common/optional.h"
 #include "../data/settings.h"
-
 
 
 namespace gcw {
@@ -48,10 +47,9 @@ struct CoreInfo
     AnalogDeadZone analogDeadZone;
   
     GfxBufferSpec gfxFormat;
+    std::optional<SfxAudioSpec> sfxFormat;
   
-    ManagerInterface* manager;
-  
-  
+
   protected:
     CoreInterface() : requiresProgressForLoading(false), analogJoypadEnabled(false) { }
   
@@ -65,10 +63,14 @@ struct CoreInfo
     void enableProgressForLoading() { requiresProgressForLoading = true; }
   
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
+    void setSfxFormat(SfxAudioSpec format) { sfxFormat = std::optional<SfxAudioSpec>(format); }
   
+    u32* audioBuffer;
     GfxBuffer gfxBuffer;
     ButtonStatus buttonStatus;
     AnalogStatus analogStatus;
+    
+    ManagerInterface* manager;
 
   public:
     virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
@@ -112,6 +114,7 @@ struct CoreInfo
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
+    void setAudioBuffer(u32* buffer) { this->audioBuffer = buffer; }
 
   
   
@@ -127,6 +130,7 @@ struct CoreInfo
     bool isAnalogJoypadUsed() const { return analogJoypadEnabled; }
   
     const GfxBufferSpec& getGfxSpec() const { return gfxFormat; }
+    const std::optional<SfxAudioSpec>& getSfxSpec() const { return sfxFormat; }
   };
   
 }

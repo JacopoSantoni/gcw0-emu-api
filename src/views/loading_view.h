@@ -1,7 +1,7 @@
 #ifndef __LOADING_VIEW_H__
 #define __LOADING_VIEW_H__
 
-#include "../ui/view.h"
+#include "../gfx/view.h"
 
 namespace gcw
 {

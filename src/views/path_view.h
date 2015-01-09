@@ -2,7 +2,7 @@
 #define _MENU_VIEW_H_
 
 #include <SDL.h>
-#include "../ui/view.h"
+#include "../gfx/view.h"
 #include "../common/utils.h"
 
 #include <vector>

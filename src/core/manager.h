@@ -2,7 +2,8 @@
 #define _MANAGER_H_
 
 #include "loader.h"
-#include "../ui/gfx.h"
+#include "../gfx/gfx.h"
+#include "../sfx/sfx.h"
 #include "../common/utils.h"
 #include "../data/rom_collection.h"
 #include "../data/persistence.h"
@@ -54,6 +55,8 @@ namespace gcw {
     
     void reportRomLoading(float percent) override { }
     void reportRomLoaded() override { }
+    
+    const AudioStatus& writeAudioSamples(size_t count, size_t shift) override { return coreView.writeAudioSamples(count, shift); }
   
     void switchView(ViewType type)
     {

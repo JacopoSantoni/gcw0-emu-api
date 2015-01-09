@@ -29,6 +29,15 @@ void CoreView::initGfx()
       blitter = new Blitter888to565(manager->getGfx());
   }
   
+  
+  const optional<SfxAudioSpec>& sfxSpec = core->getSfxSpec();
+  
+  if (sfxSpec)
+  {
+    audioBuffer = unique_ptr<u32[]>(new u32[sfxSpec->bufferSize]);
+    audioOut = unique_ptr<AudioOut>(new AudioOut(44100, 133, 4, sfxSpec->bufferSize));
+    core->setAudioBuffer(audioBuffer.get());
+  }
 }
 
 void CoreView::reset()

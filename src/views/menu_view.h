@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 #include "../core/emu_interface.h"
-#include "../ui/view.h"
+#include "../gfx/view.h"
 
 #include <stack>
 

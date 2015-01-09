@@ -1,6 +1,6 @@
 #include "menu_view.h"
 
-#include "../ui/menu.h"
+#include "../gfx/menu.h"
 #include "../common/defines.h"
 #include "../core/manager.h"
 

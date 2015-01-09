@@ -1,6 +1,6 @@
 #include "manager.h"
 
-#include "../ui/menu.h"
+#include "../gfx/menu.h"
 
 using namespace std;
 using namespace gcw;
@@ -151,6 +151,9 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   {
     handle.core->loadRomByFileName(entry.path.value());
     switchView(VIEW_CORE);
+    
+    if (handle.core->getSfxSpec())
+      SDL_PauseAudio(0);
   }
   
 }

@@ -1,6 +1,6 @@
 #include "loading_view.h"
 
-#include "../ui/gfx.h"
+#include "../gfx/gfx.h"
 
 using namespace gcw;
 

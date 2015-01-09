@@ -3,8 +3,9 @@
 
 #include <SDL.h>
 #include "../core/emu_interface.h"
-#include "../ui/view.h"
-#include "../ui/gfx.h"
+#include "../gfx/view.h"
+#include "../gfx/gfx.h"
+#include "../sfx/sfx.h"
 
 namespace gcw {
 
@@ -22,6 +23,10 @@ class CoreView : public View
     Blitter *blitter;
     GfxBuffer buffer;
     Offset offset;
+  
+    std::unique_ptr<AudioOut> audioOut;
+    std::unique_ptr<u32[]> audioBuffer;
+  
   
     struct IntegralDeadZone { s32 min, max, delta; };
         
@@ -48,6 +53,13 @@ class CoreView : public View
   
     virtual void render();
     virtual void handleEvents();
+  
+    const AudioStatus& writeAudioSamples(size_t count, size_t shift)
+    {
+      const AudioStatus& astatus = audioOut->write(reinterpret_cast<u32*>(audioBuffer.get()), count);
+      std::memmove(audioBuffer.get(), reinterpret_cast<u32*>(audioBuffer.get()) + count, shift + sizeof(*audioBuffer.get()));
+      return std::move(astatus);
+    }
 };
   
 }

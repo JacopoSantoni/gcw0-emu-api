@@ -13,6 +13,8 @@
 
 namespace gcw
 {
+  typedef unsigned long usec_t;
+  
   class Path
   {
   private:
@@ -79,6 +81,8 @@ namespace gcw
     
       void setFrameRate(float rate);
       void frameRateDelay();
+    
+      static usec_t getusecs() { return SDL_GetTicks() * usec_t(1000); }
   };
   
   class Text
