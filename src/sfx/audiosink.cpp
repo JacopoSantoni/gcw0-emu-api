@@ -101,3 +101,8 @@ void AudioSink::read(Uint8 *const stream, std::size_t const len) {
 	rateEst_.feed(len / 4);
   bufReadyCond_.notify_one();
 }
+
+void AudioSink::clear()
+{
+  rbuf_.fill(0);
+}

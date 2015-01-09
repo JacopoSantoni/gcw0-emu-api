@@ -60,6 +60,8 @@ class CoreView : public View
       std::memmove(audioBuffer.get(), reinterpret_cast<u32*>(audioBuffer.get()) + count, shift + sizeof(*audioBuffer.get()));
       return std::move(astatus);
     }
+  
+    std::unique_ptr<AudioOut>& getAudioOut() { return audioOut; }
 };
   
 }

@@ -54,7 +54,7 @@ void Manager::init()
 }
 
 void Manager::run()
-{
+{  
   while (running)
   {
     gfx.clear<u16>(gfx.ccc<u16>(0, 0, 0));
@@ -79,6 +79,9 @@ void Manager::run()
     gfx.flip();
     timer.frameRateDelay();
   }
+  
+  
+  
 }
 
 void Manager::loadCoreAndWarmUp(CoreHandle& handle)
@@ -89,6 +92,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
     if (handle.isLoaded() && core->info() == handle.core->info())
     {
       core->reset();
+      coreView.initControls(GCW_KEY_L | GCW_KEY_R);
     }
     /* if manager already has a core but it is different from the one required we need to unload resources and unload core */
     else
@@ -147,6 +151,9 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   
   loadCoreAndWarmUp(handle);
   
+  coreView.getAudioOut()->clear();
+
+  
   if (!handle.core->doesRequireProgressForLoading())
   {
     handle.core->loadRomByFileName(entry.path.value());
@@ -160,12 +167,15 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
 
 void Manager::pauseEmulation()
 {
+  SDL_PauseAudio(1);
+
   core->emulationSuspended();
   switchView(VIEW_MENU);
 }
 
 void Manager::resumeEmulation()
 {
+  SDL_PauseAudio(0);
   core->emulationResumed();
   coreView.initControls(GCW_KEY_L | GCW_KEY_R);
   switchView(VIEW_CORE);

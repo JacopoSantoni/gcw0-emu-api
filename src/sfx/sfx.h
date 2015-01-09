@@ -11,17 +11,18 @@
 
 namespace gcw
 {
-  struct AudioStatus {
+  struct AudioStatus
+  {
     long rate;
     bool low;
     
     AudioStatus(long rate, bool low) : rate(rate), low(low) {}
   };
   
-  class AudioOut {
+  class AudioOut
+  {
   public:
 
-    
     AudioOut(long sampleRate, int latency, int periods, std::size_t maxInSamplesPerWrite) :
     resampler_(new Linint<2>(2097152, sampleRate)),
     resampleBuf_(resampler_->maxOut(maxInSamplesPerWrite) * 2),
@@ -30,12 +31,13 @@ namespace gcw
     }
     
     AudioStatus write(Uint32 const *data, std::size_t samples) {
-      long const outsamples = resampler_->resample(
-                                                   resampleBuf_, reinterpret_cast<Sint16 const *>(data), samples);
+      long const outsamples = resampler_->resample(resampleBuf_, reinterpret_cast<const s16*>(data), samples);
       AudioSink::Status const &stat = sink_.write(resampleBuf_, outsamples);
       bool low = stat.fromUnderrun + outsamples < (stat.fromOverflow - outsamples) * 2;
       return AudioStatus(stat.rate, low);
     }
+    
+    void clear() { sink_.clear(); }
     
   private:
     std::unique_ptr<Resampler> const resampler_;

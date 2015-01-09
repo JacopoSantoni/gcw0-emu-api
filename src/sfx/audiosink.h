@@ -45,6 +45,7 @@ public:
 	AudioSink(long sampleRate, int latency, int periods);
 	~AudioSink();
 	Status write(Sint16 const *inBuf, std::size_t samples);
+  void clear();
 
 private:
 

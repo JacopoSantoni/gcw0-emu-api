@@ -35,7 +35,8 @@ void CoreView::initGfx()
   if (sfxSpec)
   {
     audioBuffer = unique_ptr<u32[]>(new u32[sfxSpec->bufferSize]);
-    audioOut = unique_ptr<AudioOut>(new AudioOut(44100, 133, 4, sfxSpec->bufferSize));
+    // TODO: should use sampleRate taken from core options
+    audioOut = unique_ptr<AudioOut>(new AudioOut(sfxSpec->sampleRate, 133, 4, sfxSpec->bufferSize));
     core->setAudioBuffer(audioBuffer.get());
   }
 }

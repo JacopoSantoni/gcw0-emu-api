@@ -116,6 +116,7 @@ struct CoreInfo
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
     void setAudioBuffer(u32* buffer) { this->audioBuffer = buffer; }
 
+    const AudioStatus& writeAudioSamples(size_t count, size_t shift) { return manager->writeAudioSamples(count, shift); }
   
   
   
