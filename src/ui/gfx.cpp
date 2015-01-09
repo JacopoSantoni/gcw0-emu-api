@@ -43,7 +43,7 @@ void Gfx::init()
 
 
 template <typename T>
-void Gfx::rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset)
+void Gfx::rawBlit(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset)
 {
   SDL_LockSurface(dest);
   T *p = static_cast<T*>(dest->pixels) + offset.x + offset.y*dest->w;
@@ -171,8 +171,8 @@ const Font Font::bigFont = Font("data/font.png", 6, 9, 9, 5,
 template void Gfx::clear(GfxBuffer &buffer, u32 color);
 template void Gfx::clear(GfxBuffer &buffer, u16 color);
 
-template void Gfx::rawBlit<u32>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
-template void Gfx::rawBlit<u16>(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
+template void Gfx::rawBlit<u32>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);
+template void Gfx::rawBlit<u16>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);
 
 template void Gfx::rectFill<u16>(s16 x1, s16 y1, u16 w, u16 h, u16 color);
 template void Gfx::rectFill<u32>(s16 x1, s16 y1, u16 w, u16 h, u32 color);

@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "../core/emu_interface.h"
 #include "../ui/view.h"
+#include "../ui/gfx.h"
 
 namespace gcw {
 
@@ -18,6 +19,7 @@ class Manager;
 class CoreView : public View
 {
   private:
+    Blitter *blitter;
     GfxBuffer buffer;
     Offset offset;
   
@@ -37,7 +39,7 @@ class CoreView : public View
     CoreInterface *core;
   
   public:
-    CoreView(Manager *manager) : View(manager) { }
+    CoreView(Manager *manager) : View(manager), blitter(nullptr) { }
   
     void initForCore(CoreInterface* core, ButtonStatus suspendKeys);
     void initControls(ButtonStatus suspendKeys);

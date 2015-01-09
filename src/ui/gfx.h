@@ -69,13 +69,13 @@ namespace gcw
   class Gfx
   {
     private:
-      SDL_Surface *screen;
       static SDL_PixelFormat *format;
     
-      template<typename T>
-      void rawBlit(SDL_Surface *dest, GfxBuffer &buffer, Offset &offset);
+
     
     public:
+      SDL_Surface *screen;
+
       void init();
       inline void flip() { SDL_Flip(screen); }
     
@@ -92,14 +92,15 @@ namespace gcw
       }
     
       template<typename T>
+      void rawBlit(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);
+    
+      template<typename T>
       void line(u16 x1, u16 y1, u16 x2, u16 y2, T color);
       template<typename T>
       void rect(u16 x, u16 y, u16 w, u16 h, T color);
       template<typename T>
       void rectFill(s16 x1, s16 y1, u16 w, u16 h, T color);
-    
-      void rawBlit(GfxBuffer &buffer, Offset &offset) { Gfx::rawBlit<u16>(screen, buffer, offset); }
-    
+        
       u16 print(int x, int y, bool centered, const Font &font, const char *text) const;
       u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...) const;
     
@@ -116,10 +117,13 @@ namespace gcw
         blit(src, x-src->w/2, y-src->h/2);
       }
     
+      const SDL_PixelFormat* getFormat() const { return format; }
+    
       template<typename T>
       static void clear(GfxBuffer &buffer, T color);
     
       static ImageCache cache;
+  
   };
   
   struct Font
@@ -145,6 +149,76 @@ namespace gcw
     
       static const Font bigFont;
   };
+  
+  
+  class Blitter
+  {
+  protected:
+    Gfx* gfx;
+    
+  public:
+    Blitter(Gfx* gfx) : gfx(gfx) { }
+    
+    virtual void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) = 0;
+    virtual ~Blitter() { }
+  };
+  
+  class Blitter565to565 : public Blitter
+  {
+  public:
+    Blitter565to565(Gfx* gfx) : Blitter(gfx) { }
+    
+    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
+    {
+      gfx->rawBlit<u16>(gfx->screen, buffer, offset);
+    }
+  };
+  
+  class Blitter888to888 : public Blitter
+  {
+  public:
+    Blitter888to888(Gfx* gfx) : Blitter(gfx) { }
+    
+    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
+    {      
+      gfx->rawBlit<u32>(gfx->screen, buffer, offset);
+    }
+  };
+  
+  class Blitter888to565 : public Blitter
+  {
+  public:
+    Blitter888to565(Gfx* gfx) : Blitter(gfx) { }
+    
+    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
+    {
+      SDL_LockSurface(dest);
+      u16* d = reinterpret_cast<u16*>(dest->pixels) + offset.x + offset.y*dest->w;
+      u32* s = reinterpret_cast<u32*>(buffer.data);
+      
+      for (int y = 0; y < buffer.height; ++y)
+      {
+        u16* bd = d + y*dest->w;
+        u32* bs = s + y*buffer.width;
+        
+        for (int x = 0; x < buffer.width; ++x, ++bd, ++bs)
+        {
+          u32 sc = *bs;
+          
+          u8 r = (sc >> 16) / 8;
+          u8 g = ((sc >> 8) & 0xFF) / 4;
+          u8 b = ((sc) & 0xFF) / 8;
+          
+          *bd = (r << 11) | (g << 5) | b;
+        }
+      }
+      
+      SDL_UnlockSurface(dest);
+
+    }
+  };
 }
+
+
 
 #endif

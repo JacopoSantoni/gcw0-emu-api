@@ -32,7 +32,7 @@ namespace gcw {
           MenuStatus currentStatus;
           
         public:
-          MenuEntryList() : OffsettableList(12) { }
+          MenuEntryList() : OffsettableList(10) { }
         
           u32 current() const;
           u32 count() const;

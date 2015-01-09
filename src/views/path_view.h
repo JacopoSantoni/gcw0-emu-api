@@ -25,7 +25,7 @@ namespace gcw {
         PathView *view;
         
       public:
-        PathList(PathView* view) : OffsettableList(12), view(view) { }
+        PathList(PathView* view) : OffsettableList(10), view(view) { }
         
         u32 current() const;
         u32 count() const;

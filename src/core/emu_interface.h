@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include <stdint.h>
-#include <SDL.h>
+//#include <SDL.h>
 
 #include "manager_interface.h"
 #include "../common/defines.h"

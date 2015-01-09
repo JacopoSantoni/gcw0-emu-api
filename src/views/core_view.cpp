@@ -11,11 +11,24 @@ using namespace gcw;
 
 void CoreView::initGfx()
 {
+  delete blitter;
+  
   const GfxBufferSpec& gfxSpec = core->getGfxSpec();
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
   offset.x = (WIDTH - buffer.width)/2;
   offset.y = (HEIGHT - buffer.height)/2;
+  
+  if (gfxSpec.format == FORMAT_565)
+    blitter = new Blitter565to565(manager->getGfx());
+  else if (gfxSpec.format == FORMAT_8888)
+  {
+    if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
+      blitter = new Blitter888to888(manager->getGfx());
+    else
+      blitter = new Blitter888to565(manager->getGfx());
+  }
+  
 }
 
 void CoreView::reset()
@@ -259,5 +272,5 @@ void CoreView::handleEvents()
 void CoreView::render()
 {
   core->emulationFrame();
-  gfx->rawBlit(buffer, offset);
+  blitter->blit(buffer, offset, manager->getGfx()->screen);
 }
