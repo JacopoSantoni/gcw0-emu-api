@@ -300,8 +300,6 @@
 		04D794381A60D19D00D9A690 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
 		04D794391A60D19D00D9A690 /* encodedstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encodedstream.h; sourceTree = "<group>"; };
 		04D7943A1A60D19D00D9A690 /* encodings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encodings.h; sourceTree = "<group>"; };
-		04D7943C1A60D19D00D9A690 /* en.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = en.h; sourceTree = "<group>"; };
-		04D7943D1A60D19D00D9A690 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
 		04D7943E1A60D19D00D9A690 /* filereadstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filereadstream.h; sourceTree = "<group>"; };
 		04D7943F1A60D19D00D9A690 /* filestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filestream.h; sourceTree = "<group>"; };
 		04D794401A60D19D00D9A690 /* filewritestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filewritestream.h; sourceTree = "<group>"; };
@@ -317,8 +315,6 @@
 		04D7944B1A60D19D00D9A690 /* strtod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strtod.h; sourceTree = "<group>"; };
 		04D7944C1A60D19D00D9A690 /* memorybuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memorybuffer.h; sourceTree = "<group>"; };
 		04D7944D1A60D19D00D9A690 /* memorystream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memorystream.h; sourceTree = "<group>"; };
-		04D7944F1A60D19D00D9A690 /* inttypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inttypes.h; sourceTree = "<group>"; };
-		04D794501A60D19D00D9A690 /* stdint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdint.h; sourceTree = "<group>"; };
 		04D794511A60D19D00D9A690 /* prettywriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prettywriter.h; sourceTree = "<group>"; };
 		04D794521A60D19D00D9A690 /* rapidjson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rapidjson.h; sourceTree = "<group>"; };
 		04D794531A60D19D00D9A690 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
@@ -736,14 +732,12 @@
 				04D794381A60D19D00D9A690 /* document.h */,
 				04D794391A60D19D00D9A690 /* encodedstream.h */,
 				04D7943A1A60D19D00D9A690 /* encodings.h */,
-				04D7943B1A60D19D00D9A690 /* error */,
 				04D7943E1A60D19D00D9A690 /* filereadstream.h */,
 				04D7943F1A60D19D00D9A690 /* filestream.h */,
 				04D794401A60D19D00D9A690 /* filewritestream.h */,
 				04D794411A60D19D00D9A690 /* internal */,
 				04D7944C1A60D19D00D9A690 /* memorybuffer.h */,
 				04D7944D1A60D19D00D9A690 /* memorystream.h */,
-				04D7944E1A60D19D00D9A690 /* msinttypes */,
 				04D794511A60D19D00D9A690 /* prettywriter.h */,
 				04D794521A60D19D00D9A690 /* rapidjson.h */,
 				04D794531A60D19D00D9A690 /* reader.h */,
@@ -751,15 +745,6 @@
 				04D794551A60D19D00D9A690 /* writer.h */,
 			);
 			path = json;
-			sourceTree = "<group>";
-		};
-		04D7943B1A60D19D00D9A690 /* error */ = {
-			isa = PBXGroup;
-			children = (
-				04D7943C1A60D19D00D9A690 /* en.h */,
-				04D7943D1A60D19D00D9A690 /* error.h */,
-			);
-			path = error;
 			sourceTree = "<group>";
 		};
 		04D794411A60D19D00D9A690 /* internal */ = {
@@ -777,15 +762,6 @@
 				04D7944B1A60D19D00D9A690 /* strtod.h */,
 			);
 			path = internal;
-			sourceTree = "<group>";
-		};
-		04D7944E1A60D19D00D9A690 /* msinttypes */ = {
-			isa = PBXGroup;
-			children = (
-				04D7944F1A60D19D00D9A690 /* inttypes.h */,
-				04D794501A60D19D00D9A690 /* stdint.h */,
-			);
-			path = msinttypes;
 			sourceTree = "<group>";
 		};
 		04F010BE1A5F59EE00F370D0 /* gambatte */ = {
