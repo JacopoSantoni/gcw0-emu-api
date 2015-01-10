@@ -15,6 +15,13 @@ namespace gcw
 {
   typedef unsigned long usec_t;
   
+  enum class FMode
+  {
+    READING,
+    WRITING,
+    APPENDING
+  };
+  
   class Path
   {
   private:
@@ -50,6 +57,13 @@ namespace gcw
     bool operator==(const std::string& rhs) const { return path == rhs; }
     bool operator==(const Path& rhs) const { return path == rhs.path; }
     bool operator==(const char* rhs) const { return path == std::string(rhs); }
+    
+    FILE* open(FMode mode) const;
+    bool exists() const;
+    
+    Path operator+(const Path& rhs) const { return this->append(path); }
+    Path operator+(const std::string& rhs) const { return this->append(rhs); }
+    Path operator+(const char* rhs) const { return this->append(std::string(rhs)); }
   };
   
   inline Path operator+(const Path& lhs, const Path& rhs) // first arg by value, second by const ref

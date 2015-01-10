@@ -69,7 +69,10 @@ namespace gcw {
       }
     }
   
-    void exit() { running = false; }
+    void exit() {
+      persistence.save();
+      running = false;
+    }
     
     const RomEntry* getCurrentRom() { return rom; }
     

@@ -13,10 +13,11 @@ void Manager::init()
   for (std::string &f : folders)
     std::cout << f << std::endl;*/
   
-  persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gba/");
+  /*persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gba/");
   persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/snes/");
-  persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gb/");
+  persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gb/");*/
 
+  persistence.load();
   
   loader.scan();
   collection.scan();

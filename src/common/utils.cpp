@@ -33,6 +33,25 @@ Path::Path(const std::string& path) : path(path)
   trimEndSlash();
 }
 
+FILE* Path::open(FMode mode) const
+{
+  const char* smode = nullptr;
+  
+  switch (mode) {
+    case FMode::WRITING: smode = "wb";
+    case FMode::READING: smode = "rb";
+    case FMode::APPENDING: smode = "wb+";
+  }
+  
+  return fopen(path.c_str(), smode);
+}
+
+bool Path::exists() const
+{
+  struct stat buffer;
+  return stat(path.c_str(), &buffer) == 0;
+}
+
 Path Path::folder() const
 {
   size_t dot = path.find_last_of("/");

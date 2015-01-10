@@ -296,6 +296,34 @@
 		04CB04471897670300169B41 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		04CB04481897670300169B41 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		04CB04491897670300169B41 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		04D794371A60D19D00D9A690 /* allocators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = allocators.h; sourceTree = "<group>"; };
+		04D794381A60D19D00D9A690 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		04D794391A60D19D00D9A690 /* encodedstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encodedstream.h; sourceTree = "<group>"; };
+		04D7943A1A60D19D00D9A690 /* encodings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encodings.h; sourceTree = "<group>"; };
+		04D7943C1A60D19D00D9A690 /* en.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = en.h; sourceTree = "<group>"; };
+		04D7943D1A60D19D00D9A690 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
+		04D7943E1A60D19D00D9A690 /* filereadstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filereadstream.h; sourceTree = "<group>"; };
+		04D7943F1A60D19D00D9A690 /* filestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filestream.h; sourceTree = "<group>"; };
+		04D794401A60D19D00D9A690 /* filewritestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filewritestream.h; sourceTree = "<group>"; };
+		04D794421A60D19D00D9A690 /* biginteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = biginteger.h; sourceTree = "<group>"; };
+		04D794431A60D19D00D9A690 /* diyfp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diyfp.h; sourceTree = "<group>"; };
+		04D794441A60D19D00D9A690 /* dtoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dtoa.h; sourceTree = "<group>"; };
+		04D794451A60D19D00D9A690 /* ieee754.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ieee754.h; sourceTree = "<group>"; };
+		04D794461A60D19D00D9A690 /* itoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itoa.h; sourceTree = "<group>"; };
+		04D794471A60D19D00D9A690 /* meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = meta.h; sourceTree = "<group>"; };
+		04D794481A60D19D00D9A690 /* pow10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pow10.h; sourceTree = "<group>"; };
+		04D794491A60D19D00D9A690 /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
+		04D7944A1A60D19D00D9A690 /* strfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strfunc.h; sourceTree = "<group>"; };
+		04D7944B1A60D19D00D9A690 /* strtod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strtod.h; sourceTree = "<group>"; };
+		04D7944C1A60D19D00D9A690 /* memorybuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memorybuffer.h; sourceTree = "<group>"; };
+		04D7944D1A60D19D00D9A690 /* memorystream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memorystream.h; sourceTree = "<group>"; };
+		04D7944F1A60D19D00D9A690 /* inttypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inttypes.h; sourceTree = "<group>"; };
+		04D794501A60D19D00D9A690 /* stdint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdint.h; sourceTree = "<group>"; };
+		04D794511A60D19D00D9A690 /* prettywriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prettywriter.h; sourceTree = "<group>"; };
+		04D794521A60D19D00D9A690 /* rapidjson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rapidjson.h; sourceTree = "<group>"; };
+		04D794531A60D19D00D9A690 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		04D794541A60D19D00D9A690 /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
+		04D794551A60D19D00D9A690 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
 		04F010C01A5F5A0500F370D0 /* bitmap_font.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bitmap_font.cpp; sourceTree = "<group>"; };
 		04F010C11A5F5A0500F370D0 /* bitmap_font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitmap_font.h; sourceTree = "<group>"; };
 		04F010C31A5F5A0500F370D0 /* counterdef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = counterdef.h; sourceTree = "<group>"; };
@@ -478,6 +506,7 @@
 		047E9A801A55CF140066C697 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				04D794361A60D19D00D9A690 /* json */,
 				047E9A811A55CF140066C697 /* persistence.cpp */,
 				047E9A821A55CF140066C697 /* persistence.h */,
 				047E9A831A55CF140066C697 /* rom_collection.cpp */,
@@ -698,6 +727,65 @@
 				04CB04491897670300169B41 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		04D794361A60D19D00D9A690 /* json */ = {
+			isa = PBXGroup;
+			children = (
+				04D794371A60D19D00D9A690 /* allocators.h */,
+				04D794381A60D19D00D9A690 /* document.h */,
+				04D794391A60D19D00D9A690 /* encodedstream.h */,
+				04D7943A1A60D19D00D9A690 /* encodings.h */,
+				04D7943B1A60D19D00D9A690 /* error */,
+				04D7943E1A60D19D00D9A690 /* filereadstream.h */,
+				04D7943F1A60D19D00D9A690 /* filestream.h */,
+				04D794401A60D19D00D9A690 /* filewritestream.h */,
+				04D794411A60D19D00D9A690 /* internal */,
+				04D7944C1A60D19D00D9A690 /* memorybuffer.h */,
+				04D7944D1A60D19D00D9A690 /* memorystream.h */,
+				04D7944E1A60D19D00D9A690 /* msinttypes */,
+				04D794511A60D19D00D9A690 /* prettywriter.h */,
+				04D794521A60D19D00D9A690 /* rapidjson.h */,
+				04D794531A60D19D00D9A690 /* reader.h */,
+				04D794541A60D19D00D9A690 /* stringbuffer.h */,
+				04D794551A60D19D00D9A690 /* writer.h */,
+			);
+			path = json;
+			sourceTree = "<group>";
+		};
+		04D7943B1A60D19D00D9A690 /* error */ = {
+			isa = PBXGroup;
+			children = (
+				04D7943C1A60D19D00D9A690 /* en.h */,
+				04D7943D1A60D19D00D9A690 /* error.h */,
+			);
+			path = error;
+			sourceTree = "<group>";
+		};
+		04D794411A60D19D00D9A690 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				04D794421A60D19D00D9A690 /* biginteger.h */,
+				04D794431A60D19D00D9A690 /* diyfp.h */,
+				04D794441A60D19D00D9A690 /* dtoa.h */,
+				04D794451A60D19D00D9A690 /* ieee754.h */,
+				04D794461A60D19D00D9A690 /* itoa.h */,
+				04D794471A60D19D00D9A690 /* meta.h */,
+				04D794481A60D19D00D9A690 /* pow10.h */,
+				04D794491A60D19D00D9A690 /* stack.h */,
+				04D7944A1A60D19D00D9A690 /* strfunc.h */,
+				04D7944B1A60D19D00D9A690 /* strtod.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		04D7944E1A60D19D00D9A690 /* msinttypes */ = {
+			isa = PBXGroup;
+			children = (
+				04D7944F1A60D19D00D9A690 /* inttypes.h */,
+				04D794501A60D19D00D9A690 /* stdint.h */,
+			);
+			path = msinttypes;
 			sourceTree = "<group>";
 		};
 		04F010BE1A5F59EE00F370D0 /* gambatte */ = {

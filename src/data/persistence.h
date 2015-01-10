@@ -52,6 +52,11 @@ namespace gcw {
     
     
     const static Path ROOT_PATH;
+    const static Path LOADER_PATH;
+    
+    
+    void save();
+    void load();
 
     //   paths = {gba", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes"};
 
