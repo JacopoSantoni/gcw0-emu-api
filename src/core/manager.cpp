@@ -17,6 +17,7 @@ void Manager::init()
   persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/snes/");
   persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gb/");*/
 
+  persistence.createFolderStructure();
   persistence.load();
   
   loader.scan();

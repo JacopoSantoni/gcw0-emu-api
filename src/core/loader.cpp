@@ -4,16 +4,6 @@
 #include "../common/utils.h"
 #include "manager.h"
 
-#ifdef __APPLE__
-const char* CORES_PATH = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores/";
-const char* LIBRARY_EXTENSION = "dylib";
-#else
-const char* CORES_PATH = "/usr/local/home/.cores/";
-//TODO: use wordexp
-//const char* CORES_PATH = "~/.cores/";
-const char* LIBRARY_EXTENSION = "so";
-#endif
-
 using namespace std;
 using namespace gcw;
 
@@ -44,17 +34,18 @@ void Loader::scan()
     loadCoreInfo(handle2, core2);
     return;
   #else  
-    Files::createFolder(CORES_PATH);
   
+  const Path coresFolder = Persistence::pathFor(PathType::CORES);
   
-    vector<Path> files = Files::findFiles(CORES_PATH,LIBRARY_EXTENSION,false);
+  vector<Path> files = coresFolder.findFiles(Persistence::coreExtension(), false);
     
-    LOG("Cores folder: %s\n",CORES_PATH);
-
+    LOG("Cores folder: %s\n",coresFolder.c_str());
 
     for (const Path& file : files)
     {    
-      void *handle = dlopen((CORES_PATH+file.value()).c_str(), RTLD_LOCAL|RTLD_NOW);
+      Path coreFile = coresFolder + file.value();
+      
+      void *handle = dlopen(coreFile.c_str(), RTLD_LOCAL|RTLD_NOW);
       CoreInterface* (*retrieve)();
       *(void**) (&retrieve) = dlsym(handle, "retrieve");
       
@@ -64,7 +55,7 @@ void Loader::scan()
         
         // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
         // function since we're just scanning 
-        CoreHandle coreHandle = CoreHandle(CORES_PATH+file.value(), interface->info());
+        CoreHandle coreHandle = CoreHandle(coreFile.c_str(), interface->info());
         loadCoreInfo(coreHandle, interface);
       }
       

@@ -4,8 +4,11 @@
 #include "json/prettywriter.h"
 #include "json/filewritestream.h"
 
+#include "serializer.h"
+
 #include <fstream>
 #include <streambuf>
+#include <memory>
 
 using namespace gcw;
 using namespace std;
@@ -13,12 +16,37 @@ using namespace rapidjson;
 
 #ifdef __APPLE__
 const Path Persistence::ROOT_PATH = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root");
+const Path Persistence::HOME_PATH = ROOT_PATH + "/usr/local/home";
+const Path Persistence::LOADER_PATH = ROOT_PATH + HOME_PATH + "loader";
+const Path Persistence::CORES_PATH = LOADER_PATH + "cores";
+
+const string Persistence::CORES_EXTENSION = "dylib";
+
 #else
 const Path Persistence::ROOT_PATH = Path("/");
+const Path Persistence::HOME_PATH = "/usr/local/home";
+const Path Persistence::LOADER_PATH = ROOT_PATH + HOME_PATH + ".loader";
+const Path Persistence::CORES_PATH = LOADER_PATH+ ".cores";
+
+const string Persistence::CORES_EXTENSION = "so";
+
 #endif
 
-const Path Persistence::LOADER_PATH = ROOT_PATH + "/usr/local/home/" + ".loader";
+Path Persistence::pathFor(PathType type)
+{
+  switch (type) {
+    case PathType::ROOT: return ROOT_PATH;
+    case PathType::HOME: return HOME_PATH;
+    case PathType::LOADER: return LOADER_PATH;
+    case PathType::CORES: return CORES_PATH;
+      
+    case PathType::SETTINGS_FILE: return LOADER_PATH + "settings.json";
+    
+    default: return Path();
+  }
+}
 
+const std::string& Persistence::coreExtension() { return CORES_EXTENSION; }
 
 optional<const Keybind&> Persistence::keyBindOveriddenFor(const CoreIdentifier& identifier, const std::string& keyName)
 {
@@ -49,6 +77,12 @@ void Persistence::setKeybind(const CoreIdentifier& identifier, const string& nam
     keybinds.insert(make_pair(identifier, Keybind(name, key)));
 }
 
+void Persistence::createFolderStructure()
+{
+  Files::createFolder(LOADER_PATH);
+  Files::createFolder(CORES_PATH);
+}
+
 void Persistence::load()
 {
   Path settings = LOADER_PATH + "settings.json";
@@ -68,10 +102,10 @@ void Persistence::load()
   buffer.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
   doc.Parse(buffer.c_str());
+
+  Unserializer unserializer;
   
-  const Value& jromPaths = doc["rom-paths"];
-  for (size_t i = 0; i < jromPaths.Size(); ++i)
-    romPaths.push_back(jromPaths[i].GetString());
+  unserializer.unserialize(romPaths, doc["rom-paths"]);
 }
 
 void Persistence::save()
@@ -85,12 +119,11 @@ void Persistence::save()
   
   PrettyWriter<FileWriteStream> writer(stream);
   
+  Serializer serializer;
+  
   writer.StartObject();
   writer.String("rom-paths");
-  writer.StartArray();
-  for (const Path& path : romPaths)
-    writer.String(path.value().c_str());
-  writer.EndArray();
+  serializer.serialize(romPaths, writer);
   writer.EndObject();
   
   

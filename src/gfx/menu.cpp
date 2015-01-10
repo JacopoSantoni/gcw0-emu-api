@@ -165,7 +165,7 @@ void RomPathsMenu::build()
     };
     
     PathView* pview = manager->getPathView();
-    pview->init("Add rom path", Path(Persistence::ROOT_PATH), plambda, [manager, this](){ manager->switchView(VIEW_MENU); });
+    pview->init("Add rom path", Path(Persistence::pathFor(PathType::HOME)), plambda, [manager, this](){ manager->switchView(VIEW_MENU); });
     manager->switchView(VIEW_PATH);
   };
   

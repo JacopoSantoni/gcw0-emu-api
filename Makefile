@@ -12,7 +12,16 @@ LDFLAGS += -arch x86_64 $(SDL_LIBS) -lSDL_image
 #BINARIES:= $(foreach source, $(SOURCES), $(source:%.cpp=%.o) )
 BINDIR := obj
 BASESRC := src
-SOURCE := $(BASESRC) $(BASESRC)/common $(BASESRC)/core $(BASESRC)/data $(BASESRC)/debug $(BASESRC)/systems $(BASESRC)/gfx $(BASESRC)/sfx $(BASESRC)/views
+SOURCE := \
+	$(BASESRC) \
+	$(BASESRC)/common \
+	$(BASESRC)/core \
+	$(BASESRC)/data \
+	$(BASESRC)/debug \
+	$(BASESRC)/systems \
+	$(BASESRC)/gfx \
+	$(BASESRC)/sfx \
+	$(BASESRC)/views
 SOURCES := $(patsubst $(BASESRC)/%, %, $(foreach dir, $(SOURCE), $(wildcard $(dir)/*.cpp)))
 BINARIES := $(patsubst %.cpp, %.o, $(SOURCES))
 EXECUTABLE := gcwemu

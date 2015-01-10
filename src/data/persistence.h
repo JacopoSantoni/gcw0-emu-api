@@ -11,6 +11,21 @@ namespace gcw {
   
   struct RomEntry;
   
+  enum class PathType
+  {
+    ROOT,
+    HOME,
+    LOADER,
+    CORES,
+    SAVES,
+    SAVES_THUMBNAILS,
+    
+    ART,
+    
+    SETTINGS_FILE,
+  };
+  
+  
   struct Keybind
   {
     std::string name;
@@ -33,6 +48,12 @@ namespace gcw {
     Path savesPath;
     
     KeybindMap keybinds;
+    
+    const static Path ROOT_PATH;
+    const static Path HOME_PATH;
+    const static Path LOADER_PATH;
+    const static Path CORES_PATH;
+    const static std::string CORES_EXTENSION;
 
   public:
 
@@ -50,14 +71,13 @@ namespace gcw {
     std::optional<const Keybind&> keyBindOveriddenFor(const CoreIdentifier& identifier, const std::string& keyName);
     void setKeybind(const CoreIdentifier& identifier, const std::string& name, GCWKey key);
     
-    
-    const static Path ROOT_PATH;
-    const static Path LOADER_PATH;
-    
-    
     void save();
     void load();
-
+    void createFolderStructure();
+    
+    static Path pathFor(PathType type);
+    static const std::string& coreExtension();
+    
     //   paths = {gba", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/snes"};
 
   };

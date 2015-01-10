@@ -153,7 +153,7 @@
 		04BE237A1A5B9F2800F61BD1 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores";
+			dstPath = "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/loader/cores";
 			dstSubfolderSpec = 0;
 			files = (
 				04BE237B1A5B9F2F00F61BD1 /* geekboy.dylib in CopyFiles */,
@@ -172,7 +172,7 @@
 		04F011AE1A5F604700F370D0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "/Users/jack/Documents/Dev/github/gcw0-emu-api/cores";
+			dstPath = "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/loader/cores";
 			dstSubfolderSpec = 0;
 			files = (
 				04F011AF1A5F605D00F370D0 /* gambatte.dylib in CopyFiles */,
@@ -320,6 +320,7 @@
 		04D794531A60D19D00D9A690 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
 		04D794541A60D19D00D9A690 /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
 		04D794551A60D19D00D9A690 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		04E17D961A618AFE00CACCAF /* serializer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = serializer.h; sourceTree = "<group>"; };
 		04F010C01A5F5A0500F370D0 /* bitmap_font.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bitmap_font.cpp; sourceTree = "<group>"; };
 		04F010C11A5F5A0500F370D0 /* bitmap_font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bitmap_font.h; sourceTree = "<group>"; };
 		04F010C31A5F5A0500F370D0 /* counterdef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = counterdef.h; sourceTree = "<group>"; };
@@ -505,6 +506,7 @@
 				04D794361A60D19D00D9A690 /* json */,
 				047E9A811A55CF140066C697 /* persistence.cpp */,
 				047E9A821A55CF140066C697 /* persistence.h */,
+				04E17D961A618AFE00CACCAF /* serializer.h */,
 				047E9A831A55CF140066C697 /* rom_collection.cpp */,
 				047E9A841A55CF140066C697 /* rom_collection.h */,
 				047E9A851A55CF140066C697 /* settings.cpp */,

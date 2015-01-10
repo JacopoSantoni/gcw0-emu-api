@@ -46,10 +46,23 @@ FILE* Path::open(FMode mode) const
   return fopen(path.c_str(), smode);
 }
 
+time_t Path::modificationTime() const
+{
+  struct stat buffer;
+  stat(path.c_str(), &buffer);
+  return buffer.st_mtime;
+}
+
 bool Path::exists() const
 {
   struct stat buffer;
   return stat(path.c_str(), &buffer) == 0;
+}
+
+bool Path::existsAsFolder() const
+{
+  struct stat buffer;
+  return stat(path.c_str(), &buffer) == 0 && S_ISDIR(buffer.st_mode);
 }
 
 Path Path::folder() const
@@ -208,14 +221,34 @@ vector<Path> Files::findSubfolders(const string& path)
   return folders;
 }
 
-bool Files::createFolder(const std::string& path)
+bool Files::createFolder(const Path& path, bool recursive)
 {
   //TODO: use expansion
   /*wordexp_t p;
   wordexp(path.c_str(), &p, 0);
   mkdir(p.we_wordv[0], 0755);
   wordfree(&p);*/
-  mkdir(path.c_str(), 0755);
+  
+  if (recursive)
+  {
+    vector<Path> paths;
+    
+    Path cpath = path;
+    while (!cpath.isRoot() && !cpath.existsAsFolder())
+    {
+      paths.push_back(cpath);
+      cpath = cpath.folder();
+    }
+    
+    auto it = paths.rbegin();
+    
+    for ( ; it != paths.rend(); ++it)
+      mkdir(it->value().c_str(), 0755);
+
+  }
+  else if (!path.existsAsFolder())
+    mkdir(path.value().c_str(), 0755);
+  
   return true;
 }
 

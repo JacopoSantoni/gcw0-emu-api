@@ -10,7 +10,6 @@
 #include <vector>
 #include <string>
 
-
 namespace gcw
 {
   typedef unsigned long usec_t;
@@ -36,6 +35,7 @@ namespace gcw
     Path(const char *path);
     Path(const std::string& path);
     const std::string& value() const { return path; }
+    const char* c_str() const { return path.c_str(); }
     void set(std::string& value) { path = value; }
     void set(const Path& opath) { path = opath.path; }
     Path append(std::string component) const;
@@ -58,18 +58,15 @@ namespace gcw
     bool operator==(const Path& rhs) const { return path == rhs.path; }
     bool operator==(const char* rhs) const { return path == std::string(rhs); }
     
+    time_t modificationTime() const;
     FILE* open(FMode mode) const;
     bool exists() const;
+    bool existsAsFolder() const;
     
-    Path operator+(const Path& rhs) const { return this->append(path); }
+    Path operator+(const Path& rhs) const { return this->append(rhs.path); }
     Path operator+(const std::string& rhs) const { return this->append(rhs); }
     Path operator+(const char* rhs) const { return this->append(std::string(rhs)); }
   };
-  
-  inline Path operator+(const Path& lhs, const Path& rhs) // first arg by value, second by const ref
-  {
-    return lhs.append(rhs.value());
-  }
   
   class Files
   {
@@ -77,7 +74,7 @@ namespace gcw
     static std::vector<Path> findFiles(const std::string& path, const std::string& ext, bool recursive);
     static std::vector<Path> findFiles(const std::string& path, std::unordered_set<std::string>& exts, bool recursive);
     static std::vector<Path> findSubfolders(const std::string& path);
-    static bool createFolder(const std::string& path);
+    static bool createFolder(const Path& path, bool recursive = true);
   };
   
   class Timer
