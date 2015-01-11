@@ -19,7 +19,7 @@ void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
       handledFileTypes[ext].push_back(handle);
   }
   
-  LOG("Found core: %s ident: %s\n",handle.info.name.c_str(), handle.info.identifier().c_str());
+  LOG("Found core: %s ident: %s\n",handle.info.details.name.c_str(), handle.info.ident.identifier().c_str());
 }
 
 void Loader::scan()
@@ -39,28 +39,30 @@ void Loader::scan()
   
   vector<Path> files = coresFolder.findFiles(Persistence::coreExtension(), false);
     
-    LOG("Cores folder: %s\n",coresFolder.c_str());
+  LOG("Cores folder: %s\n",coresFolder.c_str());
 
-    for (const Path& file : files)
+  for (const Path& file : files)
+  {    
+    Path coreFile = coresFolder + file.value();
+    
+    void *handle = dlopen(coreFile.c_str(), RTLD_LOCAL|RTLD_NOW);
+    CoreInterface* (*retrieve)();
+    *(void**) (&retrieve) = dlsym(handle, "retrieve");
+    
+    if (retrieve)
     {    
-      Path coreFile = coresFolder + file.value();
+      CoreInterface *interface = retrieve();
       
-      void *handle = dlopen(coreFile.c_str(), RTLD_LOCAL|RTLD_NOW);
-      CoreInterface* (*retrieve)();
-      *(void**) (&retrieve) = dlsym(handle, "retrieve");
-      
-      if (retrieve)
-      {    
-        CoreInterface *interface = retrieve();
-        
-        // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
-        // function since we're just scanning 
-        CoreHandle coreHandle = CoreHandle(coreFile.c_str(), interface->info());
-        loadCoreInfo(coreHandle, interface);
-      }
-      
-      dlclose(handle);
+      // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
+      // function since we're just scanning
+      CoreInfo info = interface->info();
+      info.timestamp = coreFile.timeModified();
+      CoreHandle coreHandle = CoreHandle(coreFile.c_str(), info);
+      loadCoreInfo(coreHandle, interface);
     }
+    
+    dlclose(handle);
+  }
   #endif
 }
 

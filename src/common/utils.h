@@ -58,7 +58,7 @@ namespace gcw
     bool operator==(const Path& rhs) const { return path == rhs.path; }
     bool operator==(const char* rhs) const { return path == std::string(rhs); }
     
-    time_t modificationTime() const;
+    time_t timeModified() const;
     FILE* open(FMode mode) const;
     bool exists() const;
     bool existsAsFolder() const;

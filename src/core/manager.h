@@ -39,7 +39,7 @@ namespace gcw {
     bool running;
 
   public:
-    Manager() : core(nullptr), loader(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), pathView(this), loadingView(this), currentView(nullptr), running(true) { }
+    Manager() : core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), pathView(this), loadingView(this), currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();

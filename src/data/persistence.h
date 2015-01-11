@@ -10,6 +10,7 @@
 namespace gcw {
   
   struct RomEntry;
+  class Manager;
   
   enum class PathType
   {
@@ -23,6 +24,7 @@ namespace gcw {
     ART,
     
     SETTINGS_FILE,
+    CORE_CACHE
   };
   
   
@@ -44,6 +46,7 @@ namespace gcw {
   class Persistence
   {
   private:
+    Manager* manager;
     std::vector<Path> romPaths;
     Path savesPath;
     
@@ -56,6 +59,7 @@ namespace gcw {
     const static std::string CORES_EXTENSION;
 
   public:
+    Persistence(Manager* manager) { this->manager = manager; }
 
     void addRomPath(Path path) { romPaths.push_back(path); }
     const std::vector<Path>& getRomPaths() { return romPaths; }

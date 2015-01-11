@@ -25,7 +25,7 @@ namespace gcw {
     std::string fileName;
     CoreInterface* core;
     
-    CoreHandle(std::string fileName, CoreInfo info) :
+    CoreHandle(std::string fileName, const CoreInfo& info) :
     info(info),
     handle(nullptr),
     fileName(fileName),

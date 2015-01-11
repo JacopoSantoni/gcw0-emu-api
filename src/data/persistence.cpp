@@ -4,6 +4,8 @@
 #include "json/prettywriter.h"
 #include "json/filewritestream.h"
 
+#include "../core/manager.h"
+
 #include "serializer.h"
 
 #include <fstream>
@@ -17,7 +19,7 @@ using namespace rapidjson;
 #ifdef __APPLE__
 const Path Persistence::ROOT_PATH = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root");
 const Path Persistence::HOME_PATH = ROOT_PATH + "/usr/local/home";
-const Path Persistence::LOADER_PATH = ROOT_PATH + HOME_PATH + "loader";
+const Path Persistence::LOADER_PATH = HOME_PATH + "loader";
 const Path Persistence::CORES_PATH = LOADER_PATH + "cores";
 
 const string Persistence::CORES_EXTENSION = "dylib";
@@ -41,6 +43,7 @@ Path Persistence::pathFor(PathType type)
     case PathType::CORES: return CORES_PATH;
       
     case PathType::SETTINGS_FILE: return LOADER_PATH + "settings.json";
+    case PathType::CORE_CACHE: return LOADER_PATH + "corecache.json";
     
     default: return Path();
   }
@@ -110,7 +113,7 @@ void Persistence::load()
 
 void Persistence::save()
 {
-  Path settings = LOADER_PATH + "settings.json";
+  Path settings = pathFor(PathType::SETTINGS_FILE);
   
   const unique_ptr<char[]> buffer = unique_ptr<char[]>(new char[256]);
   FILE* fp = settings.open(FMode::WRITING);
@@ -122,11 +125,13 @@ void Persistence::save()
   Serializer serializer;
   
   writer.StartObject();
-  writer.String("rom-paths");
-  serializer.serialize(romPaths, writer);
+  
+  serializer.serialize(romPaths, writer, "rom-paths");
+  
+  const vector<CoreHandle>& cores = manager->getLoader()->getCores();
+  serializer.serialize(cores, writer, "core-cache");
+  
   writer.EndObject();
   
-  
   fclose(fp);
-  
 }

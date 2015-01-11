@@ -46,7 +46,7 @@ FILE* Path::open(FMode mode) const
   return fopen(path.c_str(), smode);
 }
 
-time_t Path::modificationTime() const
+time_t Path::timeModified() const
 {
   struct stat buffer;
   stat(path.c_str(), &buffer);

@@ -17,17 +17,29 @@ namespace gcw {
 
 class CoreInterface;
 
+  struct CoreDetails
+  {
+    std::string name;
+    std::string author;
+    std::string porter;
+    std::string webpage;
+    
+    CoreDetails() = default;
+    CoreDetails(const std::string& name) : name(name) { }
+  };
+  
 struct CoreInfo
 {
   std::vector<System::Type> type;
   CoreIdentifier ident;
-  std::string name;
+  CoreDetails details;
+  time_t timestamp;
   
-  CoreInfo(std::initializer_list<System::Type> type, std::string ident, std::string name, std::string version) :  type(type), ident(CoreIdentifier(ident,version)), name(name) { }
-  CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()), name(std::string()) { }
+  CoreInfo(std::initializer_list<System::Type> type, const std::string& ident, const std::string& name, const std::string& version) :  type(type), ident(CoreIdentifier(ident,version)), details(CoreDetails(name)) { }
+  CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()) { }
   
   const std::string identifier() const { return ident.identifier(); }
-  const std::string title() const { return name + " (" + ident.version + ")"; }
+  const std::string title() const { return details.name + " (" + ident.version + ")"; }
   
   bool operator==(const CoreInfo& other) const { return ident == other.ident; }
   bool operator!=(const CoreInfo& other) const { return ident != other.ident; }
