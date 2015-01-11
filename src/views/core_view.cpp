@@ -28,8 +28,10 @@ void CoreView::initGfx()
     else
       blitter = new Blitter888to565(manager->getGfx());
   }
-  
-  
+}
+
+void CoreView::initSfx()
+{
   const optional<SfxAudioSpec>& sfxSpec = core->getSfxSpec();
   
   if (sfxSpec)
@@ -43,17 +45,25 @@ void CoreView::initGfx()
 
 void CoreView::reset()
 {
+  /* release gfx buffer */
   buffer.release();
   
+  /* release sfx buffers if any */
+  audioBuffer.reset();
+  audioOut.reset();
+  
+  /* nullify core reference */
+  core = nullptr;
 }
 
-void CoreView::initForCore(CoreInterface *core, ButtonStatus suspendKeys)
+void CoreView::initForCore(CoreInterface *core)
 {
   reset();
   this->core = core;
   
-  initControls(suspendKeys);
+  initControls();
   initGfx();
+  initSfx();
 }
 
 s8 CoreView::indexForKey(GCWKey key)
@@ -83,10 +93,11 @@ s8 CoreView::indexForKey(GCWKey key)
   }
 }
 
-void CoreView::initControls(ButtonStatus suspendKeys)
+void CoreView::initControls()
 {
   const vector<ButtonSetting>& buttons = core->supportedButtons();
   
+  const ButtonStatus suspendKeys = manager->getSuspendShortcut();
   // persistence->loadCustomKeysForCore(core)
   // TODO: for each keybind saved replace buttons[i].key with the saved bind if override is enabled
   

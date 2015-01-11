@@ -46,13 +46,20 @@ class CoreView : public View
   public:
     CoreView(Manager *manager) : View(manager), blitter(nullptr) { }
   
-    void initForCore(CoreInterface* core, ButtonStatus suspendKeys);
-    void initControls(ButtonStatus suspendKeys);
+    void initForCore(CoreInterface* core);
+    void initControls();
     void initGfx();
+    void initSfx();
     void reset();
   
     virtual void render();
     virtual void handleEvents();
+  
+    void flushAudioBuffer()
+    {
+      if (audioOut)
+        audioOut->clear();
+    }
   
     const AudioStatus& writeAudioSamples(size_t count, size_t shift)
     {

@@ -47,12 +47,7 @@ void Manager::init()
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   menuView.setMenu(root);
   
-  //currentView = &loadingView;
-  //currentView = &pathView;
   currentView = &menuView;
-  //currentView = &coreView;
-  //coreView.initControls(core, GCW_KEY_L | GCW_KEY_R);
-  //coreView.initGfx();
 }
 
 void Manager::run()
@@ -64,26 +59,9 @@ void Manager::run()
     currentView->handleEvents();
     currentView->render();
 
-    
-    //gfx.print(20, 20, false, Font::bigFont, "Browse ROMs by System");
-    //gfx.print(20, 30, false, Font::bigFont, "Browse ROMs alphabetically");
-    
-    /*SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-      switch (event.type) {
-        case SDL_QUIT: running = false; break;
-          
-        case SDL_KEYDOWN: running = false;
-      }
-    }*/
-    
     gfx.flip();
     timer.frameRateDelay();
   }
-  
-  
-  
 }
 
 void Manager::loadCoreAndWarmUp(CoreHandle& handle)
@@ -94,14 +72,14 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
     if (handle.isLoaded() && core->info() == handle.core->info())
     {
       core->reset();
-      coreView.initControls(GCW_KEY_L | GCW_KEY_R);
+      /* we reinit controls */
+      coreView.initControls();
+      coreView.flushAudioBuffer();
     }
     /* if manager already has a core but it is different from the one required we need to unload resources and unload core */
     else
     {
-      core->releaseResources();
-      loader.unload(core);
-      core = nullptr;
+      unloadCore();
       
       core = loader.loadCore(handle);
       core->initialize();
@@ -112,7 +90,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   else
   {
     core = loader.loadCore(handle);
-    coreView.initForCore(core, GCW_KEY_L | GCW_KEY_R);
+    coreView.initForCore(core);
     core->initialize();
   }
   }
@@ -153,9 +131,7 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   
   loadCoreAndWarmUp(handle);
   
-  coreView.getAudioOut()->clear();
-
-  
+  /* TODO: manage multithreaded loading if required */
   if (!handle.core->doesRequireProgressForLoading())
   {
     handle.core->loadRomByFileName(entry.path.value());
@@ -170,7 +146,6 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
 void Manager::pauseEmulation()
 {
   SDL_PauseAudio(1);
-
   core->emulationSuspended();
   switchView(VIEW_MENU);
 }
@@ -179,6 +154,31 @@ void Manager::resumeEmulation()
 {
   SDL_PauseAudio(0);
   core->emulationResumed();
-  coreView.initControls(GCW_KEY_L | GCW_KEY_R);
+  /* we reinit controls since a keybind could have changed */
+  coreView.initControls();
   switchView(VIEW_CORE);
+}
+
+void Manager::unloadCore()
+{
+  /* reset core view buffers */
+  coreView.reset();
+  
+  /* warn core that it is going to be unloaded */
+  core->emulationStopped();
+  core->releaseResources();
+  
+  /* ask the loader to unload the core (through dlclose) */
+  loader.unload(core);
+  core = nullptr;
+}
+
+void Manager::exit()
+{
+  /* if a core is loaded we must unload it before exiting */
+  if (core)
+    unloadCore();
+  
+  persistence.save();
+  running = false;
 }

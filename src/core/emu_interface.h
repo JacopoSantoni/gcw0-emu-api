@@ -113,15 +113,17 @@ struct CoreInfo
      */
     void setManager(ManagerInterface* manager) { this->manager = manager; }
     
+    virtual void initialize() = 0;
+    virtual void releaseResources() = 0;
+    
     virtual void emulationFrame() = 0;
     virtual void loadRomByFileName(const std::string& name) = 0;
   
     virtual void emulationStarted() = 0;
     virtual void emulationSuspended() = 0;
     virtual void emulationResumed() = 0;
+    virtual void emulationStopped() = 0;
     
-    virtual void initialize() = 0;
-    virtual void releaseResources() = 0;
     virtual void reset() = 0;
   
   

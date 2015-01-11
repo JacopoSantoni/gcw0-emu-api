@@ -55,12 +55,12 @@ class LambdaMenuEntry : public StandardMenuEntry
 class SubMenuEntry : public StandardMenuEntry
 {
   protected:
-    Menu* const menu;
+    std::unique_ptr<Menu> menu;
  
   public:
     SubMenuEntry(std::string caption, Menu *menu) : StandardMenuEntry(caption+" >"), menu(menu) { }
   
-    Menu *subMenu() { return menu; }
+    Menu *subMenu() { return menu.get(); }
   
     virtual void action(Manager *manager, GCWKey key);
 };

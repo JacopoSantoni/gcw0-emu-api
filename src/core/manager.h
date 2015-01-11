@@ -68,11 +68,11 @@ namespace gcw {
         case VIEW_LOADING: currentView = &loadingView; break;
       }
     }
+    
+    bool isCoreLoaded() const { return core != nullptr; }
   
-    void exit() {
-      persistence.save();
-      running = false;
-    }
+    void exit();
+    void unloadCore();
     
     const RomEntry* getCurrentRom() { return rom; }
     
@@ -82,6 +82,8 @@ namespace gcw {
     
     void pauseEmulation();
     void resumeEmulation();
+        
+    ButtonStatus getSuspendShortcut() { return GCW_KEY_L | GCW_KEY_R; }
   };
 
 }
