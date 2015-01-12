@@ -116,6 +116,8 @@ class PathMenuEntry : public MenuEntry
     Path path;
   public:
     PathMenuEntry(const Path& path) : path(path) { }
+  
+    const Path& getPath() { return path; }
     
     virtual const std::string& name() { return path.value(); }
     virtual void action(Manager *manager, GCWKey key);
@@ -168,7 +170,7 @@ class Menu
     void setTitle(const std::string& title) { this->caption = title; }
     const std::string& title() { return caption; }
 };
-  
+
 class StandardMenu : public Menu
 {
   protected:

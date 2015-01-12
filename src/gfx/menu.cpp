@@ -178,5 +178,14 @@ void RomPathsMenu::build()
     manager->switchView(View::Type::PATH);
   };
   
+  
+  sort(entries.begin(), entries.end(), [](const unique_ptr<MenuEntry>& p1, const unique_ptr<MenuEntry>& p2){
+    PathMenuEntry *e1 = static_cast<PathMenuEntry*>(p1.get());
+    PathMenuEntry *e2 = static_cast<PathMenuEntry*>(p2.get());
+    
+    return e1->getPath() < e2->getPath();
+  });
+  
   addEntry(new LambdaMenuEntry("Add Path", lambda));
+
 }

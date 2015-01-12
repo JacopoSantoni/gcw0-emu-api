@@ -57,7 +57,7 @@ namespace gcw
     std::string fileInsidePath(const std::string& file) const;
     std::vector<Path> findFiles(const std::string& ext, bool recursive) const;
     std::vector<Path> findFiles(std::unordered_set<std::string>& exts, bool recursive) const;
-    std::vector<Path> subfolders() const;
+    std::vector<Path> subfolders(bool sorted = true) const;
     
     bool operator==(const std::string& rhs) const { return path == rhs; }
     bool operator==(const Path& rhs) const { return path == rhs.path; }
@@ -71,6 +71,8 @@ namespace gcw
     Path operator+(const Path& rhs) const { return this->append(rhs.path); }
     Path operator+(const std::string& rhs) const { return this->append(rhs); }
     Path operator+(const char* rhs) const { return this->append(std::string(rhs)); }
+    
+    bool operator<(const Path& rhs) const { return path < rhs.path; }
   };
   
   class Files

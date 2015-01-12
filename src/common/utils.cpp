@@ -159,9 +159,14 @@ vector<Path> Path::findFiles(unordered_set<string>& exts, bool recursive) const
   return Files::findFiles(path, exts, recursive);
 }
 
-vector<Path> Path::subfolders() const
+vector<Path> Path::subfolders(bool sorted) const
 {
-  return Files::findSubfolders(path);
+  auto paths = Files::findSubfolders(path);
+  
+  if (sorted)
+    sort(paths.begin(), paths.end());
+  
+  return paths;
 }
 
 
