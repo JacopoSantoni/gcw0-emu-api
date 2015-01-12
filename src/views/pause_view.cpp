@@ -46,6 +46,7 @@ public:
       {
         manager->stateSave(ref);
         manager->resumeEmulation();
+        //updateCaption();
       }
       else
       {
@@ -64,7 +65,7 @@ public:
     
     if (manager->getCurrentCore() && manager->getCurrentRom())
     {
-      Path path = manager->getPersistence()->savePath(manager->getCurrentCore()->info().ident, manager->getCurrentRom(), ref);
+      Path path = manager->getPersistence()->savePath(manager->getCurrentCore()->info(), manager->getCurrentRom(), ref);
       if (path.exists())
       {
         setCaption(caption + to_string(ref) + " (" + Text::dateToString(path.timeModified())+")");
@@ -92,19 +93,21 @@ PauseView::PauseView(Manager* manager) : View(manager), currentSaveSlot(0), curr
   menu->addEntry(new SlotSelectionMenuEntry(manager, "Load from slot ", currentLoadSlot, false));
   menu->addEntry(new StandardMenuEntry("Settings"));
   menu->addEntry(new StandardMenuEntry("Soft Reset"));
-  menu->addEntry(new StandardMenuEntry("Stop"));
+  menu->addEntry(new LambdaMenuEntry("Back to roms", [](Manager* manager) { manager->switchView(View::Type::MENU); }));
   menu->setSpacing(10);
 }
 
 void PauseView::initialize(const CoreInterface* core, const RomEntry* rom)
 {
+  list.set(0);
+  
   menu->setTitle(rom->name + " on " + core->info().details.name);
   
   SlotSelectionMenuEntry* save = menu->castedEntry<SlotSelectionMenuEntry>(1);
   SlotSelectionMenuEntry* load = menu->castedEntry<SlotSelectionMenuEntry>(2);
   
-  save->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
-  load->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
+  save->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATE));
+  load->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATE));
   save->updateCaption();
   load->updateCaption();
   

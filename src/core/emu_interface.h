@@ -32,8 +32,9 @@ class CoreInterface;
   {
     REQUIRES_MULTI_THREADING_LOADING = 0x00000001,
     
-    CAN_SAVE_STATES                  = 0x00010000,
-    CAN_SOFT_RESET                   = 0x00020000,
+    CAN_SAVE_STATE                   = 0x00010000,
+    CAN_SAVE_RAM                     = 0x00020000,
+    CAN_SOFT_RESET                   = 0x00040000,
   };
   
   typedef u32 CoreFeatures;
@@ -138,6 +139,9 @@ struct CoreInfo
     
     virtual void stateSaveTo(const std::string& filename) { }
     virtual void stateLoadFrom(const std::string& filename) { }
+    
+    virtual void sramSaveTo(const std::string& path, const std::string& romName) { }
+    virtual void stateLoadFrom(const std::string& path, const std::string& romName) { }
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

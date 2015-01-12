@@ -167,13 +167,13 @@ void Manager::resumeEmulation()
 
 void Manager::stateSave(SaveSlot slot)
 {
-  Path path = persistence.savePath(core->info().ident, rom, slot);
+  Path path = persistence.savePath(core->info(), rom, slot);
   core->stateSaveTo(path.value());
 }
 
 void Manager::stateLoad(SaveSlot slot)
 {
-  Path path = persistence.savePath(core->info().ident, rom, slot);
+  Path path = persistence.savePath(core->info(), rom, slot);
   core->stateLoadFrom(path.value());
 }
 
