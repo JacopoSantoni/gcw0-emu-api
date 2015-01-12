@@ -10,6 +10,11 @@
 #include <vector>
 #include <string>
 
+#ifndef __APPLE__
+#include <sstream>
+#endif
+
+
 namespace gcw
 {
   typedef unsigned long usec_t;
@@ -104,6 +109,17 @@ namespace gcw
     
       static std::string fuzzyTimeInterval(time_t start, time_t end);
       static std::string dateToString(time_t timestamp);
+    
+      template <typename T> static std::string to_string(T value)
+      {
+        #ifdef __APPLE__
+          return std::to_string(value);
+        #else
+          std::stringstream ss;
+          ss << value;
+          return ss.str();
+        #endif
+      }
   };
 }
 

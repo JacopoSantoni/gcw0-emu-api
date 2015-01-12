@@ -95,7 +95,7 @@ void Persistence::createFolderStructure()
 
 Path Persistence::savePath(const CoreInfo& core, const gcw::RomEntry *entry, SaveSlot slot)
 {
-  Path path = SAVES_PATH + (core.ident.ident + (core.type.size() > 1 ? (string("-") + entry->system.ident) : "")) + (entry->name + "-" + to_string(slot) + ".sav");
+  Path path = SAVES_PATH + (core.ident.ident + (core.type.size() > 1 ? (string("-") + entry->system.ident) : "")) + (entry->name + "-" + Text::to_string(slot) + ".sav");
   Files::createFolder(path.folder());
   return path;
 }

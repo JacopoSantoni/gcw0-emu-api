@@ -358,3 +358,4 @@ string Text::dateToString(time_t timestamp)
   strftime(buffer, 128, "%d/%m/%y %H:%M", std::localtime(&timestamp));
   return string(buffer);
 }
+
