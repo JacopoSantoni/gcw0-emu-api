@@ -132,7 +132,7 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   loadCoreAndWarmUp(handle);
   
   /* TODO: manage multithreaded loading if required */
-  if (!handle.core->doesRequireProgressForLoading())
+  if (!handle.core->hasFeature(CoreFeature::REQUIRES_MULTI_THREADING_LOADING))
   {
     handle.core->loadRomByFileName(entry.path.value());
     switchView(VIEW_CORE);

@@ -28,6 +28,15 @@ class CoreInterface;
     CoreDetails(const std::string& name) : name(name) { }
   };
   
+  enum class CoreFeature : u32
+  {
+    REQUIRES_MULTI_THREADING_LOADING,
+    
+    CAN_SOFT_RESET,
+  };
+  
+  typedef u32 CoreFeatures;
+  
 struct CoreInfo
 {
   std::vector<System::Type> type;
@@ -51,8 +60,9 @@ struct CoreInfo
   {
   private:
     CoreInfo information;
+    
+    CoreFeatures features;
   
-    bool requiresProgressForLoading;
     std::vector<std::unique_ptr<Setting> > settings;
     std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
@@ -63,8 +73,9 @@ struct CoreInfo
   
 
   protected:
-    CoreInterface() : requiresProgressForLoading(false), analogJoypadEnabled(false) { }
+    CoreInterface() : features(0), analogJoypadEnabled(false) { }
   
+    void registerFeature(CoreFeatures features) { this->features |= features; }
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
@@ -72,8 +83,6 @@ struct CoreInfo
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
     
-    void enableProgressForLoading() { requiresProgressForLoading = true; }
-  
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
     void setSfxFormat(SfxAudioSpec format) { sfxFormat = std::optional<SfxAudioSpec>(format); }
   
@@ -135,7 +144,7 @@ struct CoreInfo
   
   
   
-    bool doesRequireProgressForLoading() const { return requiresProgressForLoading; }
+    bool hasFeature(CoreFeature feature) { return (features & static_cast<u32>(feature)) != 0; }
 
     const CoreInfo& info() const { return information; }
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
