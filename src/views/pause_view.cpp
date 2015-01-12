@@ -11,13 +11,14 @@ using namespace gcw;
 class SlotSelectionMenuEntry : public StandardMenuEntry
 {
 private:
+  Manager* manager;
   string caption;
   SaveSlot& ref;
   bool enabled;
   bool isSave;
   
 public:
-  SlotSelectionMenuEntry(const string& caption, SaveSlot& ref, bool isSave) : StandardMenuEntry(), caption(caption), ref(ref), enabled(true), isSave(isSave)
+  SlotSelectionMenuEntry(Manager* manager, const string& caption, SaveSlot& ref, bool isSave) : StandardMenuEntry(), manager(manager), caption(caption), ref(ref), enabled(true), isSave(isSave)
   {
     updateCaption();
   }
@@ -59,7 +60,20 @@ public:
   void setEnabled(bool enabled) { this->enabled = enabled; }
   bool isEnabled() { return enabled; }
   
-  void updateCaption() { setCaption(caption + to_string(ref)); }
+  void updateCaption() {
+    
+    if (manager->getCurrentCore() && manager->getCurrentRom())
+    {
+      Path path = manager->getPersistence()->savePath(manager->getCurrentCore()->info().ident, manager->getCurrentRom(), ref);
+      if (path.exists())
+      {
+        setCaption(caption + to_string(ref) + " (" + Text::dateToString(path.timeModified())+")");
+        return;
+      }
+    }
+
+    setCaption(caption + to_string(ref));
+  }
 };
 
 u32 PauseView::PauseEntryList::current() const { return currentIndex; }
@@ -74,8 +88,8 @@ PauseView::PauseView(Manager* manager) : View(manager), currentSaveSlot(0), curr
   this->menu = unique_ptr<Menu>(menu);
   
   menu->addEntry(new LambdaMenuEntry("Back to game", [](Manager* manager){ manager->resumeEmulation(); }));
-  menu->addEntry(new SlotSelectionMenuEntry("Save to slot ", currentSaveSlot, true));
-  menu->addEntry(new SlotSelectionMenuEntry("Load from slot ", currentLoadSlot, false));
+  menu->addEntry(new SlotSelectionMenuEntry(manager, "Save to slot ", currentSaveSlot, true));
+  menu->addEntry(new SlotSelectionMenuEntry(manager, "Load from slot ", currentLoadSlot, false));
   menu->addEntry(new StandardMenuEntry("Settings"));
   menu->addEntry(new StandardMenuEntry("Soft Reset"));
   menu->addEntry(new StandardMenuEntry("Stop"));
@@ -86,8 +100,13 @@ void PauseView::initialize(const CoreInterface* core, const RomEntry* rom)
 {
   menu->setTitle(rom->name + " on " + core->info().details.name);
   
-  menu->castedEntry<SlotSelectionMenuEntry>(1)->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
-  menu->castedEntry<SlotSelectionMenuEntry>(2)->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
+  SlotSelectionMenuEntry* save = menu->castedEntry<SlotSelectionMenuEntry>(1);
+  SlotSelectionMenuEntry* load = menu->castedEntry<SlotSelectionMenuEntry>(2);
+  
+  save->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
+  load->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATES));
+  save->updateCaption();
+  load->updateCaption();
   
   this->core = core;
   this->rom = rom;

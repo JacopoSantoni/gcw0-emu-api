@@ -101,6 +101,9 @@ namespace gcw
     public:
       static std::string clipText(const std::string &text, s32 length, const char *filler = nullptr);
       static const char* nameForKey(GCWKey key);
+    
+      static std::string fuzzyTimeInterval(time_t start, time_t end);
+      static std::string dateToString(time_t timestamp);
   };
 }
 

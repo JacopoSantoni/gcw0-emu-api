@@ -61,6 +61,9 @@ namespace gcw {
     Gfx *getGfx() { return &gfx; }
     Timer *getTimer() { return &timer; }
     
+    const RomEntry* getCurrentRom() { return rom; }
+    const CoreInterface* getCurrentCore() { return core; }
+    
     void reportRomLoading(float percent) override { }
     void reportRomLoaded() override { }
     
@@ -87,7 +90,6 @@ namespace gcw {
     void exit();
     void unloadCore();
     
-    const RomEntry* getCurrentRom() { return rom; }
     
     void loadCoreAndWarmUp(CoreHandle& handle);
     void launchRom(const RomEntry& entry);

@@ -5,6 +5,7 @@
 //#include "wordexp.h"
 
 #include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace std::chrono;
@@ -328,4 +329,32 @@ const char* Text::nameForKey(GCWKey key)
     case GCW_KEY_SELECT: return "SELECT";
     default: return "UNKOWN";
   }
+}
+
+string Text::fuzzyTimeInterval(time_t start, time_t end)
+{
+  auto spt = system_clock::from_time_t(start);
+  auto ept = system_clock::from_time_t(end);
+  
+  auto delta = ept - spt;
+  
+  if (chrono::duration_cast<seconds>(delta).count() < 60)
+    return "seconds ago";
+  else if (chrono::duration_cast<minutes>(delta).count() >= 1 && chrono::duration_cast<minutes>(delta).count() <= 5)
+    return to_string(chrono::duration_cast<minutes>(delta).count()) + " minutes ago";
+  else if (chrono::duration_cast<hours>(delta).count() < 1)
+    return "less than one hour ago";
+  else if (chrono::duration_cast<hours>(delta).count() >= 1 && chrono::duration_cast<hours>(delta).count() <= 24)
+    return to_string(chrono::duration_cast<hours>(delta).count()) + " hours ago";
+  else if (chrono::duration_cast<hours>(delta).count() > 24 && chrono::duration_cast<hours>(delta).count() <= 48)
+    return "one day ago";
+  else
+    return to_string(chrono::duration_cast<hours>(delta).count()/24) + " days ago";
+}
+
+string Text::dateToString(time_t timestamp)
+{
+  char buffer[128];
+  strftime(buffer, 128, "%d/%m/%y %H:%M", std::localtime(&timestamp));
+  return string(buffer);
 }
