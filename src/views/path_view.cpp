@@ -25,20 +25,20 @@ void PathView::init(string title, const Path& path, function<void (const Path&)>
 
 void PathView::render()
 {
-  gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y, false, Font::bigFont, title.c_str());
+  gfx->print(UI::TITLE_OFFSET.x, UI::TITLE_OFFSET.y, false, Font::bigFont, title.c_str());
   
   string path = this->path.value();
-  gfx->print(View::TITLE_OFFSET.x, View::TITLE_OFFSET.y+10, false, Font::bigFont, Text::clipText(path, -40, "...").c_str());
+  gfx->print(UI::TITLE_OFFSET.x, UI::TITLE_OFFSET.y+10, false, Font::bigFont, Text::clipText(path, -40, "...").c_str());
   
   u32 count = list.getDisplayedAmount();
   for (int i = 0; i < count; ++i)
   {
     Path &folder = folders[i+list.minOffset()];
     
-    gfx->print(View::MENU_OFFSET.x, View::MENU_OFFSET.y+14*i, false, Font::bigFont, Text::clipText(folder.value(), 30).c_str());
+    gfx->print(UI::MENU_OFFSET.x, UI::MENU_OFFSET.y+14*i, false, Font::bigFont, Text::clipText(folder.value(), 30).c_str());
   }
   
-  gfx->print(View::MENU_OFFSET.x-10,View::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");
+  gfx->print(UI::MENU_OFFSET.x-10,UI::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");
   
   //gfx->print(View::HELP_OFFSET.x,View::HELP_OFFSET.y, false, Font::bigFont, (string(Text::nameForKey(GCW_KEY_START)) + ": save changes").c_str());
 }

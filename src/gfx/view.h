@@ -6,39 +6,32 @@
 
 namespace gcw
 {
-  enum ViewType : u8
-  {
-    VIEW_MENU,
-    VIEW_PATH,
-    VIEW_CORE,
-    VIEW_LOADING
-  };
-  
-  struct ViewOffset
-  {
-    const u16 x, y;
-    
-    ViewOffset(const u16 x, const u16 y) : x(x), y(y) { }
-  };
-  
-  
   class Manager;
   class Gfx;
 
   class View
   {
-    protected:
-      Manager* const manager;
-      Gfx* const gfx;
+  protected:
+    Manager* const manager;
+    Gfx* const gfx;
+  
+  public:
+    View(Manager *manager);
+  
+    virtual void activated() { }
+    virtual void deactivated() { }
+  
+    virtual void render() = 0;
+    virtual void handleEvents() = 0;
     
-    public:
-      View(Manager *manager);
-      virtual void render() = 0;
-      virtual void handleEvents() = 0;
-    
-    static const ViewOffset TITLE_OFFSET;
-    static const ViewOffset MENU_OFFSET;
-    static const ViewOffset HELP_OFFSET;
+    enum class Type : u8
+    {
+      MENU,
+      PATH,
+      CORE,
+      LOADING,
+      PAUSE
+    };
   };
   
   template<class T>

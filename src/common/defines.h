@@ -105,6 +105,9 @@ struct AnalogDeadZone
 
 typedef u32 ButtonStatus;
 
+
+const u16 MAX_SAVE_SLOTS = 10;
+
 struct CoreIdentifier
 {
   std::string ident;

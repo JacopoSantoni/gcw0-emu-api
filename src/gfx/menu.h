@@ -4,6 +4,7 @@
 #include "../common/defines.h"
 
 #include "gfx.h"
+#include "ui.h"
 #include "../data/settings.h"
 #include "../data/rom_collection.h"
 #include "../data/persistence.h"
@@ -24,6 +25,7 @@ class MenuEntry
     MenuEntry() { }
     virtual ~MenuEntry() { }
     virtual const std::string& name() = 0;
+    virtual SDL_Surface* icon() { return nullptr; }
   
     virtual void action(Manager *manager, GCWKey key) { }
     virtual void render(Gfx* gfx, int x, int y);
@@ -118,11 +120,11 @@ class SystemMenuEntry : public SubMenuEntry
 {
 private:
   const System::Spec& system;
-  SDL_Surface* const icon;
+  SDL_Surface* const systemIcon;
   
 public:
   SystemMenuEntry(const System::Spec& system, Menu *menu);
-  virtual void render(Gfx* gfx, int x, int y);
+  SDL_Surface* icon() override { return systemIcon; }
 };
 
 class RomMenuEntry : public MenuEntry
@@ -138,19 +140,22 @@ class RomMenuEntry : public MenuEntry
 
 };
 
-
-
+  
+  
+  
 class Menu
 {
   protected:
     std::string const caption;
+    u16 spacing;
   
   public:
-    Menu(std::string caption) : caption(caption) { }
+    Menu(const std::string& caption) : caption(caption), spacing(UI::MENU_DEFAULT_SPACING) { }
+    void setSpacing(u16 spacing) { this->spacing = spacing; }
   
     virtual size_t count() const = 0;
-    virtual MenuEntry* entryAt(u32 index) = 0;
-    virtual void render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y);
+    virtual MenuEntry* entryAt(u32 index) const = 0;
+    virtual void render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y, int c = -1);
 
   
     const std::string& title() { return caption; }
@@ -166,7 +171,7 @@ class StandardMenu : public Menu
   
     size_t count() const { return entries.size(); }
     void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
-    MenuEntry* entryAt(u32 index) { return entries[index].get(); }
+    MenuEntry* entryAt(u32 index) const { return entries[index].get(); }
 
 };
   

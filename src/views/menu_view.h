@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "../core/emu_interface.h"
 #include "../gfx/view.h"
+#include "../gfx/ui.h"
 
 #include <stack>
 
@@ -16,47 +17,47 @@ namespace gcw {
   
   class MenuView : public View
   {
+  private:
+    struct MenuStatus
+    {
+      Menu *menu;
+      u8 index;
+      
+      MenuStatus() : menu(nullptr), index(0) { }
+      MenuStatus(Menu *menu) : menu(menu), index(0) { }
+    };
+  
+    class MenuEntryList : public OffsettableList<MenuEntry*>
+    {
     private:
-      struct MenuStatus
-      {
-        Menu *menu;
-        u8 index;
-        
-        MenuStatus() : menu(nullptr), index(0) { }
-        MenuStatus(Menu *menu) : menu(menu), index(0) { }
-      };
-    
-      class MenuEntryList : public OffsettableList<MenuEntry*>
-      {
-        private:
-          MenuStatus currentStatus;
-          
-        public:
-          MenuEntryList() : OffsettableList(10) { }
-        
-          u32 current() const;
-          u32 count() const;
-          void set(u32 i);
-          MenuEntry* get(u32 i);
-        
-          MenuEntry* selected();
-        
-          void setStatus(MenuStatus status) { currentStatus = status; }
-          MenuStatus status() { return currentStatus; }
-      };
-    
-      MenuEntryList list;
-      std::stack<MenuStatus> menuStack;
-    
+      MenuStatus currentStatus;
+      
     public:
-      MenuView(Manager *manager);
+      MenuEntryList() : OffsettableList(UI::LIST_SIZE) { }
     
-      void setMenu(Menu *root) { /*this->root = root;*/ list.setStatus(MenuStatus(root)); }
+      u32 current() const;
+      u32 count() const;
+      void set(u32 i);
+      MenuEntry* get(u32 i);
     
-      virtual void render();
-      virtual void handleEvents();
+      MenuEntry* selected();
     
-      void enterSubmenu(SubMenuEntry *entry);
+      void setStatus(MenuStatus status) { currentStatus = status; }
+      MenuStatus status() { return currentStatus; }
+    };
+  
+    MenuEntryList list;
+    std::stack<MenuStatus> menuStack;
+  
+  public:
+    MenuView(Manager *manager);
+  
+    void setMenu(Menu *root) { /*this->root = root;*/ list.setStatus(MenuStatus(root)); }
+  
+    virtual void render();
+    virtual void handleEvents();
+  
+    void enterSubmenu(SubMenuEntry *entry);
   };
 
   

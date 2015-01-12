@@ -3,6 +3,8 @@
 
 #include <SDL.h>
 #include "../gfx/view.h"
+#include "../gfx/ui.h"
+
 #include "../common/utils.h"
 
 #include <vector>
@@ -25,7 +27,7 @@ namespace gcw {
         PathView *view;
         
       public:
-        PathList(PathView* view) : OffsettableList(10), view(view) { }
+        PathList(PathView* view) : OffsettableList(UI::LIST_SIZE), view(view) { }
         
         u32 current() const;
         u32 count() const;

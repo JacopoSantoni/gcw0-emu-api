@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0435E55E1A636BC10059AC7E /* pause_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0435E55C1A636BC10059AC7E /* pause_view.cpp */; };
 		043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0418A206A70015B350 /* SDL_image.framework */; };
 		043E7E0718A206A70015B350 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0518A206A70015B350 /* SDL.framework */; };
 		043E7E0918A208FE0015B350 /* libSDLmain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0818A208FE0015B350 /* libSDLmain.a */; };
@@ -185,6 +186,9 @@
 		040A9A1B1A5EFFCD00413237 /* optional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = optional.h; sourceTree = "<group>"; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
+		0435E55B1A6369C60059AC7E /* ui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
+		0435E55C1A636BC10059AC7E /* pause_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pause_view.cpp; sourceTree = "<group>"; };
+		0435E55D1A636BC10059AC7E /* pause_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pause_view.h; sourceTree = "<group>"; };
 		043E7E0418A206A70015B350 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
 		043E7E0518A206A70015B350 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		043E7E0818A208FE0015B350 /* libSDLmain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLmain.a; path = ../../../../../../../usr/local/Cellar/sdl/1.2.15/lib/libSDLmain.a; sourceTree = "<group>"; };
@@ -543,6 +547,8 @@
 				047E9A991A55CF140066C697 /* path_view.h */,
 				04B60DB71A58580C00DCFDBD /* loading_view.cpp */,
 				04B60DB81A58580C00DCFDBD /* loading_view.h */,
+				0435E55C1A636BC10059AC7E /* pause_view.cpp */,
+				0435E55D1A636BC10059AC7E /* pause_view.h */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -550,6 +556,7 @@
 		04914AAF1A601E28001EAD6A /* gfx */ = {
 			isa = PBXGroup;
 			children = (
+				0435E55B1A6369C60059AC7E /* ui.h */,
 				04914AB01A601E28001EAD6A /* gfx.cpp */,
 				04914AB11A601E28001EAD6A /* gfx.h */,
 				04914AB21A601E28001EAD6A /* menu.cpp */,
@@ -1106,6 +1113,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04914ABC1A60254F001EAD6A /* sfx.cpp in Sources */,
+				0435E55E1A636BC10059AC7E /* pause_view.cpp in Sources */,
 				047E9A9F1A55CF140066C697 /* manager.cpp in Sources */,
 				047E9A9D1A55CF140066C697 /* loader.cpp in Sources */,
 				04914B0D1A60420A001EAD6A /* u48div.cpp in Sources */,

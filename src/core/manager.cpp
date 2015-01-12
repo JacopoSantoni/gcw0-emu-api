@@ -26,6 +26,8 @@ void Manager::init()
   gfx.init();
   timer.setFrameRate(60.0f);
   
+  UI::enableKeyRepeat();
+  
   EnumSet sampleRates = {
     new ConcreteEnumValue<int32_t>("0",0),
     new ConcreteEnumValue<int32_t>("11025",11025),
@@ -48,6 +50,7 @@ void Manager::init()
   menuView.setMenu(root);
   
   currentView = &menuView;
+  //currentView = &pauseView;
 }
 
 void Manager::run()
@@ -135,7 +138,7 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   if (!handle.core->hasFeature(CoreFeature::REQUIRES_MULTI_THREADING_LOADING))
   {
     handle.core->loadRomByFileName(entry.path.value());
-    switchView(VIEW_CORE);
+    switchView(View::Type::CORE);
     
     if (handle.core->getSfxSpec())
       SDL_PauseAudio(0);
@@ -147,7 +150,7 @@ void Manager::pauseEmulation()
 {
   SDL_PauseAudio(1);
   core->emulationSuspended();
-  switchView(VIEW_MENU);
+  switchView(View::Type::MENU);
 }
 
 void Manager::resumeEmulation()
@@ -156,7 +159,7 @@ void Manager::resumeEmulation()
   core->emulationResumed();
   /* we reinit controls since a keybind could have changed */
   coreView.initControls();
-  switchView(VIEW_CORE);
+  switchView(View::Type::CORE);
 }
 
 void Manager::unloadCore()

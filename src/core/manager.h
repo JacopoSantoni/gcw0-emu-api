@@ -12,6 +12,7 @@
 #include "../views/menu_view.h"
 #include "../views/path_view.h"
 #include "../views/loading_view.h"
+#include "../views/pause_view.h"
 
 namespace gcw {
   
@@ -31,6 +32,7 @@ namespace gcw {
     MenuView menuView;
     PathView pathView;
     LoadingView loadingView;
+    PauseView pauseView;
     
     View *currentView;
     
@@ -39,7 +41,13 @@ namespace gcw {
     bool running;
 
   public:
-    Manager() : core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()), coreView(this), menuView(this), pathView(this), loadingView(this), currentView(nullptr), running(true) { }
+    Manager() : core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
+    coreView(this),
+    menuView(this),
+    pathView(this),
+    loadingView(this),
+    pauseView(this),
+    currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
     void run();
@@ -58,15 +66,20 @@ namespace gcw {
     
     const AudioStatus& writeAudioSamples(size_t count, size_t shift) override { return coreView.writeAudioSamples(count, shift); }
   
-    void switchView(ViewType type)
+    void switchView(View::Type type)
     {
+      currentView->deactivated();
+      
       switch (type)
       {
-        case VIEW_MENU: currentView = &menuView; break;
-        case VIEW_CORE: currentView = &coreView; break;
-        case VIEW_PATH: currentView = &pathView; break;
-        case VIEW_LOADING: currentView = &loadingView; break;
+        case View::Type::MENU: currentView = &menuView; break;
+        case View::Type::CORE: currentView = &coreView; break;
+        case View::Type::PATH: currentView = &pathView; break;
+        case View::Type::LOADING: currentView = &loadingView; break;
+        case View::Type::PAUSE: currentView = &pauseView; break;
       }
+      
+      currentView->activated();
     }
     
     bool isCoreLoaded() const { return core != nullptr; }
