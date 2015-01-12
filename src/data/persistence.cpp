@@ -20,7 +20,6 @@ using namespace rapidjson;
 const Path Persistence::ROOT_PATH = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root");
 const Path Persistence::HOME_PATH = ROOT_PATH + "/usr/local/home";
 const Path Persistence::LOADER_PATH = HOME_PATH + "loader";
-const Path Persistence::CORES_PATH = LOADER_PATH + "cores";
 
 const string Persistence::CORES_EXTENSION = "dylib";
 
@@ -28,11 +27,13 @@ const string Persistence::CORES_EXTENSION = "dylib";
 const Path Persistence::ROOT_PATH = Path("/");
 const Path Persistence::HOME_PATH = "/usr/local/home";
 const Path Persistence::LOADER_PATH = ROOT_PATH + HOME_PATH + ".loader";
-const Path Persistence::CORES_PATH = LOADER_PATH+ ".cores";
 
 const string Persistence::CORES_EXTENSION = "so";
 
 #endif
+
+const Path Persistence::CORES_PATH = LOADER_PATH + "cores";
+const Path Persistence::SAVES_PATH = LOADER_PATH + "data";
 
 Path Persistence::pathFor(PathType type)
 {
@@ -41,6 +42,7 @@ Path Persistence::pathFor(PathType type)
     case PathType::HOME: return HOME_PATH;
     case PathType::LOADER: return LOADER_PATH;
     case PathType::CORES: return CORES_PATH;
+    case PathType::SAVES: return SAVES_PATH;
       
     case PathType::SETTINGS_FILE: return LOADER_PATH + "settings.json";
     case PathType::CORE_CACHE: return LOADER_PATH + "corecache.json";
@@ -84,6 +86,14 @@ void Persistence::createFolderStructure()
 {
   Files::createFolder(LOADER_PATH);
   Files::createFolder(CORES_PATH);
+  Files::createFolder(SAVES_PATH);
+}
+
+Path Persistence::savePath(const CoreIdentifier& core, const gcw::RomEntry *entry, SaveSlot slot)
+{
+  Path path = SAVES_PATH + (core.ident + "-" + entry->system.ident) + (entry->name + "-" + to_string(slot) + ".sav");
+  Files::createFolder(path.folder());
+  return path;
 }
 
 void Persistence::load()

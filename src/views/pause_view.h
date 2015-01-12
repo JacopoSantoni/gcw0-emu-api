@@ -11,13 +11,18 @@ namespace gcw
 {
   class Manager;
   class Menu;
+  struct RomEntry;
+  class CoreInterface;
   
   class PauseView : public View
   {
   private:
     std::unique_ptr<Menu> menu;
-    u32 currentSaveSlot;
-    u32 currentLoadSlot;
+    SaveSlot currentSaveSlot;
+    SaveSlot currentLoadSlot;
+    
+    const RomEntry* rom;
+    const CoreInterface* core;
     
     
     class PauseEntryList : public OffsettableList<MenuEntry*>
@@ -42,6 +47,17 @@ namespace gcw
     
     virtual void handleEvents();
     virtual void render();
+    
+    void reset()
+    {
+      //menu.reset(nullptr);
+      rom = nullptr;
+      core = nullptr;
+      currentSaveSlot = 0;
+      currentLoadSlot = 0;
+    }
+    
+    void initialize(const CoreInterface* core, const RomEntry* rom);
     
     //void activated() override;
     

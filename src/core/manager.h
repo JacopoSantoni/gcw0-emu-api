@@ -95,6 +95,9 @@ namespace gcw {
     
     void pauseEmulation();
     void resumeEmulation();
+    
+    void stateSave(SaveSlot slot);
+    void stateLoad(SaveSlot slot);
         
     ButtonStatus getSuspendShortcut() { return GCW_KEY_L | GCW_KEY_R; }
   };

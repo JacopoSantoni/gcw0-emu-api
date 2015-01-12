@@ -46,7 +46,7 @@ void MenuView::handleEvents()
           case GCW_KEY_RIGHT:
           case GCW_KEY_LEFT:
           case MENU_ACTION_BUTTON:
-            list.selected()->action(manager, key); break;
+            list.selected()->doAction(manager, key); break;
             
           default: break;
         }

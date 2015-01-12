@@ -107,6 +107,7 @@ typedef u32 ButtonStatus;
 
 
 const u16 MAX_SAVE_SLOTS = 10;
+typedef u32 SaveSlot;
 
 struct CoreIdentifier
 {

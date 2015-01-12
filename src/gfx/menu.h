@@ -26,20 +26,27 @@ class MenuEntry
     virtual ~MenuEntry() { }
     virtual const std::string& name() = 0;
     virtual SDL_Surface* icon() { return nullptr; }
+    virtual bool isEnabled() { return true; }
   
+  protected:
     virtual void action(Manager *manager, GCWKey key) { }
+  
+  public:
     virtual void render(Gfx* gfx, int x, int y);
+    void doAction(Manager* manager, GCWKey key) { if (isEnabled()) action(manager,key); }
 };
   
 class StandardMenuEntry : public MenuEntry
 {
   protected:
-    const std::string caption;
+    std::string caption;
     
   public:
+    StandardMenuEntry() : caption() { }
     StandardMenuEntry(std::string caption) : caption(caption) { }
+    template<typename S> void setCaption(S caption) { this->caption = std::forward<S>(caption); }
+  
     virtual const std::string& name() { return caption; }
-    
     virtual void action(Manager *manager, GCWKey key) { }
 };
   
@@ -146,7 +153,7 @@ class RomMenuEntry : public MenuEntry
 class Menu
 {
   protected:
-    std::string const caption;
+    std::string caption;
     u16 spacing;
   
   public:
@@ -154,10 +161,11 @@ class Menu
     void setSpacing(u16 spacing) { this->spacing = spacing; }
   
     virtual size_t count() const = 0;
+    template<typename T> T* castedEntry(u32 index) const { return static_cast<T*>(entryAt(index)); }
     virtual MenuEntry* entryAt(u32 index) const = 0;
     virtual void render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y, int c = -1);
 
-  
+    void setTitle(const std::string& title) { this->caption = title; }
     const std::string& title() { return caption; }
 };
   

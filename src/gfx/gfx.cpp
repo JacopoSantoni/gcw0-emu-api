@@ -95,6 +95,62 @@ void Gfx::rectFill(s16 x1, s16 y1, u16 w, u16 h, T color)
   SDL_FillRect(screen, &rect, color);
 }
 
+template <typename T>
+u16 Gfx::print(int x, int y, bool centered, const Font &font, const T color, const char *text) const
+{
+  y -= font.tileHeight/2;
+  
+  if (centered)
+  {
+    u16 length = font.stringWidth(text);
+    x -= length/2;
+  }
+  
+  u16 len = strlen(text);
+  
+  SDL_Rect rect;
+  SDL_Rect out = rrr(x, y, 0, 0);
+  
+  SDL_LockSurface(font.image);
+  SDL_LockSurface(screen);
+  
+  u32 reference = Gfx::ccc<u32>(255, 255, 255);
+  
+  for (u16 i = 0; i < len; ++i)
+  {
+    char c = text[i];
+    
+    if (c == '\n')
+    {
+      out.y += font.lineHeight;
+      out.x = x;
+    }
+    else
+    {
+      const u8 w = font.widths[static_cast<u8>(c)];
+      rect = rrr(font.tileWidth * (c%32), font.tileHeight * (c/32), w, font.tileHeight);
+      
+      u32* sp = static_cast<u32*>(font.image->pixels) + rect.x + rect.y*font.image->w;
+      T* dp = static_cast<T*>(screen->pixels) + out.x + out.y*screen->w;
+
+      for (int h = 0; h < rect.h; ++h)
+        for (int w = 0; w < rect.w; ++w)
+        {
+          T sc = *(sp + w + h*font.image->w);
+          if (sc == reference) *(dp + w + h*screen->w) = color;
+        }
+      
+      out.x += w+1;
+    }
+  }
+  
+  SDL_UnlockSurface(font.image);
+  SDL_UnlockSurface(screen);
+  
+  return out.x;
+}
+
+
 
 u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text) const
 {
@@ -170,6 +226,9 @@ const Font Font::bigFont = Font("data/font.png", 6, 9, 9, 5,
 
 template void Gfx::clear(GfxBuffer &buffer, u32 color);
 template void Gfx::clear(GfxBuffer &buffer, u16 color);
+
+template u16 Gfx::print<u16>(int x, int y, bool centered, const Font &font, const u16 color, const char *text) const;
+template u16 Gfx::print<u32>(int x, int y, bool centered, const Font &font, const u32 color, const char *text) const;
 
 template void Gfx::rawBlit<u32>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);
 template void Gfx::rawBlit<u16>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);

@@ -30,9 +30,10 @@ class CoreInterface;
   
   enum class CoreFeature : u32
   {
-    REQUIRES_MULTI_THREADING_LOADING,
+    REQUIRES_MULTI_THREADING_LOADING = 0x00000001,
     
-    CAN_SOFT_RESET,
+    CAN_SAVE_STATES                  = 0x00010000,
+    CAN_SOFT_RESET                   = 0x00020000,
   };
   
   typedef u32 CoreFeatures;
@@ -75,7 +76,7 @@ struct CoreInfo
   protected:
     CoreInterface() : features(0), analogJoypadEnabled(false) { }
   
-    void registerFeature(CoreFeatures features) { this->features |= features; }
+    void registerFeature(CoreFeature features) { this->features |= static_cast<CoreFeatures>(features); }
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
@@ -134,6 +135,9 @@ struct CoreInfo
     virtual void emulationStopped() = 0;
     
     virtual void reset() = 0;
+    
+    virtual void stateSaveTo(const std::string& filename) { }
+    virtual void stateLoadFrom(const std::string& filename) { }
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
@@ -144,7 +148,7 @@ struct CoreInfo
   
   
   
-    bool hasFeature(CoreFeature feature) { return (features & static_cast<u32>(feature)) != 0; }
+    bool hasFeature(CoreFeature feature) const { return (features & static_cast<CoreFeatures>(feature)) != 0; }
 
     const CoreInfo& info() const { return information; }
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }

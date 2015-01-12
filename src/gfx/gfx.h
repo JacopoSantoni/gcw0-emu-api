@@ -100,7 +100,11 @@ namespace gcw
       void rect(u16 x, u16 y, u16 w, u16 h, T color);
       template<typename T>
       void rectFill(s16 x1, s16 y1, u16 w, u16 h, T color);
-        
+    
+      template<typename T>
+      u16 print(int x, int y, bool centered, const Font &font, const T color, const char *text) const;
+    
+    
       u16 print(int x, int y, bool centered, const Font &font, const char *text) const;
       u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...) const;
     

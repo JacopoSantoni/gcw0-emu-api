@@ -56,6 +56,7 @@ namespace gcw {
     const static Path HOME_PATH;
     const static Path LOADER_PATH;
     const static Path CORES_PATH;
+    const static Path SAVES_PATH;
     const static std::string CORES_EXTENSION;
 
   public:
@@ -64,9 +65,6 @@ namespace gcw {
     void addRomPath(Path path) { romPaths.push_back(path); }
     const std::vector<Path>& getRomPaths() { return romPaths; }
 
-    void setSavesPath(Path path) { savesPath = path; }
-    const Path& getSavesPath() const { return savesPath; }
-    
     std::optional<CoreIdentifier> defaultCoreForEntry(const RomEntry& folder) {
       return std::optional<CoreIdentifier>(CoreIdentifier("gambatte", "1.0"));
       //return std::optional<CoreIdentifier>(CoreIdentifier("geekboy", "0.2a"));
@@ -78,6 +76,8 @@ namespace gcw {
     void save();
     void load();
     void createFolderStructure();
+    
+    Path savePath(const CoreIdentifier& core, const RomEntry* entry, SaveSlot slot);
     
     static Path pathFor(PathType type);
     static const std::string& coreExtension();

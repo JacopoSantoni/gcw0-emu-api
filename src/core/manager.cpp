@@ -28,6 +28,8 @@ void Manager::init()
   
   UI::enableKeyRepeat();
   
+  //persistence.savePath(loader.getCores()[0].info.ident, &collection.getRomsForSystem(System::getSpecForSystem(System::Type::GAME_BOY_COLOR)).second->second, 0);
+  
   EnumSet sampleRates = {
     new ConcreteEnumValue<int32_t>("0",0),
     new ConcreteEnumValue<int32_t>("11025",11025),
@@ -138,6 +140,7 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   if (!handle.core->hasFeature(CoreFeature::REQUIRES_MULTI_THREADING_LOADING))
   {
     handle.core->loadRomByFileName(entry.path.value());
+    pauseView.initialize(core, rom);
     switchView(View::Type::CORE);
     
     if (handle.core->getSfxSpec())
@@ -150,7 +153,7 @@ void Manager::pauseEmulation()
 {
   SDL_PauseAudio(1);
   core->emulationSuspended();
-  switchView(View::Type::MENU);
+  switchView(View::Type::PAUSE);
 }
 
 void Manager::resumeEmulation()
@@ -161,6 +164,19 @@ void Manager::resumeEmulation()
   coreView.initControls();
   switchView(View::Type::CORE);
 }
+
+void Manager::stateSave(SaveSlot slot)
+{
+  Path path = persistence.savePath(core->info().ident, rom, slot);
+  core->stateSaveTo(path.value());
+}
+
+void Manager::stateLoad(SaveSlot slot)
+{
+  Path path = persistence.savePath(core->info().ident, rom, slot);
+  core->stateLoadFrom(path.value());
+}
+
 
 void Manager::unloadCore()
 {

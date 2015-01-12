@@ -18,7 +18,11 @@ void MenuEntry::render(Gfx *gfx, int x, int y)
     x += 5 + i->w;
   }
   
-  gfx->print(x, y, false, Font::bigFont, name().c_str());
+  if (isEnabled())
+    gfx->print(x, y, false, Font::bigFont, name().c_str());
+  else
+    gfx->print(x, y, false, Font::bigFont, Gfx::ccc<u16>(160,160,160), name().c_str());
+
 }
 
 #pragma mark SubMenuEntry
