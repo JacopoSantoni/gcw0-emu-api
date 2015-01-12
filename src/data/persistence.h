@@ -11,7 +11,7 @@ namespace gcw {
   
   struct RomEntry;
   class Manager;
-  class CoreInfo;
+  struct CoreInfo;
   
   enum class PathType
   {
@@ -81,6 +81,8 @@ namespace gcw {
     void createFolderStructure();
     
     Path savePath(const CoreInfo& core, const RomEntry* entry, SaveSlot slot);
+    Path sramPath(const CoreInfo& core, const RomEntry* entry);
+
     
     static Path pathFor(PathType type);
     static const std::string& coreExtension();

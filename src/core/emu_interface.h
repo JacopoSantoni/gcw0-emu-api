@@ -135,13 +135,15 @@ struct CoreInfo
     virtual void emulationResumed() = 0;
     virtual void emulationStopped() = 0;
     
+    virtual void softReset() { }
     virtual void reset() = 0;
     
     virtual void stateSaveTo(const std::string& filename) { }
     virtual void stateLoadFrom(const std::string& filename) { }
     
+    virtual void sramSetPath(const std::string& path) { }
     virtual void sramSaveTo(const std::string& path, const std::string& romName) { }
-    virtual void stateLoadFrom(const std::string& path, const std::string& romName) { }
+    virtual void sramLoadFrom(const std::string& path, const std::string& romName) { }
   
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }

@@ -137,9 +137,19 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
   loadCoreAndWarmUp(handle);
   
   /* TODO: manage multithreaded loading if required */
-  if (!handle.core->hasFeature(CoreFeature::REQUIRES_MULTI_THREADING_LOADING))
+  if (!core->hasFeature(CoreFeature::REQUIRES_MULTI_THREADING_LOADING))
   {
-    handle.core->loadRomByFileName(entry.path.value());
+    if (core->hasFeature(CoreFeature::CAN_SAVE_RAM))
+    {
+      Path sramPath = persistence.sramPath(core->info(), rom);
+      
+      core->sramSetPath(sramPath.value());
+      core->loadRomByFileName(entry.path.value());
+      core->sramLoadFrom(sramPath.value(), rom->name);
+    }
+    else
+      core->loadRomByFileName(entry.path.value());
+
     pauseView.initialize(core, rom);
     switchView(View::Type::CORE);
     

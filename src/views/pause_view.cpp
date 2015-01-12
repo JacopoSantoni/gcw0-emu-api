@@ -92,7 +92,13 @@ PauseView::PauseView(Manager* manager) : View(manager), currentSaveSlot(0), curr
   menu->addEntry(new SlotSelectionMenuEntry(manager, "Save to slot ", currentSaveSlot, true));
   menu->addEntry(new SlotSelectionMenuEntry(manager, "Load from slot ", currentLoadSlot, false));
   menu->addEntry(new StandardMenuEntry("Settings"));
-  menu->addEntry(new StandardMenuEntry("Soft Reset"));
+  menu->addEntry(new LambdaMenuEntry("Soft Reset", [](Manager* manager) {
+    if (manager->getCurrentCore()->hasFeature(CoreFeature::CAN_SOFT_RESET))
+    {
+      manager->softReset();
+      manager->resumeEmulation();
+    }
+  }));
   menu->addEntry(new LambdaMenuEntry("Back to roms", [](Manager* manager) { manager->switchView(View::Type::MENU); }));
   menu->setSpacing(10);
 }

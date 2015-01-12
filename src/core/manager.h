@@ -95,6 +95,9 @@ namespace gcw {
     void launchRom(const RomEntry& entry);
     void launchRom(const RomEntry& entry, CoreHandle& handle);
     
+    /* TODO: save sram first? */
+    void softReset() { core->softReset(); }
+    
     void pauseEmulation();
     void resumeEmulation();
     
