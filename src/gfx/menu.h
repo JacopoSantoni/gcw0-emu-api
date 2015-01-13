@@ -260,10 +260,10 @@ class SystemsMenu : public StandardMenu
   class KeybindMenuEntry : public StandardMenuEntry
   {
   private:
-    GCWKey key;
+    ButtonSetting& setting;
     
   public:
-    KeybindMenuEntry(const std::string& name, GCWKey key) : StandardMenuEntry(name), key(key) { }
+    KeybindMenuEntry(const std::string& name, ButtonSetting& setting) : StandardMenuEntry(name), setting(setting) { }
   };
 }
 

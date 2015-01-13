@@ -128,8 +128,9 @@ struct ButtonSetting
   GCWKey key;
   u8 shiftAmount;
   bool canBeRebound;
+  bool allowsMultikey;
 
-  ButtonSetting(const std::string& name, GCWKey key, u8 shiftAmount, bool canBeRebound) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound) { }
+  ButtonSetting(const std::string& name, GCWKey key, u8 shiftAmount, bool canBeRebound, bool allowsMultikey = false) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound), allowsMultikey(allowsMultikey) { }
 };
 
 }
