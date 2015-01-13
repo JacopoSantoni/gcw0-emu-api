@@ -58,7 +58,7 @@ class LambdaMenuEntry : public StandardMenuEntry
   public:
     LambdaMenuEntry(std::string caption, std::function<void (Manager*)> lambda) : StandardMenuEntry(caption), lambda(lambda) { }
 
-    virtual void action(Manager *manager, GCWKey key) { if (key == GCW_KEY_B) lambda(manager); }
+    virtual void action(Manager *manager, GCWKey key) { if (key == MENU_ACTION_BUTTON) lambda(manager); }
 };
 
 class SubMenuEntry : public StandardMenuEntry

@@ -82,7 +82,7 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
       manager->switchView(View::Type::MENU);
     };
     
-    pview->init(pathViewTitle, Path(setting->getValue()), lambda, [manager, this](){ manager->switchView(View::Type::MENU); });
+    pview->init(pathViewTitle, "Set this path", Path(setting->getValue()), lambda, [manager, this](){ manager->switchView(View::Type::MENU); });
     manager->switchView(View::Type::PATH);
   }
 }
@@ -174,7 +174,7 @@ void RomPathsMenu::build()
     };
     
     PathView* pview = manager->getPathView();
-    pview->init("Add rom path", Path(Persistence::pathFor(PathType::HOME)), plambda, [manager, this](){ manager->switchView(View::Type::MENU); });
+    pview->init("Add rom path", "Add this path", Path(Persistence::pathFor(PathType::HOME)), plambda, [manager, this](){ manager->switchView(View::Type::MENU); });
     manager->switchView(View::Type::PATH);
   };
   

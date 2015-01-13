@@ -25,6 +25,7 @@ namespace gcw {
       {
       private:
         PathView *view;
+        Path fakePath = Path();
         
       public:
         PathList(PathView* view) : OffsettableList(UI::LIST_SIZE), view(view) { }
@@ -34,7 +35,9 @@ namespace gcw {
         void set(u32 i);
         const Path& get(u32 i);
         
-        const Path& selected();
+        const Path& selected() { return get(current()); }
+        
+        friend class PathView;
       };
     
       std::vector<Path> folders;
@@ -50,7 +53,7 @@ namespace gcw {
     public:
       PathView(Manager *manager);
     
-      void init(std::string title, const Path& path, std::function<void (const Path&)> lambda, std::function<void(void)> clambda);
+      void init(const std::string& title, const std::string& addThisCaption, const Path& path, std::function<void (const Path&)> lambda, std::function<void(void)> clambda);
 
       virtual void render();
       virtual void handleEvents();
