@@ -43,6 +43,7 @@ private:
   ButtonStatus suspendShortcut;
 
   CoreInterface *core;
+  CoreInfo* info;
 
 public:
   CoreView(Manager *manager) : View(manager), blitter(nullptr) { }

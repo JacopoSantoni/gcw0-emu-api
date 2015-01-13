@@ -130,6 +130,8 @@ void Persistence::load()
   Unserializer unserializer;
   
   unserializer.unserialize(romPaths, doc["rom-paths"]);
+  
+  unserializer.unserialize(manager->getLoader()->getCores(), doc["core-cache"]);
 }
 
 void Persistence::save()

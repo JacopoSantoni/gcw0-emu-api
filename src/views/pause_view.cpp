@@ -65,7 +65,7 @@ public:
     
     if (manager->getCurrentCore() && manager->getCurrentRom())
     {
-      Path path = manager->getPersistence()->savePath(manager->getCurrentCore()->info(), manager->getCurrentRom(), ref);
+      Path path = manager->getPersistence()->savePath(manager->getCurrentCoreInfo(), manager->getCurrentRom(), ref);
       if (path.exists())
       {
         setCaption(caption + Text::to_string(ref) + " (" + Text::dateToString(path.timeModified())+")");

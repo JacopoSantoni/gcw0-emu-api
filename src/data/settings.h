@@ -143,6 +143,15 @@ public:
     allowsMultikey(allowsMultikey)
   { }
   
+  ButtonSetting(const std::string& name, ButtonStatus mask, ButtonStatus defaultMask, u8 shiftAmount, bool canBeRebound, bool allowsMultikey) :
+  name(name),
+  mask(mask),
+  defaultMask(defaultMask),
+  shiftAmount(shiftAmount),
+  canBeRebound(canBeRebound),
+  allowsMultikey(allowsMultikey)
+  { }
+  
   const std::string& getName() const { return name; }
   std::string mnemonic() const { return Keys::mnemonicForKeybind(mask); }
   ButtonStatus getMask() const { return mask; }

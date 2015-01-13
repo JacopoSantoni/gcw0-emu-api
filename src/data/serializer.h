@@ -51,7 +51,7 @@ public:
   {
     writer.StartObject();
     writer.String("path");
-    writer.String(handle.fileName.c_str());
+    serialize(handle.path, writer);
     serialize(handle.info, writer, "info");
     writer.EndObject();
   }
@@ -64,6 +64,7 @@ public:
     writer.Uint(info.timestamp);
     serialize(info.ident, writer, "ident");
     serialize(info.details, writer, "details");
+    serialize(info.supportedButtons(), writer, "buttons");
   }
   
   template<typename Writer>
@@ -86,6 +87,26 @@ public:
     serialize(details.porter, writer);
     writer.String("webpage");
     serialize(details.webpage, writer);
+  }
+  
+  template<typename Writer>
+  void serialize(const ButtonSetting& button, Writer& writer) const
+  {
+    writer.StartObject();
+    writer.String("name");
+    serialize(button.getName(), writer);
+    writer.String("shiftAmount");
+    writer.Uint(button.getShiftAmount());
+    writer.String("mask");
+    writer.Uint(button.getMask());
+    writer.String("defaultMask");
+    writer.Uint(button.getDefaultMask());
+    writer.String("isRebindable");
+    writer.Bool(button.isRebindable());
+    writer.String("canBeMultikey");
+    writer.Bool(button.canBeMultikey());
+    
+    writer.EndObject();
   }
   
   template<typename Writer>
@@ -121,6 +142,70 @@ public:
 
 template<>
 Path Unserializer::unserialize(const Value& value) { return Path(value.GetString()); }
+
+template<>
+ButtonSetting Unserializer::unserialize(const Value& value)
+{
+  std::string name = value["name"].GetString();
+  u8 shiftAmount = value["shiftAmount"].GetUint();
+  ButtonStatus mask = value["mask"].GetUint();
+  ButtonStatus defaultMask = value["defaultMask"].GetUint();
+  bool isRebindable = value["isRebindable"].GetBool();
+  bool canBeMultikey = value["canBeMultikey"].GetBool();
+  
+  return ButtonSetting(name, mask, defaultMask, shiftAmount, isRebindable, canBeMultikey);
+}
+
+template<>
+CoreDetails Unserializer::unserialize(const Value& value)
+{
+  std::string name = value["name"].GetString();
+  std::string author = value["author"].GetString();
+  std::string porter = value["porter"].GetString();
+  std::string webpage = value["webpage"].GetString();
+  
+  return CoreDetails(name, author, porter, webpage);
+}
+
+template<>
+CoreIdentifier Unserializer::unserialize(const Value& value)
+{
+  std::string ident = value["name"].GetString();
+  std::string version = value["version"].GetString();
+  
+  return CoreIdentifier(ident, version);
+}
+
+template<>
+System::Type Unserializer::unserialize(const Value& value)
+{
+  return System::getSpecForIdent(value.GetString()).type;
+}
+
+template<>
+CoreInfo Unserializer::unserialize(const Value& value)
+{
+  CoreInfo info;
+  
+  unserialize(info.type, value["systems"]);
+  std::vector<ButtonSetting> buttons;
+  unserialize(buttons, value["buttons"]);
+  info.setButtons(buttons);
+  info.timestamp = value["timestamp"].GetUint();
+  info.ident = unserialize<CoreIdentifier>(value["ident"]);
+  info.details = unserialize<CoreDetails>(value["details"]);
+  
+  return info;
+}
+
+template<>
+CoreHandle Unserializer::unserialize(const Value& value)
+{
+  CoreInfo info = unserialize<CoreInfo>(value["info"]);
+  Path path = unserialize<Path>(value["path"]);
+  
+  return CoreHandle(path, info);
+}
 
 
 #endif

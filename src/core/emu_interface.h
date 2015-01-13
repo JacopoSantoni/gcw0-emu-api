@@ -25,6 +25,7 @@ class CoreInterface;
     std::string webpage;
     
     CoreDetails() = default;
+    CoreDetails(const std::string& name, const std::string& author, const std::string& porter, const std::string& webpage) : name(name), author(author), porter(porter), webpage(webpage) { }
     CoreDetails(const std::string& name) : name(name) { }
   };
   
@@ -41,19 +42,39 @@ class CoreInterface;
   
 struct CoreInfo
 {
+private:
+  std::vector<ButtonSetting> buttons;
+
+public:
   std::vector<System::Type> type;
+
   CoreIdentifier ident;
   CoreDetails details;
   time_t timestamp;
   
-  CoreInfo(std::initializer_list<System::Type> type, const std::string& ident, const std::string& name, const std::string& version) :  type(type), ident(CoreIdentifier(ident,version)), details(CoreDetails(name)) { }
   CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()) { }
+  
+  void setButtons(const std::vector<ButtonSetting>& buttons) { this->buttons = buttons; }
+  
+  void setInformations(std::initializer_list<System::Type> type, const std::string& ident, const std::string& name, const std::string& version)
+  {
+    this->type = type;
+    this->ident = CoreIdentifier(ident, version);
+    this->details = CoreDetails(name);
+  }
+  
+  const std::vector<ButtonSetting>& supportedButtons() const { return buttons; }
+  void registerButton(const ButtonSetting& button) { buttons.push_back(button); }
   
   const std::string identifier() const { return ident.identifier(); }
   const std::string title() const { return details.name + " (" + ident.version + ")"; }
   
   bool operator==(const CoreInfo& other) const { return ident == other.ident; }
   bool operator!=(const CoreInfo& other) const { return ident != other.ident; }
+  
+  CoreInfo& operator=(const CoreInfo&) = delete;
+  
+  friend class Unserializer;
 };
   
   
@@ -65,7 +86,7 @@ struct CoreInfo
     
     CoreFeatures features;
   
-    std::vector<std::unique_ptr<Setting> > settings;
+    std::vector<std::unique_ptr<Setting>> settings;
     std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
@@ -78,10 +99,10 @@ struct CoreInfo
     CoreInterface() : features(0), analogJoypadEnabled(false) { }
   
     void registerFeature(CoreFeature features) { this->features |= static_cast<CoreFeatures>(features); }
-    void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information = CoreInfo(systems,ident,name,version); }
+    void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information.setInformations(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
-    void registerButton(ButtonSetting button) { buttons.push_back(button); }
+    void registerButton(const ButtonSetting& button) { information.registerButton(button); }
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
     
@@ -94,7 +115,7 @@ struct CoreInfo
     AnalogStatus analogStatus;
     
     ManagerInterface* manager;
-
+    
   public:
     virtual ~CoreInterface() { } // TODO: possible leaks of objects if _fini is not supported by the platform, fix it with a specific
     
@@ -156,15 +177,15 @@ struct CoreInfo
   
     bool hasFeature(CoreFeature feature) const { return (features & static_cast<CoreFeatures>(feature)) != 0; }
 
-    const CoreInfo& info() const { return information; }
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
   
-    const std::vector<ButtonSetting>& supportedButtons() const { return buttons; }
     AnalogDeadZone getAnalogDeadZone() const { return analogDeadZone; }
     bool isAnalogJoypadUsed() const { return analogJoypadEnabled; }
   
     const GfxBufferSpec& getGfxSpec() const { return gfxFormat; }
     const std::optional<SfxAudioSpec>& getSfxSpec() const { return sfxFormat; }
+    
+    const CoreInfo& info() const { return information; }
   };
   
 }

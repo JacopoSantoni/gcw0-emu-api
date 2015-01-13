@@ -92,6 +92,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
       unloadCore();
       
       core = loader.loadCore(handle);
+      this->handle = optional<reference_wrapper<CoreHandle>>(ref(handle));
       core->initialize();
     }
 
@@ -100,6 +101,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   else
   {
     core = loader.loadCore(handle);
+    this->handle = optional<reference_wrapper<CoreHandle>>(ref(handle));
     coreView.initForCore(core);
     core->initialize();
   }
@@ -205,6 +207,7 @@ void Manager::unloadCore()
   /* ask the loader to unload the core (through dlclose) */
   loader.unload(core);
   core = nullptr;
+  this->handle = nullopt;
 }
 
 void Manager::exit()

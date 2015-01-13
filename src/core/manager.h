@@ -5,6 +5,7 @@
 #include "../gfx/gfx.h"
 #include "../sfx/sfx.h"
 #include "../common/utils.h"
+#include "../common/optional.h"
 #include "../data/rom_collection.h"
 #include "../data/persistence.h"
 
@@ -20,6 +21,7 @@ namespace gcw {
   class Manager : public ManagerInterface
   {
   private:
+    std::optional<std::reference_wrapper<CoreHandle>> handle;
     CoreInterface *core;
     const RomEntry *rom;
     
@@ -43,7 +45,7 @@ namespace gcw {
     bool running;
 
   public:
-    Manager() : core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
+    Manager() : handle(std::nullopt), core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
     coreView(this),
     menuView(this),
     pathView(this),
@@ -66,6 +68,7 @@ namespace gcw {
     
     const RomEntry* getCurrentRom() { return rom; }
     const CoreInterface* getCurrentCore() { return core; }
+    const CoreInfo& getCurrentCoreInfo() { return (*handle).get().info; }
     
     void reportRomLoading(float percent) override { }
     void reportRomLoaded() override { }

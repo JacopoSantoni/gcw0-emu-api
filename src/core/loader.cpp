@@ -10,7 +10,12 @@ using namespace gcw;
 void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
 {
   cores.push_back(handle);
-  
+  addCoreManagedExtensions(handle);
+  LOG("Found core: %s ident: %s\n",handle.info.details.name.c_str(), handle.info.ident.identifier().c_str());
+}
+
+void Loader::addCoreManagedExtensions(const CoreHandle& handle)
+{
   for (const System::Type& type : handle.info.type)
   {
     const vector<string>& extensions = System::getSpecForSystem(type).extensions;
@@ -18,8 +23,17 @@ void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
     for (const string& ext : extensions)
       handledFileTypes[ext].push_back(handle);
   }
+}
+
+optional<CoreHandle&> Loader::findCachedCore(const Path& filename, time_t timestamp)
+{
+  for (CoreHandle& handle : cores)
+  {
+    if (handle.path == filename /*&& handle.info.timestamp == timestamp*/)
+      return optional<CoreHandle&>(handle);
+  }
   
-  LOG("Found core: %s ident: %s\n",handle.info.details.name.c_str(), handle.info.ident.identifier().c_str());
+  return nullopt;
 }
 
 void Loader::scan()
@@ -44,7 +58,18 @@ void Loader::scan()
   for (const Path& file : files)
   {    
     Path coreFile = coresFolder + file.value();
+    time_t timestamp = coreFile.timeModified();
     
+    optional<CoreHandle&> cachedCore = findCachedCore(coreFile, timestamp);
+    
+    /* a cached core with same filename and same timestamp has been found, we can skip scanning it and just manage extensions */
+    if (cachedCore)
+    {
+      LOG("Found cached core: %s ident: %s\n", cachedCore->info.details.name.c_str(), cachedCore->info.ident.identifier().c_str());
+      addCoreManagedExtensions(*cachedCore);
+      continue;
+    }
+
     void *handle = dlopen(coreFile.c_str(), RTLD_LOCAL|RTLD_NOW);
     CoreInterface* (*retrieve)();
     *(void**) (&retrieve) = dlsym(handle, "retrieve");
@@ -56,7 +81,7 @@ void Loader::scan()
       // we create the CoreHandle but without setting it's pointer to the CoreInterface or to the retrieve
       // function since we're just scanning
       CoreInfo info = interface->info();
-      info.timestamp = coreFile.timeModified();
+      info.timestamp = timestamp;
       CoreHandle coreHandle = CoreHandle(coreFile.c_str(), info);
       loadCoreInfo(coreHandle, interface);
     }
@@ -90,7 +115,7 @@ CoreInterface* Loader::loadCore(CoreHandle& handle)
 {
   unload(handle.core);
 
-  LOG("Loading core %s at %s\n",handle.info.ident.ident.c_str(),handle.fileName.c_str());
+  LOG("Loading core %s at %s\n",handle.info.ident.ident.c_str(),handle.path.c_str());
   
   #ifdef _DUMMY_CORE_
     if (handle.info.ident.ident == "dummy1")
@@ -103,7 +128,7 @@ CoreInterface* Loader::loadCore(CoreHandle& handle)
 
 
   #else
-    void *dlhandle = dlopen(handle.fileName.c_str(), RTLD_LOCAL|RTLD_NOW);
+    void *dlhandle = dlopen(handle.path.c_str(), RTLD_LOCAL|RTLD_NOW);
     CoreInterface* (*retrieve)();
     *(void**) (&retrieve) = dlsym(dlhandle, "retrieve");
     

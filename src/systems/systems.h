@@ -48,6 +48,11 @@ namespace gcw
       return *std::find_if(specs.begin(), specs.end(), [&](const Spec& spec){ return spec.type == type; });
     }
     
+    static const Spec& getSpecForIdent(const std::string& ident)
+    {
+      return *std::find_if(specs.begin(), specs.end(), [&](const Spec& spec){ return spec.ident == ident; });
+    }
+    
     static const std::vector<Spec>& getSystems() { return specs; }
     static std::vector<Spec>::const_iterator getIterator() { return specs.begin(); }
     static bool hasNext(std::vector<Spec>::const_iterator& it) { return it != specs.end(); }

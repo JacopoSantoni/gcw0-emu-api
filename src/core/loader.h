@@ -7,6 +7,7 @@
 #include <map>
 #include <algorithm>
 
+#include "../common/utils.h"
 #include "emu_interface.h"
 
 //#define _DUMMY_CORE_
@@ -22,13 +23,13 @@ namespace gcw {
   {
     const CoreInfo info;
     void* handle;
-    std::string fileName;
+    Path path;
     CoreInterface* core;
     
-    CoreHandle(std::string fileName, const CoreInfo& info) :
+    CoreHandle(const Path& path, const CoreInfo& info) :
     info(info),
     handle(nullptr),
-    fileName(fileName),
+    path(path),
     core(nullptr)
     {
       
@@ -40,6 +41,7 @@ namespace gcw {
   };
 
   class Manager;
+  class Path;
     
   class Loader
   {
@@ -49,6 +51,7 @@ namespace gcw {
     std::map<std::string,std::vector<std::reference_wrapper<const CoreHandle>> > handledFileTypes;
 
     void loadCoreInfo(const CoreHandle& handle, CoreInterface *info);
+    void addCoreManagedExtensions(const CoreHandle& handle);
 
 
   public:
@@ -65,9 +68,11 @@ namespace gcw {
 
     void unload(CoreInterface* core);
 
-    const std::vector<CoreHandle>& getCores() { return cores; }
+    std::vector<CoreHandle>& getCores() { return cores; }
     
     const std::vector<std::reference_wrapper<CoreHandle>> findCoresForSystem(const System::Type system);
+    
+    std::optional<CoreHandle&> findCachedCore(const Path& filename, time_t timestamp);
     
     /*std::vector<std::string> allowedFileTypes()
     {
