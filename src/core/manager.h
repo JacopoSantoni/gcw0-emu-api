@@ -15,6 +15,7 @@
 #include "../views/loading_view.h"
 #include "../views/pause_view.h"
 #include "../views/keybind_view.h"
+#include "../views/dialog_view.h"
 
 namespace gcw {
   
@@ -37,6 +38,7 @@ namespace gcw {
     LoadingView loadingView;
     PauseView pauseView;
     KeybindView keybindView;
+    DialogView dialogView;
     
     View *currentView;
     
@@ -52,6 +54,7 @@ namespace gcw {
     loadingView(this),
     pauseView(this),
     keybindView(this),
+    dialogView(this),
     currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
@@ -88,6 +91,7 @@ namespace gcw {
         case View::Type::LOADING: currentView = &loadingView; break;
         case View::Type::PAUSE: currentView = &pauseView; break;
         case View::Type::KEYBIND: currentView = &keybindView; break;
+        case View::Type::DIALOG: currentView = &dialogView; break;
       }
       
       currentView->activated();

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043307701A65B3CA000FDCD9 /* dialog_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0433076E1A65B3CA000FDCD9 /* dialog_view.cpp */; };
 		0435E55E1A636BC10059AC7E /* pause_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0435E55C1A636BC10059AC7E /* pause_view.cpp */; };
 		043E7E0618A206A70015B350 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0418A206A70015B350 /* SDL_image.framework */; };
 		043E7E0718A206A70015B350 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E7E0518A206A70015B350 /* SDL.framework */; };
@@ -188,6 +189,8 @@
 		040A9A1B1A5EFFCD00413237 /* optional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = optional.h; sourceTree = "<group>"; };
 		041DB1FF189AA37200E4AFE9 /* SDLMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = SOURCE_ROOT; };
 		041DB200189AA37200E4AFE9 /* SDLMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SDLMain.mm; sourceTree = SOURCE_ROOT; };
+		0433076E1A65B3CA000FDCD9 /* dialog_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dialog_view.cpp; sourceTree = "<group>"; };
+		0433076F1A65B3CA000FDCD9 /* dialog_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dialog_view.h; sourceTree = "<group>"; };
 		0435E55B1A6369C60059AC7E /* ui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
 		0435E55C1A636BC10059AC7E /* pause_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pause_view.cpp; sourceTree = "<group>"; };
 		0435E55D1A636BC10059AC7E /* pause_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pause_view.h; sourceTree = "<group>"; };
@@ -559,6 +562,8 @@
 				0435E55D1A636BC10059AC7E /* pause_view.h */,
 				04783E5A1A64C52600B56380 /* keybind_view.cpp */,
 				04783E5B1A64C52600B56380 /* keybind_view.h */,
+				0433076E1A65B3CA000FDCD9 /* dialog_view.cpp */,
+				0433076F1A65B3CA000FDCD9 /* dialog_view.h */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -1132,6 +1137,7 @@
 				047E9AA91A55CF140066C697 /* main.cpp in Sources */,
 				04914AB61A601E28001EAD6A /* gfx.cpp in Sources */,
 				047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */,
+				043307701A65B3CA000FDCD9 /* dialog_view.cpp in Sources */,
 				047E9A9B1A55CF140066C697 /* utils.cpp in Sources */,
 				04D67AB31A656AAD000A03BB /* keys.cpp in Sources */,
 				047E9AB51A55CF140066C697 /* path_view.cpp in Sources */,

@@ -31,7 +31,8 @@ namespace gcw
       CORE,
       LOADING,
       PAUSE,
-      KEYBIND
+      KEYBIND,
+      DIALOG
     };
   };
   
