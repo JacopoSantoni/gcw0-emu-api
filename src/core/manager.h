@@ -57,8 +57,9 @@ namespace gcw {
     void init();
     void run();
   
-    MenuView *getMenuView() { return &menuView; }
-    PathView *getPathView() { return &pathView; }
+    MenuView* getMenuView() { return &menuView; }
+    PathView* getPathView() { return &pathView; }
+    KeybindView* getKeybindView() { return &keybindView; }
   
     Loader *getLoader() { return &loader; }
     Persistence *getPersistence() { return &persistence; }

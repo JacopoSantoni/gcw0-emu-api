@@ -263,7 +263,17 @@ class SystemsMenu : public StandardMenu
     ButtonSetting& setting;
     
   public:
-    KeybindMenuEntry(const std::string& name, ButtonSetting& setting) : StandardMenuEntry(name), setting(setting) { }
+    KeybindMenuEntry(ButtonSetting& setting) : StandardMenuEntry(), setting(setting)
+    {
+      updateCaption();
+    }
+    
+    void updateCaption()
+    {
+      setCaption(setting.getName() + ": "+setting.mnemonic());
+    }
+    
+    void action(Manager *manager, GCWKey key) override;
   };
 }
 

@@ -189,3 +189,38 @@ void RomPathsMenu::build()
   addEntry(new LambdaMenuEntry("Add Path", lambda));
 
 }
+
+
+
+void KeybindMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == MENU_ACTION_BUTTON && setting.isRebindable())
+  {
+    KeybindView* view = manager->getKeybindView();
+    
+    if (!setting.canBeMultikey())
+    {
+      static auto lambda = [this,manager](ButtonSetting& setting, GCWKey key)
+      {
+        setting.setMask(key);
+        updateCaption();
+        manager->switchView(View::Type::MENU);
+      };
+      
+      view->init(std::bind(lambda, ref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, "");
+      manager->switchView(View::Type::KEYBIND);
+    }
+    else
+    {
+      static auto lambda = [this, manager](ButtonSetting& setting, ButtonStatus status)
+      {
+        setting.setMask(status);
+        updateCaption();
+        manager->switchView(View::Type::MENU);
+      };
+      
+      view->initm(std::bind(lambda, ref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, "");
+      manager->switchView(View::Type::KEYBIND);
+    }
+  }
+}
