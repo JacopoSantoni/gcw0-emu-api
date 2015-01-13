@@ -66,33 +66,6 @@ void CoreView::initForCore(CoreInterface *core)
   initSfx();
 }
 
-s8 CoreView::indexForKey(GCWKey key)
-{
-  switch (key) {
-    case GCW_KEY_A: return 0;
-    case GCW_KEY_B: return 1;
-    case GCW_KEY_X: return 2;
-    case GCW_KEY_Y: return 3;
-    case GCW_KEY_LEFT: return 4;
-    case GCW_KEY_RIGHT: return 5;
-    case GCW_KEY_UP: return 6;
-    case GCW_KEY_DOWN: return 7;
-    case GCW_KEY_L: return 8;
-    case GCW_KEY_R: return 9;
-    case GCW_KEY_START: return 10;
-    case GCW_KEY_SELECT: return 11;
-    case GCW_KEY_PAUSE: return 12;
-    case GCW_KEY_HOME: return 13;
-      
-    case GCW_ANALOG_LEFT: return 14;
-    case GCW_ANALOG_RIGHT: return 15;
-    case GCW_ANALOG_UP: return 16;
-    case GCW_ANALOG_DOWN: return 17;
-      
-    default: return SDL_INVALID_KEY;
-  }
-}
-
 void CoreView::initControls()
 {
   const vector<ButtonSetting>& buttons = core->supportedButtons();
@@ -116,9 +89,9 @@ void CoreView::initControls()
     s8 index = -1;
     
     if (bind)
-      index = indexForKey(bind->key);
+      index = Keys::indexForKey(bind->key);
     else
-      index = indexForKey(button.key);
+      index = Keys::indexForKey(button.key);
 
     mapping[index].enabled = true;
     mapping[index].mask = 1 << button.shiftAmount;
@@ -137,7 +110,7 @@ void CoreView::initControls()
   GCWKey keys[] = {GCW_KEY_L, GCW_KEY_R};
   for (GCWKey& key : keys)
   {
-    s8 index = indexForKey(key);
+    s8 index = Keys::indexForKey(key);
     
     if (!mapping[index].enabled)
     {
@@ -198,7 +171,7 @@ void CoreView::handleEvents()
       case SDL_KEYDOWN:
       {
         // find the index in the mapping, or SDL_INVALID_KEY if nothing is found
-        s8 index = indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
+        s8 index = Keys::indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
         
         if (index != SDL_INVALID_KEY && index < GCW_KEY_COUNT && mapping[index].enabled)
           status |= mapping[index].mask;
@@ -208,7 +181,7 @@ void CoreView::handleEvents()
         
       case SDL_KEYUP:
       {
-        s8 index = indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
+        s8 index = Keys::indexForKey(static_cast<GCWKey>(event.key.keysym.sym));
         
         if (index != SDL_INVALID_KEY && index < GCW_KEY_COUNT && mapping[index].enabled)
           status &=  ~mapping[index].mask;

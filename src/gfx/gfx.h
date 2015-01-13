@@ -105,7 +105,7 @@ namespace gcw
       u16 print(int x, int y, bool centered, const Font &font, const T color, const char *text) const;
     
     
-      u16 print(int x, int y, bool centered, const Font &font, const char *text) const;
+      u16 print(int x, int y, bool centered, const Font &font, const std::string& text) const;
       u16 printf(int x, int y, bool centered, const Font &font, const char *text, ...) const;
     
       void blit(SDL_Surface *src, int x, int y)
@@ -145,7 +145,7 @@ namespace gcw
       u16 stringWidth(const char *text) const
       {
         u16 length = strlen(text), width = 0;
-        for (int i = 0; i < length; ++i) width += widths[static_cast<u8>(text[i])];
+        for (int i = 0; i < length; ++i) width += widths[static_cast<u8>(text[i])] + 1;
         return width;
       }
     

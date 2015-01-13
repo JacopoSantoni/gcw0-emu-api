@@ -31,7 +31,6 @@ private:
 
   struct IntegralDeadZone { s32 min, max, delta; };
       
-  s8 indexForKey(GCWKey key);
   ButtonDefinition mapping[GCW_KEY_COUNT+GCW_ANALOG_COUNT];
   IntegralDeadZone analogDeadZone;
   AnalogMode analogMode;

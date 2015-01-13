@@ -52,6 +52,11 @@ void Manager::init()
   menuView.setMenu(root);
   
   currentView = &menuView;
+  
+  keybindView.initm([](ButtonStatus key){ cout << "mask " << key << endl; }, [](){ cout << "canceled" << endl; }, "Rebind key 'Start' of Gambatte core");
+  currentView = &keybindView;
+  currentView->activated();
+  
   //currentView = &pauseView;
 }
 

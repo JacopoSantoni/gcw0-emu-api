@@ -152,17 +152,25 @@ u16 Gfx::print(int x, int y, bool centered, const Font &font, const T color, con
 
 
 
-u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text) const
+u16 Gfx::print(int x, int y, bool centered, const Font &font, const string& text) const
 {
+  size_t firstNewline = text.find_first_of('\n');
+  
+  if (firstNewline != string::npos)
+  {
+    print(x, y + font.lineHeight, centered, font, text.substr(firstNewline+1, string::npos));
+    return print(x, y, centered, font, text.substr(0, firstNewline));
+  }
+  
   y -= font.tileHeight/2;
   
   if (centered)
   {
-    u16 length = font.stringWidth(text);
+    u16 length = font.stringWidth(text.c_str());
     x -= length/2;
   }
   
-  u16 len = strlen(text);
+  u16 len = text.length();
 
   SDL_Rect rect;
   SDL_Rect out = rrr(x, y, 0, 0);
@@ -188,15 +196,16 @@ u16 Gfx::print(int x, int y, bool centered, const Font &font, const char *text) 
   return out.x;
 }
 
+static char buffer[128];
+
 u16 Gfx::printf(int x, int y, bool centered, const Font &font, const char *text, ...) const
 {
-  char buffer[64];
   va_list args;
   va_start (args, text);
-  vsnprintf (buffer, 64, text, args);
+  vsnprintf (buffer, 128, text, args);
   va_end(args);
   
-  return print(x,y,centered,font,buffer);
+  return print(x,y,centered,font,string(buffer));
 }
 
 #pragma mark Font

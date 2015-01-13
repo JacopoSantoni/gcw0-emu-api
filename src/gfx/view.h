@@ -30,7 +30,8 @@ namespace gcw
       PATH,
       CORE,
       LOADING,
-      PAUSE
+      PAUSE,
+      KEYBIND
     };
   };
   

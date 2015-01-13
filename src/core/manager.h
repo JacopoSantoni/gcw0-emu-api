@@ -13,6 +13,7 @@
 #include "../views/path_view.h"
 #include "../views/loading_view.h"
 #include "../views/pause_view.h"
+#include "../views/keybind_view.h"
 
 namespace gcw {
   
@@ -33,6 +34,7 @@ namespace gcw {
     PathView pathView;
     LoadingView loadingView;
     PauseView pauseView;
+    KeybindView keybindView;
     
     View *currentView;
     
@@ -47,6 +49,7 @@ namespace gcw {
     pathView(this),
     loadingView(this),
     pauseView(this),
+    keybindView(this),
     currentView(nullptr), running(true) { }
     void scan() { loader.scan(); }
     void init();
@@ -80,6 +83,7 @@ namespace gcw {
         case View::Type::PATH: currentView = &pathView; break;
         case View::Type::LOADING: currentView = &loadingView; break;
         case View::Type::PAUSE: currentView = &pauseView; break;
+        case View::Type::KEYBIND: currentView = &keybindView; break;
       }
       
       currentView->activated();
