@@ -317,63 +317,6 @@ string Text::clipText(const string &text, s32 length, const char *filler)
   }
 }
 
-const char* Keys::nameForKey(GCWKey key)
-{
-  switch (key) {
-    case GCW_KEY_A: return "A";
-    case GCW_KEY_B: return "B";
-    case GCW_KEY_X: return "X";
-    case GCW_KEY_Y: return "Y";
-    case GCW_KEY_DOWN: return "\x18";
-    case GCW_KEY_UP: return "\x19";
-    case GCW_KEY_RIGHT: return "\x17";
-    case GCW_KEY_LEFT: return "\x16";
-    case GCW_KEY_L: return "L";
-    case GCW_KEY_R: return "R";
-    case GCW_KEY_START: return "Start";
-    case GCW_KEY_SELECT: return "Select";
-    case GCW_KEY_PAUSE: return "Pause";
-    case GCW_KEY_HOME: return "Home";
-    default: return "UNKOWN";
-  }
-}
-
-s8 Keys::indexForKey(GCWKey key)
-{
-  switch (key) {
-    case GCW_KEY_A: return 0;
-    case GCW_KEY_B: return 1;
-    case GCW_KEY_X: return 2;
-    case GCW_KEY_Y: return 3;
-    case GCW_KEY_LEFT: return 4;
-    case GCW_KEY_RIGHT: return 5;
-    case GCW_KEY_UP: return 6;
-    case GCW_KEY_DOWN: return 7;
-    case GCW_KEY_L: return 8;
-    case GCW_KEY_R: return 9;
-    case GCW_KEY_START: return 10;
-    case GCW_KEY_SELECT: return 11;
-    case GCW_KEY_PAUSE: return 12;
-    case GCW_KEY_HOME: return 13;
-      
-    case GCW_ANALOG_LEFT: return 14;
-    case GCW_ANALOG_RIGHT: return 15;
-    case GCW_ANALOG_UP: return 16;
-    case GCW_ANALOG_DOWN: return 17;
-      
-    default: return SDL_INVALID_KEY;
-  }
-}
-
-static constexpr GCWKey keys[] = {
-  GCW_KEY_A, GCW_KEY_B, GCW_KEY_X, GCW_KEY_Y, GCW_KEY_LEFT, GCW_KEY_RIGHT, GCW_KEY_UP, GCW_KEY_DOWN,
-  GCW_KEY_L, GCW_KEY_R, GCW_KEY_START, GCW_KEY_SELECT, GCW_KEY_PAUSE, GCW_KEY_HOME,
-  GCW_ANALOG_LEFT, GCW_ANALOG_RIGHT, GCW_ANALOG_UP, GCW_ANALOG_DOWN
-};
-
-GCWKey Keys::keyForIndex(u8 key) { return keys[key]; }
-
-
 string Text::fuzzyTimeInterval(time_t start, time_t end)
 {
   auto spt = system_clock::from_time_t(start);

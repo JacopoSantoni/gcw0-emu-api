@@ -1,5 +1,6 @@
 #include "keybind_view.h"
 
+#include "../common/keys.h"
 #include "../gfx/gfx.h"
 #include "../gfx/ui.h"
 

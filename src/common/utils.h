@@ -9,7 +9,6 @@
 #include <unordered_set>
 #include <vector>
 #include <string>
-
 #ifndef __APPLE__
 #include <sstream>
 #endif
@@ -121,14 +120,6 @@ namespace gcw
           return ss.str();
         #endif
       }
-  };
-  
-  class Keys
-  {
-  public:
-    static const char* nameForKey(GCWKey key);
-    static s8 indexForKey(GCWKey key);
-    static GCWKey keyForIndex(u8 key);
   };
 }
 

@@ -32,6 +32,7 @@ const s8 SDL_INVALID_KEY = -1;
 const int GCW_KEY_COUNT = 14;
 const int GCW_ANALOG_COUNT = 4;
 const int GCW_ANALOG_MAP_SHIFT = GCW_KEY_COUNT;
+const int GCW_KEY_TOTAL_COUNT = GCW_KEY_COUNT + GCW_ANALOG_COUNT;
 
 enum GCWKey : s16
 {

@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "../common/defines.h"
+#include "../common/keys.h"
 
 namespace gcw
 {
@@ -124,13 +125,52 @@ class EnumSetting : public ConcreteSetting<EnumValue*>
 
 struct ButtonSetting
 {
+private:
   std::string name;
-  GCWKey key;
+  ButtonStatus mask;
+  ButtonStatus defaultMask;
   u8 shiftAmount;
   bool canBeRebound;
   bool allowsMultikey;
 
-  ButtonSetting(const std::string& name, GCWKey key, u8 shiftAmount, bool canBeRebound, bool allowsMultikey = false) : name(name), key(key), shiftAmount(shiftAmount), canBeRebound(canBeRebound), allowsMultikey(allowsMultikey) { }
+public:
+  ButtonSetting(const std::string& name, GCWKey key, u8 shiftAmount, bool canBeRebound, bool allowsMultikey = false) :
+    name(name),
+    mask(Keys::shiftMaskForKey(key)),
+    defaultMask(Keys::shiftMaskForKey(key)),
+    shiftAmount(shiftAmount),
+    canBeRebound(canBeRebound),
+    allowsMultikey(allowsMultikey)
+  { }
+  
+  const std::string& getName() const { return name; }
+  std::string mnemonic() const { return Keys::mnemonicForKeybind(mask); }
+  ButtonStatus getMask() const { return mask; }
+  ButtonStatus getDefaultMask() const { return defaultMask; }
+  
+  u8 getShiftAmount() const { return shiftAmount; }
+  bool isRebindable() const { return canBeRebound; }
+  bool canBeMultikey() const { return allowsMultikey; }
+  
+  void setMask(GCWKey key) { mask = Keys::shiftMaskForKey(key); }
+  void setMask(std::initializer_list<GCWKey> keys)
+  {
+    mask = 0;
+    for (auto key : keys)
+      mask |= Keys::shiftMaskForKey(key);
+  }
+  void setMask(ButtonStatus mask) { this->mask = mask; }
+  
+  void restore() { mask = defaultMask; }
+  
+  bool isSingleKey() const { return numberOfKeys() == 1; }
+  u32 numberOfKeys() const
+  {
+    u32 i = mask;
+    i = i - ((i >> 1) & 0x55555555);
+    i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
+    return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+  }
 };
 
 }

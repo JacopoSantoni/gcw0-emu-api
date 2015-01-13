@@ -84,23 +84,24 @@ void CoreView::initControls()
   for (const ButtonSetting &button : buttons)
   {
     // retrieve overridden controls if they are present
-    optional<const Keybind&> bind = manager->getPersistence()->keyBindOveriddenFor(core->info().ident, button.name);
+    optional<const Keybind&> bind = manager->getPersistence()->keyBindOveriddenFor(core->info().ident, button.getName());
     
     s8 index = -1;
     
     if (bind)
       index = Keys::indexForKey(bind->key);
-    else
-      index = Keys::indexForKey(button.key);
+    else if (button.isSingleKey())
+      index = Keys::indexForKey(Keys::keyForMask(button.getMask()));
+    // TODO: if !button.isSingleKey() we must manage it in a special way
 
     mapping[index].enabled = true;
-    mapping[index].mask = 1 << button.shiftAmount;
+    mapping[index].mask = 1 << button.getShiftAmount();
 
     if (index >= GCW_KEY_COUNT)
       analogMode = GCW_ANALOG_DIGITAL_MODE;
   }
   
-  // each available button managed by the combiner (not active on emulator) must be enabled anyway to check for events not directly
+  // each available button managed by the loader (not active on emulator) must be enabled anyway to check for events not directly
   // managed by the core. first we compute the whole button mask, so that we can find empty slots for unused required keys
   ButtonStatus usedMask = 0;
   suspendShortcut = 0;
