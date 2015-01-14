@@ -127,7 +127,7 @@ struct ButtonSetting
 {
 private:
   std::string name;
-  ButtonStatus mask;
+  mutable ButtonStatus mask;
   ButtonStatus defaultMask;
   u8 shiftAmount;
   bool canBeRebound;
@@ -161,14 +161,14 @@ public:
   bool isRebindable() const { return canBeRebound; }
   bool canBeMultikey() const { return allowsMultikey; }
   
-  void setMask(GCWKey key) { mask = Keys::shiftMaskForKey(key); }
-  void setMask(std::initializer_list<GCWKey> keys)
+  void setMask(GCWKey key) const { mask = Keys::shiftMaskForKey(key); }
+  void setMask(std::initializer_list<GCWKey> keys) const
   {
     mask = 0;
     for (auto key : keys)
       mask |= Keys::shiftMaskForKey(key);
   }
-  void setMask(ButtonStatus mask) { this->mask = mask; }
+  void setMask(ButtonStatus mask) const { this->mask = mask; }
   
   void restore() { mask = defaultMask; }
   

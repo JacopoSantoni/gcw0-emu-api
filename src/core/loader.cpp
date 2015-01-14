@@ -11,7 +11,7 @@ void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
 {
   cores.push_back(handle);
   addCoreManagedExtensions(handle);
-  LOG("Found core: %s ident: %s\n",handle.info.details.name.c_str(), handle.info.ident.identifier().c_str());
+  LOG("Found core: %s ident: %s\n",handle.name().c_str(), handle.info.ident.identifier().c_str());
 }
 
 void Loader::addCoreManagedExtensions(const CoreHandle& handle)

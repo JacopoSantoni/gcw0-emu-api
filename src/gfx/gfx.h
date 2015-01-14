@@ -102,7 +102,7 @@ namespace gcw
       void rectFill(s16 x1, s16 y1, u16 w, u16 h, T color);
     
       template<typename T>
-      u16 print(int x, int y, bool centered, const Font &font, const T color, const char *text) const;
+      u16 print(int x, int y, bool centered, const Font &font, const T color, const std::string& text) const;
     
     
       u16 print(int x, int y, bool centered, const Font &font, const std::string& text) const;

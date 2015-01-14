@@ -36,6 +36,24 @@ namespace gcw
     };
   };
   
+  class ViewWrapper : public View
+  {
+    View* view;
+  private:
+    void handleEvents() override { }
+    void render() override { }
+
+    
+  public:
+    ViewWrapper(Manager* manager) : View(manager), view(nullptr) { }
+    
+    void setView(View* view) { this->view = view; }
+    
+    View* operator->() const { return view; }
+    
+    
+  };
+  
   template<class T>
   class OffsettableList
   {

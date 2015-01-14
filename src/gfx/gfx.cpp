@@ -96,17 +96,25 @@ void Gfx::rectFill(s16 x1, s16 y1, u16 w, u16 h, T color)
 }
 
 template <typename T>
-u16 Gfx::print(int x, int y, bool centered, const Font &font, const T color, const char *text) const
+u16 Gfx::print(int x, int y, bool centered, const Font &font, const T color, const string& text) const
 {
+  size_t firstNewline = text.find_first_of('\n');
+  
+  if (firstNewline != string::npos)
+  {
+    print(x, y + font.lineHeight, centered, font, color, text.substr(firstNewline+1, string::npos));
+    return print(x, y, centered, font, color, text.substr(0, firstNewline));
+  }
+  
   y -= font.tileHeight/2;
   
   if (centered)
   {
-    u16 length = font.stringWidth(text);
+    u16 length = font.stringWidth(text.c_str());
     x -= length/2;
   }
   
-  u16 len = strlen(text);
+  u16 len = text.length();
   
   SDL_Rect rect;
   SDL_Rect out = rrr(x, y, 0, 0);
@@ -236,8 +244,8 @@ const Font Font::bigFont = Font("data/font.png", 6, 9, 9, 5,
 template void Gfx::clear(GfxBuffer &buffer, u32 color);
 template void Gfx::clear(GfxBuffer &buffer, u16 color);
 
-template u16 Gfx::print<u16>(int x, int y, bool centered, const Font &font, const u16 color, const char *text) const;
-template u16 Gfx::print<u32>(int x, int y, bool centered, const Font &font, const u32 color, const char *text) const;
+template u16 Gfx::print<u16>(int x, int y, bool centered, const Font &font, const u16 color, const string& text) const;
+template u16 Gfx::print<u32>(int x, int y, bool centered, const Font &font, const u32 color, const string& text) const;
 
 template void Gfx::rawBlit<u32>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);
 template void Gfx::rawBlit<u16>(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offset);

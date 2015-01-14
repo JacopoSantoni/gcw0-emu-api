@@ -35,6 +35,8 @@ namespace gcw {
       
     }
     
+    const std::string name() const { return info.details.name; }
+    
     void load();
     void unload();
     bool isLoaded() const { return core != nullptr; }

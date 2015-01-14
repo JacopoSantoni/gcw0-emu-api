@@ -191,6 +191,23 @@ void RomPathsMenu::build()
 }
 
 
+CoresMenu::CoresMenu(Manager* manager) : StandardMenu("Cores")
+{
+  auto& cores = manager->getLoader()->getCores();
+  
+  for (CoreHandle& core : cores)
+    entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core, manager->getMenuView()->getCoreMenu())));
+}
+
+
+void CoreMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == MENU_ACTION_BUTTON)
+    manager->getMenuView()->getCoreMenu()->build(core);
+  
+  SubMenuEntry::action(manager, key);
+}
+
 
 void KeybindMenuEntry::action(Manager *manager, GCWKey key)
 {
@@ -198,29 +215,48 @@ void KeybindMenuEntry::action(Manager *manager, GCWKey key)
   {
     KeybindView* view = manager->getKeybindView();
     
+    std::string text;
+    
+    if (core)
+      text = "Binding key '"+setting.getName()+"' of core "+core->get().name();
+    // TODO else
+    
     if (!setting.canBeMultikey())
     {
-      static auto lambda = [this,manager](ButtonSetting& setting, GCWKey key)
+      static auto lambda = [this,manager](const ButtonSetting& setting, GCWKey key)
       {
         setting.setMask(key);
-        updateCaption();
         manager->switchView(View::Type::MENU);
       };
-      
-      view->init(std::bind(lambda, ref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, "");
+
+      view->init(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, text);
       manager->switchView(View::Type::KEYBIND);
     }
     else
     {
-      static auto lambda = [this, manager](ButtonSetting& setting, ButtonStatus status)
+      static auto lambda = [this, manager](const ButtonSetting& setting, ButtonStatus status)
       {
         setting.setMask(status);
-        updateCaption();
         manager->switchView(View::Type::MENU);
       };
       
-      view->initm(std::bind(lambda, ref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, "");
+      view->initm(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, text);
       manager->switchView(View::Type::KEYBIND);
     }
+  }
+}
+
+void KeybindMenuEntry::render(Gfx* gfx, int x, int y)
+{
+  if (isEnabled())
+  {
+    gfx->print(x, y, false, Font::bigFont, setting.getName());
+    gfx->print(x+spacing, y, false, Font::bigFont, setting.mnemonic());
+
+  }
+  else
+  {
+    gfx->print(x, y, false, Font::bigFont, Gfx::ccc<u16>(200,200,200), setting.getName());
+    gfx->print(x+spacing, y, false, Font::bigFont, Gfx::ccc<u16>(200,200,200), setting.mnemonic());
   }
 }

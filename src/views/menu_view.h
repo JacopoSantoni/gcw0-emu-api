@@ -5,6 +5,7 @@
 #include "../core/emu_interface.h"
 #include "../gfx/view.h"
 #include "../gfx/ui.h"
+#include "../gfx/menu.h"
 
 #include <stack>
 
@@ -14,6 +15,7 @@ namespace gcw {
   class Menu;
   class SubMenuEntry;
   class MenuEntry;
+  class CoreMenu;
   
   class MenuView : public View
   {
@@ -32,6 +34,7 @@ namespace gcw {
     private:
       MenuStatus currentStatus;
       
+      
     public:
       MenuEntryList() : OffsettableList(UI::LIST_SIZE) { }
     
@@ -48,6 +51,8 @@ namespace gcw {
   
     MenuEntryList list;
     std::stack<MenuStatus> menuStack;
+    
+    std::unique_ptr<CoreMenu> coreMenu;
   
   public:
     MenuView(Manager *manager);
@@ -58,6 +63,8 @@ namespace gcw {
     virtual void handleEvents();
   
     void enterSubmenu(SubMenuEntry *entry);
+    
+    CoreMenu* getCoreMenu() { return coreMenu.get(); }
   };
 
   

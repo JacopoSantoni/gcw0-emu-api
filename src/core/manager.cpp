@@ -41,17 +41,14 @@ void Manager::init()
   RomPathsMenu *romPathsMenu = new RomPathsMenu("Rom Paths", getPersistence());
   romPathsMenu->build();
   
-  static ButtonSetting button = ButtonSetting("Start", GCW_KEY_START, 1, true);
-
   StandardMenu *root = new StandardMenu("Root");
-  root->addEntry(new SubMenuEntry("Cores",new CoresMenu(&loader)));
+  root->addEntry(new SubMenuEntry("Cores",new CoresMenu(this)));
   root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
   root->addEntry(new EnumMenuEntry(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3])));
   root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves"), "Choose saves path"));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
-  root->addEntry(new KeybindMenuEntry(button));
   menuView.setMenu(root);
   
   currentView = &menuView;

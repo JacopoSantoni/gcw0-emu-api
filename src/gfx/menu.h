@@ -26,7 +26,7 @@ class MenuEntry
     virtual ~MenuEntry() { }
     virtual const std::string& name() = 0;
     virtual SDL_Surface* icon() { return nullptr; }
-    virtual bool isEnabled() { return true; }
+    virtual bool isEnabled() const { return true; }
   
   protected:
     virtual void action(Manager *manager, GCWKey key) { }
@@ -71,7 +71,7 @@ class SubMenuEntry : public StandardMenuEntry
   
     Menu *subMenu() { return menu.get(); }
   
-    virtual void action(Manager *manager, GCWKey key);
+    void action(Manager *manager, GCWKey key) override;
 };
   
 class BoolMenuEntry : public StandardMenuEntry
@@ -159,6 +159,7 @@ class Menu
     u16 spacing;
   
   public:
+    Menu() : spacing(UI::MENU_DEFAULT_SPACING) { }
     Menu(const std::string& caption) : caption(caption), spacing(UI::MENU_DEFAULT_SPACING) { }
     void setSpacing(u16 spacing) { this->spacing = spacing; }
   
@@ -177,10 +178,12 @@ class StandardMenu : public Menu
     std::vector<std::unique_ptr<MenuEntry>> entries;
   
   public:
-    StandardMenu(std::string caption) : Menu(caption) { }
+    StandardMenu() : Menu() { }
+    StandardMenu(const std::string& caption) : Menu(caption) { }
   
     size_t count() const { return entries.size(); }
     void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
+    void clear() { entries.clear(); }
     MenuEntry* entryAt(u32 index) const { return entries[index].get(); }
 
 };
@@ -234,12 +237,15 @@ class SystemsMenu : public StandardMenu
     }
 };
   
-  class CoreMenuEntry : public StandardMenuEntry
+
+  
+  class CoreMenuEntry : public SubMenuEntry
   {
   private:
-    const CoreHandle& core;
+    CoreHandle& core;
   public:
-    CoreMenuEntry(const CoreHandle& core) : StandardMenuEntry(core.info.title()), core(core) { }
+    CoreMenuEntry(CoreHandle& core, Menu* menu) : SubMenuEntry(core.info.title(), menu), core(core) { }
+    void action(Manager *manager, GCWKey key) override;
   };
   
   class CoresMenu : public StandardMenu
@@ -247,34 +253,65 @@ class SystemsMenu : public StandardMenu
   private:
     
   public:
-    CoresMenu(Loader* loader) : StandardMenu("Cores")
-    {
-      auto& cores = loader->getCores();
-      
-      for (const CoreHandle& core : cores)
-        entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core)));
-    }
+    CoresMenu(Manager* manager);
   };
   
   
   class KeybindMenuEntry : public StandardMenuEntry
   {
   private:
-    ButtonSetting& setting;
+    const ButtonSetting& setting;
+    u16 spacing;
+    std::optional<std::reference_wrapper<CoreHandle>> core;
     
   public:
-    KeybindMenuEntry(ButtonSetting& setting) : StandardMenuEntry(), setting(setting)
-    {
-      updateCaption();
-    }
-    
-    void updateCaption()
-    {
-      setCaption(setting.getName() + ": "+setting.mnemonic());
-    }
+    KeybindMenuEntry(const ButtonSetting& setting, u16 spacing = 50) : StandardMenuEntry(), setting(setting), spacing(spacing), core(std::nullopt) { }
+    KeybindMenuEntry(const ButtonSetting& setting, CoreHandle& core, u16 spacing = 50) : StandardMenuEntry(), setting(setting), spacing(spacing), core(std::optional<std::reference_wrapper<CoreHandle>>(std::ref(core))) { }
+
+    bool isEnabled() const override { return setting.isRebindable(); }
     
     void action(Manager *manager, GCWKey key) override;
+    void render(Gfx* gfx, int x, int y) override;
+  };
+  
+  
+  
+  
+  class CoreMenu : public StandardMenu
+  {
+  private:
+    
+  public:
+    CoreMenu() : StandardMenu() { }
+    
+    void build(CoreHandle& handle)
+    {
+      setTitle("Core "+handle.name());
+      clear();
+      
+      StandardMenu *keybinds = new StandardMenu("Keys for "+handle.name());
+      
+      const auto& buttons = handle.info.supportedButtons();
+      
+      /* compute max button name length for correct alignment */
+      u16 maxWidth = 0;
+      for (const auto& button : buttons)
+        maxWidth = std::max(maxWidth, Font::bigFont.stringWidth(button.getName().c_str()));
+      
+      for (const auto& button : buttons)
+      {
+        KeybindMenuEntry *keyentry = new KeybindMenuEntry(button, handle, maxWidth+10);
+        keybinds->addEntry(keyentry);
+      }
+      
+      addEntry(new SubMenuEntry(std::string("Keys"), keybinds));
+    }
   };
 }
+
+
+
+
+
 
 #endif

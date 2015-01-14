@@ -16,7 +16,7 @@ MenuEntry* MenuView::MenuEntryList::selected() { return currentStatus.menu->entr
 MenuEntry* MenuView::MenuEntryList::get(u32 i) { return currentStatus.menu->entryAt(offset+i); }
 
 
-MenuView::MenuView(Manager *manager) : View(manager)
+MenuView::MenuView(Manager *manager) : View(manager), coreMenu(new CoreMenu())
 {
 
 }

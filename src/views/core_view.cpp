@@ -68,7 +68,7 @@ void CoreView::initForCore(CoreInterface *core)
 
 void CoreView::initControls()
 {
-  const vector<ButtonSetting>& buttons = core->info().supportedButtons();
+  const vector<ButtonSetting>& buttons = manager->getCurrentCoreInfo().supportedButtons();
   
   const ButtonStatus suspendKeys = manager->getSuspendShortcut();
   // persistence->loadCustomKeysForCore(core)

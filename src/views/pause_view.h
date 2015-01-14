@@ -2,7 +2,6 @@
 #define __PAUSE_VIEW_H__
 
 #include "../gfx/view.h"
-#include "../gfx/menu.h"
 #include "../gfx/ui.h"
 
 #include <memory>
@@ -11,6 +10,7 @@ namespace gcw
 {
   class Manager;
   class Menu;
+  class MenuEntry;
   struct RomEntry;
   class CoreInterface;
   
