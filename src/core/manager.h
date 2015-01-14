@@ -63,6 +63,7 @@ namespace gcw {
     MenuView* getMenuView() { return &menuView; }
     PathView* getPathView() { return &pathView; }
     KeybindView* getKeybindView() { return &keybindView; }
+    DialogView* getDialogView() { return &dialogView; }
   
     Loader *getLoader() { return &loader; }
     Persistence *getPersistence() { return &persistence; }

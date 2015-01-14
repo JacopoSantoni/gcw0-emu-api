@@ -16,6 +16,9 @@ namespace gcw
     constexpr ViewOffset MENU_OFFSET = {20,40};
     constexpr ViewOffset HELP_OFFSET = {10,230};
     
+    constexpr ViewOffset DIALOG_MESSAGE = {160, 80};
+    constexpr ViewOffset DIALOG_HELP = {160, 160};
+    
     constexpr ViewOffset REBIND_KEY_INFO = {160,160};
     constexpr ViewOffset REBIND_KEY_CAPTION = {160, 80};
     constexpr ViewOffset REBIND_KEY_STATUS = {160, 120};

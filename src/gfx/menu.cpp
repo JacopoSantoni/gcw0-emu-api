@@ -200,6 +200,47 @@ CoresMenu::CoresMenu(Manager* manager) : StandardMenu("Cores")
 }
 
 
+void CoreMenu::build(CoreHandle& handle)
+{
+  setTitle("Core "+handle.name());
+  clear();
+  
+  StandardMenu *keybinds = new StandardMenu("Keys for "+handle.name());
+  
+  const auto& buttons = handle.info.supportedButtons();
+  
+  /* compute max button name length for correct alignment */
+  u16 maxWidth = 0;
+  for (const auto& button : buttons)
+    maxWidth = std::max(maxWidth, Font::bigFont.stringWidth(button.getName().c_str()));
+  
+  for (const auto& button : buttons)
+  {
+    KeybindMenuEntry *keyentry = new KeybindMenuEntry(button, handle, maxWidth+10);
+    keybinds->addEntry(keyentry);
+  }
+  
+
+  static auto resetBindsLambda = [](const CoreHandle& handle, Manager* manager)
+  {
+    static auto resetBinds = [&handle, manager]() {
+      for (const auto& button : handle.info.supportedButtons())
+        button.setMask(button.getDefaultMask());
+      manager->switchView(View::Type::MENU);
+    };
+    
+    manager->getDialogView()->initConfirm(string("Are you sure you want to reset all binds for ")+handle.name()+"?", resetBinds, [manager](){ manager->switchView(View::Type::MENU);});
+    manager->switchView(View::Type::DIALOG);
+  };
+  
+  LambdaMenuEntry *resetBindsEntry = new LambdaMenuEntry("Reset to default", std::bind(resetBindsLambda, cref(handle), placeholders::_1));
+  
+  keybinds->addEntry(resetBindsEntry);
+  
+  addEntry(new SubMenuEntry(std::string("Keys"), keybinds));
+}
+
+
 void CoreMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == MENU_ACTION_BUTTON)

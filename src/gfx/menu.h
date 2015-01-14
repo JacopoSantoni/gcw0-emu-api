@@ -284,28 +284,7 @@ class SystemsMenu : public StandardMenu
   public:
     CoreMenu() : StandardMenu() { }
     
-    void build(CoreHandle& handle)
-    {
-      setTitle("Core "+handle.name());
-      clear();
-      
-      StandardMenu *keybinds = new StandardMenu("Keys for "+handle.name());
-      
-      const auto& buttons = handle.info.supportedButtons();
-      
-      /* compute max button name length for correct alignment */
-      u16 maxWidth = 0;
-      for (const auto& button : buttons)
-        maxWidth = std::max(maxWidth, Font::bigFont.stringWidth(button.getName().c_str()));
-      
-      for (const auto& button : buttons)
-      {
-        KeybindMenuEntry *keyentry = new KeybindMenuEntry(button, handle, maxWidth+10);
-        keybinds->addEntry(keyentry);
-      }
-      
-      addEntry(new SubMenuEntry(std::string("Keys"), keybinds));
-    }
+    void build(CoreHandle& handle);
   };
 }
 
