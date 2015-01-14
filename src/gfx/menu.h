@@ -32,7 +32,7 @@ class MenuEntry
     virtual void action(Manager *manager, GCWKey key) { }
   
   public:
-    virtual void render(Gfx* gfx, int x, int y);
+    virtual void render(Gfx* gfx, int x, int y, bool isSelected = false);
     void doAction(Manager* manager, GCWKey key) { if (isEnabled()) action(manager,key); }
 };
   
@@ -78,12 +78,14 @@ class BoolMenuEntry : public StandardMenuEntry
 {
   private:
     BoolSetting* const setting;
+    const u16 totalSpacing = 10;
+    const u16 valueSpacing;
   
   public:
-    BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+    BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting), valueSpacing(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No"))+10) { }
 
     virtual void action(Manager *manager, GCWKey key);
-    virtual void render(Gfx* gfx, int x, int y);
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class EnumMenuEntry : public StandardMenuEntry
@@ -95,7 +97,7 @@ class EnumMenuEntry : public StandardMenuEntry
     EnumMenuEntry(EnumSetting* setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
   
     virtual void action(Manager *manager, GCWKey key);
-    virtual void render(Gfx* gfx, int x, int y);
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class PathSettingMenuEntry : public StandardMenuEntry
@@ -107,7 +109,7 @@ class PathSettingMenuEntry : public StandardMenuEntry
     PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : StandardMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
   
     virtual void action(Manager *manager, GCWKey key);
-    virtual void render(Gfx* gfx, int x, int y);
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class PathMenuEntry : public MenuEntry
@@ -121,7 +123,7 @@ class PathMenuEntry : public MenuEntry
     
     virtual const std::string& name() { return path.value(); }
     virtual void action(Manager *manager, GCWKey key);
-    virtual void render(Gfx* gfx, int x, int y);
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
   
@@ -144,7 +146,7 @@ class RomMenuEntry : public MenuEntry
   public:
     RomMenuEntry(const RomEntry& rom) : rom(rom) { }
     const std::string& name() override { return rom.name; }
-    void render(Gfx* gfx, int x, int y) override;
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
     void action(Manager *manager, GCWKey key) override;
 
 };
@@ -274,7 +276,7 @@ class SystemsMenu : public StandardMenu
     bool isEnabled() const override { return setting.isRebindable(); }
     
     void action(Manager *manager, GCWKey key) override;
-    void render(Gfx* gfx, int x, int y) override;
+    void render(Gfx* gfx, int x, int y, bool isSelected) override;
   };
   
   

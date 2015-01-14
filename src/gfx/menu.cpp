@@ -8,7 +8,7 @@ using namespace gcw;
 
 #pragma mark MenuEntry
 
-void MenuEntry::render(Gfx *gfx, int x, int y)
+void MenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   SDL_Surface* i = icon();
   
@@ -45,11 +45,24 @@ void BoolMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
-void BoolMenuEntry::render(Gfx *gfx, int x, int y)
+void BoolMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  gfx->print(x+width+10, y, false, Font::bigFont, setting->getValue()?"Yes":"No");
+  u16 basePosition = x+width+totalSpacing;
+  u16 baseTextPosition = basePosition+Font::bigFont.stringWidth("\x14")+valueSpacing/2;
+  
+  gfx->print(baseTextPosition, y, true, Font::bigFont, setting->getValue()?"Yes":"No");
 
+  if (isSelected)
+  {
+    gfx->print(basePosition, y, false, Font::bigFont, "\x14");
+    gfx->print(baseTextPosition+valueSpacing/2, y, false, Font::bigFont, "\x15");
+  }
+  
+  /*if (isSelected)
+    gfx->print(x+width+totalSpacing, y, false, Font::bigFont, string("\x14 ") + (setting->getValue()?"Yes":"No") + " \x15");
+  else
+    gfx->print(x+width+totalSpacing+Font::bigFont.stringWidth("\x14 "), y, false, Font::bigFont, setting->getValue()?"Yes":"No");*/
 }
 
 #pragma mark EnumMenuEntry
@@ -62,10 +75,10 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
     setting->prev();
 }
 
-void EnumMenuEntry::render(Gfx *gfx, int x, int y)
+void EnumMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  gfx->print(x+width+10, y, false, Font::bigFont, setting->getValue()->getName().c_str());
+  gfx->print(x+width+10, y, false, Font::bigFont, string("\x14 ") + setting->getValue()->getName().c_str() + " \x15");
   
 }
 
@@ -87,7 +100,7 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
-void PathSettingMenuEntry::render(Gfx *gfx, int x, int y)
+void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
   
@@ -105,7 +118,7 @@ void PathMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
-void PathMenuEntry::render(Gfx *gfx, int x, int y)
+void PathMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   gfx->print(x, y, false, Font::bigFont, Text::clipText(path.value(), -40, "...").c_str());
 }
@@ -120,7 +133,7 @@ SystemMenuEntry::SystemMenuEntry(const System::Spec& system, Menu *menu) : SubMe
 
 #pragma mark RomMenuEntry
 
-void RomMenuEntry::render(Gfx *gfx, int x, int y)
+void RomMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   gfx->print(x, y, false, Font::bigFont, name().c_str());
 }
@@ -144,9 +157,11 @@ void Menu::render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y, 
 
   for (int i = 0; i < size; ++i)
   {
-    this->entryAt(i+offset)->render(gfx, x, y+spacing*i);
+    bool selected = c >= 0 && c == i + offset;
     
-    if (c >= 0 && c == i + offset)
+    this->entryAt(i+offset)->render(gfx, x, y+spacing*i, selected);
+    
+    if (selected)
       gfx->print(x - UI::MENU_SELECTION_SPACING, y + spacing * i, false, Font::bigFont, gfx->ccc<u16>(0, 255, 0),  "\x15");
   }
 }
@@ -287,7 +302,7 @@ void KeybindMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
-void KeybindMenuEntry::render(Gfx* gfx, int x, int y)
+void KeybindMenuEntry::render(Gfx* gfx, int x, int y, bool isSelected)
 {
   if (isEnabled())
   {

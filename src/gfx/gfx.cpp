@@ -234,7 +234,7 @@ Font::Font(string filename, u8 tileWidth, u8 tileHeight, u8 lineHeight, u8 defau
 const Font Font::bigFont = Font("data/font.png", 6, 9, 9, 5,
   {{"!.:|", 1},
    {"(),:`", 2},
-   {" \"<=>[]ijl{}\x15", 3},
+   {" \"<=>[]ijl{}\x14\x15", 3},
    {"frt", 4}}
 );
 
