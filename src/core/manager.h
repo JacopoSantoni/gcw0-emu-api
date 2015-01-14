@@ -17,6 +17,8 @@
 #include "../views/keybind_view.h"
 #include "../views/dialog_view.h"
 
+#include <stack>
+
 namespace gcw {
   
   class Manager : public ManagerInterface
@@ -31,6 +33,8 @@ namespace gcw {
     RomCollection collection;
     Gfx gfx;
     Timer timer;
+    
+    Menus menus;
   
     CoreView coreView;
     MenuView menuView;
@@ -40,19 +44,19 @@ namespace gcw {
     KeybindView keybindView;
     DialogView dialogView;
     
+    std::stack<View*> viewStack;
+    
     View *currentView;
     
-
-  
     bool running;
 
   public:
     Manager() : handle(std::nullopt), core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
     coreView(this),
-    menuView(this),
+    menuView(this, menus.mainMenu),
     pathView(this),
     loadingView(this),
-    pauseView(this),
+    pauseView(this, menus.pauseMenu),
     keybindView(this),
     dialogView(this),
     currentView(nullptr), running(true) { }
@@ -60,10 +64,14 @@ namespace gcw {
     void init();
     void run();
   
+    
+    Menus* getMenus() { return &menus; }
+    
     MenuView* getMenuView() { return &menuView; }
     PathView* getPathView() { return &pathView; }
     KeybindView* getKeybindView() { return &keybindView; }
     DialogView* getDialogView() { return &dialogView; }
+    template<typename T> T* getView() { return static_cast<T*>(currentView); }
   
     Loader *getLoader() { return &loader; }
     Persistence *getPersistence() { return &persistence; }
@@ -82,6 +90,8 @@ namespace gcw {
   
     void switchView(View::Type type)
     {
+      //while (!viewStack.empty()) viewStack.pop();
+      
       currentView->deactivated();
       
       switch (type)
@@ -95,6 +105,20 @@ namespace gcw {
         case View::Type::DIALOG: currentView = &dialogView; break;
       }
       
+      currentView->activated();
+    }
+    
+    void pushView(View::Type type)
+    {
+      viewStack.push(currentView);
+      switchView(type);
+    }
+    
+    void popView()
+    {
+      currentView->deactivated();
+      currentView = viewStack.top();
+      viewStack.pop();
       currentView->activated();
     }
     

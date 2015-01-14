@@ -30,7 +30,7 @@ void MenuEntry::render(Gfx *gfx, int x, int y)
 void SubMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == MENU_ACTION_BUTTON)
-    manager->getMenuView()->enterSubmenu(this);
+    manager->getView<MenuView>()->enterSubmenu(this);
 }
 
 #pragma mark BoolMenuEntry
@@ -79,11 +79,11 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
     
     auto lambda = [manager, this](const Path& path) {
       setting->setValue(path.value());
-      manager->switchView(View::Type::MENU);
+      manager->popView();
     };
     
-    pview->init(pathViewTitle, "Set this path", Path(setting->getValue()), lambda, [manager, this](){ manager->switchView(View::Type::MENU); });
-    manager->switchView(View::Type::PATH);
+    pview->init(pathViewTitle, "Set this path", Path(setting->getValue()), lambda, [manager, this](){ manager->popView(); });
+    manager->pushView(View::Type::PATH);
   }
 }
 
@@ -147,7 +147,7 @@ void Menu::render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y, 
     this->entryAt(i+offset)->render(gfx, x, y+spacing*i);
     
     if (c >= 0 && c == i + offset)
-      gfx->print(x - UI::MENU_SELECTION_SPACING, y + spacing * i, false, Font::bigFont, ">");
+      gfx->print(x - UI::MENU_SELECTION_SPACING, y + spacing * i, false, Font::bigFont, gfx->ccc<u16>(0, 255, 0),  "\x15");
   }
 }
 
@@ -170,12 +170,12 @@ void RomPathsMenu::build()
     {
       persistence->addRomPath(path);
       build();
-      manager->switchView(View::Type::MENU);
+      manager->popView();
     };
     
     PathView* pview = manager->getPathView();
-    pview->init("Add rom path", "Add this path", Path(Persistence::pathFor(PathType::HOME)), plambda, [manager, this](){ manager->switchView(View::Type::MENU); });
-    manager->switchView(View::Type::PATH);
+    pview->init("Add rom path", "Add this path", Path(Persistence::pathFor(PathType::HOME)), plambda, [manager, this](){ manager->popView(); });
+    manager->pushView(View::Type::PATH);
   };
   
   
@@ -196,7 +196,7 @@ CoresMenu::CoresMenu(Manager* manager) : StandardMenu("Cores")
   auto& cores = manager->getLoader()->getCores();
   
   for (CoreHandle& core : cores)
-    entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core, manager->getMenuView()->getCoreMenu())));
+    entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core, manager->getMenus()->getCoreMenu())));
 }
 
 
@@ -220,17 +220,17 @@ void CoreMenu::build(CoreHandle& handle)
     keybinds->addEntry(keyentry);
   }
   
-
   static auto resetBindsLambda = [](const CoreHandle& handle, Manager* manager)
   {
     static auto resetBinds = [&handle, manager]() {
       for (const auto& button : handle.info.supportedButtons())
         button.setMask(button.getDefaultMask());
-      manager->switchView(View::Type::MENU);
+      
+      manager->popView();
     };
     
-    manager->getDialogView()->initConfirm(string("Are you sure you want to reset all binds for ")+handle.name()+"?", resetBinds, [manager](){ manager->switchView(View::Type::MENU);});
-    manager->switchView(View::Type::DIALOG);
+    manager->getDialogView()->initConfirm(string("Are you sure you want to reset all binds\nfor ")+handle.name()+"?", resetBinds, [manager](){ manager->popView(); });
+    manager->pushView(View::Type::DIALOG);
   };
   
   LambdaMenuEntry *resetBindsEntry = new LambdaMenuEntry("Reset to default", std::bind(resetBindsLambda, cref(handle), placeholders::_1));
@@ -244,7 +244,7 @@ void CoreMenu::build(CoreHandle& handle)
 void CoreMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (key == MENU_ACTION_BUTTON)
-    manager->getMenuView()->getCoreMenu()->build(core);
+    manager->getMenus()->getCoreMenu()->build(core);
   
   SubMenuEntry::action(manager, key);
 }
@@ -267,22 +267,22 @@ void KeybindMenuEntry::action(Manager *manager, GCWKey key)
       static auto lambda = [this,manager](const ButtonSetting& setting, GCWKey key)
       {
         setting.setMask(key);
-        manager->switchView(View::Type::MENU);
+        manager->popView();
       };
 
-      view->init(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, text);
-      manager->switchView(View::Type::KEYBIND);
+      view->init(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->popView(); }, text);
+      manager->pushView(View::Type::KEYBIND);
     }
     else
     {
       static auto lambda = [this, manager](const ButtonSetting& setting, ButtonStatus status)
       {
         setting.setMask(status);
-        manager->switchView(View::Type::MENU);
+        manager->popView();
       };
       
-      view->initm(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->switchView(View::Type::MENU); }, text);
-      manager->switchView(View::Type::KEYBIND);
+      view->initm(std::bind(lambda, cref(setting), placeholders::_1), [manager](){ manager->popView(); }, text);
+      manager->pushView(View::Type::KEYBIND);
     }
   }
 }

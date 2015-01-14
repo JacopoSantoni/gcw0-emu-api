@@ -49,7 +49,9 @@ void Manager::init()
   root->addEntry(new EnumMenuEntry(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3])));
   root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves"), "Choose saves path"));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
-  menuView.setMenu(root);
+  
+  menus.setMainMenu(root);
+  menuView.resetToRoot();
   
   currentView = &menuView;
   
@@ -158,6 +160,7 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
       core->loadRomByFileName(entry.path.value());
 
     pauseView.initialize(core, rom);
+    menus.getCoreMenu()->build(handle);
     switchView(View::Type::CORE);
     
     if (handle.core->getSfxSpec())

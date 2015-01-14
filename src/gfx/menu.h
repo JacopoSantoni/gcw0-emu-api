@@ -67,7 +67,7 @@ class SubMenuEntry : public StandardMenuEntry
     std::unique_ptr<Menu> menu;
  
   public:
-    SubMenuEntry(std::string caption, Menu *menu) : StandardMenuEntry(caption+" >"), menu(menu) { }
+    SubMenuEntry(std::string caption, Menu *menu) : StandardMenuEntry(caption+" \x15"), menu(menu) { }
   
     Menu *subMenu() { return menu.get(); }
   
@@ -163,9 +163,12 @@ class Menu
     Menu(const std::string& caption) : caption(caption), spacing(UI::MENU_DEFAULT_SPACING) { }
     void setSpacing(u16 spacing) { this->spacing = spacing; }
   
+    virtual void addEntry(MenuEntry *entry) = 0;
     virtual size_t count() const = 0;
     template<typename T> T* castedEntry(u32 index) const { return static_cast<T*>(entryAt(index)); }
     virtual MenuEntry* entryAt(u32 index) const = 0;
+    virtual void clear() = 0;
+  
     virtual void render(Gfx* gfx, int offset, int size, int tx, int ty, int x, int y, int c = -1);
 
     void setTitle(const std::string& title) { this->caption = title; }
@@ -182,8 +185,8 @@ class StandardMenu : public Menu
     StandardMenu(const std::string& caption) : Menu(caption) { }
   
     size_t count() const { return entries.size(); }
-    void addEntry(MenuEntry *entry) { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
-    void clear() { entries.clear(); }
+    void addEntry(MenuEntry *entry) override { entries.push_back(std::unique_ptr<MenuEntry>(entry)); }
+    void clear() override { entries.clear(); }
     MenuEntry* entryAt(u32 index) const { return entries[index].get(); }
 
 };
@@ -285,6 +288,27 @@ class SystemsMenu : public StandardMenu
     CoreMenu() : StandardMenu() { }
     
     void build(CoreHandle& handle);
+  };
+  
+  
+  class Menus
+  {
+  private:
+    std::unique_ptr<Menu> mainMenu;
+    std::unique_ptr<CoreMenu> coreMenu;
+    std::unique_ptr<Menu> pauseMenu;
+    
+  public:
+    Menus() : coreMenu(new CoreMenu()), pauseMenu(new StandardMenu("Pause Menu")) { }
+    
+    /* TODO: maybe unnecessary in final version? */
+    void setMainMenu(Menu* menu) { mainMenu.reset(menu); }
+    
+    CoreMenu* getCoreMenu() { return coreMenu.get(); }
+    Menu* getMainMenu() { return mainMenu.get(); }
+    Menu* getPauseMenu() { return pauseMenu.get(); }
+    
+    friend class Manager;
   };
 }
 

@@ -16,7 +16,7 @@ MenuEntry* MenuView::MenuEntryList::selected() { return currentStatus.menu->entr
 MenuEntry* MenuView::MenuEntryList::get(u32 i) { return currentStatus.menu->entryAt(offset+i); }
 
 
-MenuView::MenuView(Manager *manager) : View(manager), coreMenu(new CoreMenu())
+MenuView::MenuView(Manager *manager, std::unique_ptr<Menu>& root) : View(manager), root(root)
 {
 
 }
@@ -41,8 +41,13 @@ void MenuView::handleEvents()
           case GCW_KEY_L: list.prevPage(); break;
           case GCW_KEY_R: list.nextPage(); break;
             
-          case MENU_BACK_BUTTON: if (!menuStack.empty()) { list.setStatus(menuStack.top()); menuStack.pop(); } break;
+          case MENU_BACK_BUTTON:
+          {
+            if (!menuStack.empty()) { list.setStatus(menuStack.top()); menuStack.pop(); }
+            else backActionOnRoot();
             
+            break;
+          }
           case GCW_KEY_RIGHT:
           case GCW_KEY_LEFT:
           case MENU_ACTION_BUTTON:

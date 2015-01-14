@@ -39,7 +39,7 @@ void PathView::render()
     gfx->print(UI::MENU_OFFSET.x, UI::MENU_OFFSET.y+14*i, false, Font::bigFont, Text::clipText(folder.value(), 30).c_str());
   }
 
-  gfx->print(UI::MENU_OFFSET.x-10,UI::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, ">");
+  gfx->print(UI::MENU_OFFSET.x-10,UI::MENU_OFFSET.y+list.relativeIndex(list.current())*14, false, Font::bigFont, gfx->ccc<u16>(0, 255, 0),"\x15");
   
   //gfx->print(View::HELP_OFFSET.x,View::HELP_OFFSET.y, false, Font::bigFont, (string(Text::nameForKey(GCW_KEY_START)) + ": save changes").c_str());
 }

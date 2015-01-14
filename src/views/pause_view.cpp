@@ -59,7 +59,7 @@ public:
   }
   
   void setEnabled(bool enabled) { this->enabled = enabled; }
-  bool isEnabled() { return enabled; }
+  bool isEnabled() const override { return enabled; }
   
   void updateCaption() {
     
@@ -77,21 +77,14 @@ public:
   }
 };
 
-u32 PauseView::PauseEntryList::current() const { return currentIndex; }
-u32 PauseView::PauseEntryList::count() const { return view->menu->count(); }
-void PauseView::PauseEntryList::set(u32 i) { currentIndex = i; }
-MenuEntry* PauseView::PauseEntryList::get(u32 i) { return view->menu->entryAt(offset+i); }
-
-PauseView::PauseView(Manager* manager) : View(manager), currentSaveSlot(0), currentLoadSlot(0), list(this)
+PauseView::PauseView(Manager* manager, std::unique_ptr<Menu>& root) : MenuView(manager, root), currentSaveSlot(0), currentLoadSlot(0)
 {
-  StandardMenu* menu = new StandardMenu("Pause Menu");
-  
-  this->menu = unique_ptr<Menu>(menu);
+  Menu* menu = manager->getMenus()->getPauseMenu();
   
   menu->addEntry(new LambdaMenuEntry("Back to game", [](Manager* manager){ manager->resumeEmulation(); }));
   menu->addEntry(new SlotSelectionMenuEntry(manager, "Save to slot ", currentSaveSlot, true));
   menu->addEntry(new SlotSelectionMenuEntry(manager, "Load from slot ", currentLoadSlot, false));
-  menu->addEntry(new StandardMenuEntry("Settings"));
+  menu->addEntry(new SubMenuEntry("Core Settings", manager->getMenus()->getCoreMenu()));
   menu->addEntry(new LambdaMenuEntry("Soft Reset", [](Manager* manager) {
     if (manager->getCurrentCore()->hasFeature(CoreFeature::CAN_SOFT_RESET))
     {
@@ -105,12 +98,12 @@ PauseView::PauseView(Manager* manager) : View(manager), currentSaveSlot(0), curr
 
 void PauseView::initialize(const CoreInterface* core, const RomEntry* rom)
 {
-  list.set(0);
+  resetPosition();
   
-  menu->setTitle(rom->name + " on " + core->info().details.name);
+  root->setTitle(rom->name + " on " + core->info().details.name);
   
-  SlotSelectionMenuEntry* save = menu->castedEntry<SlotSelectionMenuEntry>(1);
-  SlotSelectionMenuEntry* load = menu->castedEntry<SlotSelectionMenuEntry>(2);
+  SlotSelectionMenuEntry* save = root->castedEntry<SlotSelectionMenuEntry>(1);
+  SlotSelectionMenuEntry* load = root->castedEntry<SlotSelectionMenuEntry>(2);
   
   save->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATE));
   load->setEnabled(core->hasFeature(CoreFeature::CAN_SAVE_STATE));
@@ -119,42 +112,11 @@ void PauseView::initialize(const CoreInterface* core, const RomEntry* rom)
   
   this->core = core;
   this->rom = rom;
-}
-
-void PauseView::handleEvents()
-{
-  SDL_Event event;
   
-  while (SDL_PollEvent(&event))
-  {
-    switch(event.type)
-    {
-      case SDL_KEYDOWN:
-      {
-        GCWKey key = static_cast<GCWKey>(event.key.keysym.sym);
-        switch (key)
-        {
-          case GCW_KEY_DOWN: list.down(); break;
-          case GCW_KEY_UP: list.up(); break;
-            
-          case GCW_KEY_L: list.prevPage(); break;
-          case GCW_KEY_R: list.nextPage(); break;
-          
-          
-          case GCW_KEY_RIGHT:
-          case GCW_KEY_LEFT:
-          case MENU_ACTION_BUTTON:
-            list.selected()->doAction(manager, key); break;
-            
-          default: break;
-        }
-      }
-    }
-  }
-
+  resetToRoot();
 }
 
-void PauseView::render()
+void PauseView::backActionOnRoot()
 {
-  menu->render(gfx, list.minOffset(), list.getDisplayedAmount(), UI::TITLE_OFFSET.x, UI::TITLE_OFFSET.y, UI::MENU_OFFSET.x, UI::MENU_OFFSET.y, list.current());
+  manager->resumeEmulation();
 }

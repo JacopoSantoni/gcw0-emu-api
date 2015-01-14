@@ -51,20 +51,22 @@ namespace gcw {
   
     MenuEntryList list;
     std::stack<MenuStatus> menuStack;
-    
-    std::unique_ptr<CoreMenu> coreMenu;
+
+  protected:
+    std::unique_ptr<Menu>& root;
   
   public:
-    MenuView(Manager *manager);
-  
-    void setMenu(Menu *root) { /*this->root = root;*/ list.setStatus(MenuStatus(root)); }
-  
+    MenuView(Manager *manager, std::unique_ptr<Menu>& root);
+    
+    void resetPosition() { list.set(0); }
+    void resetToRoot() { list.setStatus(root.get()); }
+
+    virtual void backActionOnRoot() { }
+    
     virtual void render();
     virtual void handleEvents();
   
     void enterSubmenu(SubMenuEntry *entry);
-    
-    CoreMenu* getCoreMenu() { return coreMenu.get(); }
   };
 
   

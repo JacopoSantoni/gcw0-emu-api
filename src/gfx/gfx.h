@@ -83,7 +83,7 @@ namespace gcw
       static inline SDL_Rect rrr(s16 x, s16 y, u16 w, u16 h) { return {x,y,w,h}; }
     
       template<typename T>
-      static inline T ccc(u8 r, u8 b, u8 g) { return static_cast<T>(SDL_MapRGB(format, r, g, b)); }
+      static inline T ccc(u8 r, u8 g, u8 b) { return static_cast<T>(SDL_MapRGB(format, r, g, b)); }
   
       template<typename T>
       void clear(T color) {
