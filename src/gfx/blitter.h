@@ -5,17 +5,6 @@
 
 namespace gcw {
   
-  
-template<GfxBufferFormat FROM, GfxBufferFormat TO>
-class FormatConvert
-{
-  template<typename U, typename std::enable_if<FROM == FORMAT_XRGB888 && TO == FORMAT_RGB565>::type = 0>
-  static inline u16 convert(u32 c)
-  {
-    
-  }
-};
-  
 class Blitter
 {
 protected:
@@ -41,79 +30,71 @@ public:
 };
   
   
-template<GfxBufferFormat FROM, GfxBufferFormat TO> struct fake_dependency : public std::false_type {};
-  
 template<GfxBufferFormat FROM, GfxBufferFormat TO>
-class FormatBlitter
+class FormatBlitter : public Blitter
 {
+private:
+  typedef typename std::conditional<FROM == FORMAT_XRGB888 || FROM == FORMAT_RGBA8888, u32, u16>::type pixel_from;
+  typedef typename std::conditional<TO == FORMAT_XRGB888 || TO == FORMAT_RGBA8888, u32, u16>::type pixel_to;
+  
 public:
   void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest)
   {
-    static_assert(fake_dependency<FROM, TO>::value, "must use specialization");
-  }
-  
-};
-  
-template<>
-inline void FormatBlitter<FORMAT_XRGB888, FORMAT_RGB565>::blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest)
-{
-}
-
-class Blitter565to565 : public Blitter
-{
-public:
-  Blitter565to565() : Blitter() { }
-  
-  void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-  {
-    rawBlit<u16>(dest, buffer, offset);
-  }
-};
-
-class Blitter888to888 : public Blitter
-{
-public:
-  Blitter888to888() : Blitter() { }
-  
-  void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-  {
-    rawBlit<u32>(dest, buffer, offset);
-  }
-};
-
-class Blitter888to565 : public Blitter
-{
-public:
-  Blitter888to565() : Blitter() { }
-  
-  void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-  {
     SDL_LockSurface(dest);
-    u16* d = reinterpret_cast<u16*>(dest->pixels) + offset.x + offset.y*dest->w;
-    u32* s = reinterpret_cast<u32*>(buffer.data);
+    pixel_to* d = reinterpret_cast<pixel_to*>(dest->pixels) + offset.x + offset.y*dest->w;
+    pixel_from* s = reinterpret_cast<pixel_from*>(buffer.data);
     
     for (int y = 0; y < buffer.height; ++y)
     {
-      u16* bd = d + y*dest->w;
-      u32* bs = s + y*buffer.width;
+      pixel_to* bd = d + y*dest->w;
+      pixel_from* bs = s + y*buffer.width;
       
       for (int x = 0; x < buffer.width; ++x, ++bd, ++bs)
-      {
-        u32 sc = *bs;
-        
-        u8 r = (sc >> 16) / 8;
-        u8 g = ((sc >> 8) & 0xFF) / 4;
-        u8 b = ((sc) & 0xFF) / 8;
-        
-        *bd = (r << 11) | (g << 5) | b;
-      }
+        *bd = convert(*bs);
     }
     
     SDL_UnlockSurface(dest);
+  }
+  
+  template< bool cond, typename U > using conversion_type  = typename std::enable_if<cond, U >::type;
+  
+  template<GfxBufferFormat F = FROM>
+  static inline conversion_type<F == FORMAT_XRGB888 && TO == FORMAT_RGB565, pixel_to> convert(pixel_from c)
+  {
+    u8 r = (c >> 16) / 8;
+    u8 g = ((c >> 8) & 0xFF) / 4;
+    u8 b = ((c) & 0xFF) / 8;
     
+    return (r << 11) | (g << 5) | b;
+  }
+  
+  template<GfxBufferFormat F = FROM>
+  static inline conversion_type<F == FORMAT_XRGB888 && TO == FORMAT_RGBA8888, pixel_to> convert(pixel_from c)
+  {
+    return c << 8;
   }
 };
+  
 
+  
+template<>
+inline void FormatBlitter<FORMAT_RGB565, FORMAT_RGB565>::blit(const GfxBuffer &buffer, const Offset &offset, SDL_Surface *dest)
+{
+  rawBlit<u16>(dest, buffer, offset);
+}
+  
+template<>
+inline void FormatBlitter<FORMAT_RGBA5551, FORMAT_RGBA5551>::blit(const GfxBuffer &buffer, const Offset &offset, SDL_Surface *dest)
+{
+  rawBlit<u16>(dest, buffer, offset);
+}
+  
+template<>
+inline void FormatBlitter<FORMAT_RGBA8888, FORMAT_RGBA8888>::blit(const GfxBuffer &buffer, const Offset &offset, SDL_Surface *dest)
+{
+  rawBlit<u32>(dest, buffer, offset);
+}
+  
 }
 
 

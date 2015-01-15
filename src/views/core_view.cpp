@@ -20,13 +20,13 @@ void CoreView::initGfx()
   offset.y = (HEIGHT - buffer.height)/2;
   
   if (gfxSpec.format == FORMAT_RGB565)
-    blitter = new Blitter565to565();
+    blitter = new FormatBlitter<FORMAT_RGB565, FORMAT_RGB565>();
   else if (gfxSpec.format == FORMAT_XRGB888)
   {
     if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
-      blitter = new Blitter888to888();
+      blitter = new FormatBlitter<FORMAT_XRGB888, FORMAT_RGBA8888>();
     else
-      blitter = new Blitter888to565();
+      blitter = new FormatBlitter<FORMAT_XRGB888, FORMAT_RGB565>();
   }
 }
 

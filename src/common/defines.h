@@ -130,7 +130,8 @@ enum GfxBufferFormat
 {
   FORMAT_XRGB888,
   FORMAT_RGB565,
-  FORMAT_RGBA5551
+  FORMAT_RGBA5551,
+  FORMAT_RGBA8888,
 };
 
 struct GfxBufferSpec
