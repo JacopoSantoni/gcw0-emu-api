@@ -121,6 +121,7 @@ namespace gcw
         blit(src, x-src->w/2, y-src->h/2);
       }
     
+      SDL_Surface* getScreen() { return screen; }
       const SDL_PixelFormat* getFormat() const { return format; }
     
       template<typename T>
@@ -152,74 +153,6 @@ namespace gcw
       friend class Gfx;
     
       static const Font bigFont;
-  };
-  
-  
-  class Blitter
-  {
-  protected:
-    Gfx* gfx;
-    
-  public:
-    Blitter(Gfx* gfx) : gfx(gfx) { }
-    
-    virtual void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) = 0;
-    virtual ~Blitter() { }
-  };
-  
-  class Blitter565to565 : public Blitter
-  {
-  public:
-    Blitter565to565(Gfx* gfx) : Blitter(gfx) { }
-    
-    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-    {
-      gfx->rawBlit<u16>(gfx->screen, buffer, offset);
-    }
-  };
-  
-  class Blitter888to888 : public Blitter
-  {
-  public:
-    Blitter888to888(Gfx* gfx) : Blitter(gfx) { }
-    
-    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-    {      
-      gfx->rawBlit<u32>(gfx->screen, buffer, offset);
-    }
-  };
-  
-  class Blitter888to565 : public Blitter
-  {
-  public:
-    Blitter888to565(Gfx* gfx) : Blitter(gfx) { }
-    
-    void blit(const GfxBuffer& buffer, const Offset& offset, SDL_Surface* dest) override
-    {
-      SDL_LockSurface(dest);
-      u16* d = reinterpret_cast<u16*>(dest->pixels) + offset.x + offset.y*dest->w;
-      u32* s = reinterpret_cast<u32*>(buffer.data);
-      
-      for (int y = 0; y < buffer.height; ++y)
-      {
-        u16* bd = d + y*dest->w;
-        u32* bs = s + y*buffer.width;
-        
-        for (int x = 0; x < buffer.width; ++x, ++bd, ++bs)
-        {
-          u32 sc = *bs;
-          
-          u8 r = (sc >> 16) / 8;
-          u8 g = ((sc >> 8) & 0xFF) / 4;
-          u8 b = ((sc) & 0xFF) / 8;
-          
-          *bd = (r << 11) | (g << 5) | b;
-        }
-      }
-      
-      SDL_UnlockSurface(dest);
-
-    }
   };
 }
 

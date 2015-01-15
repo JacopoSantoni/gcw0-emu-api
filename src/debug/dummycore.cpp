@@ -104,7 +104,7 @@ class DummyCore : public CoreInterface
       
       setAnalogDeadZone(0.20f, 1.0f);
       
-      setGfxFormat(240, 160, FORMAT_565);
+      setGfxFormat(240, 160, FORMAT_RGB565);
     }
   
     void emulationSuspended() override { }

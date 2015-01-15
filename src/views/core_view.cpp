@@ -19,14 +19,14 @@ void CoreView::initGfx()
   offset.x = (WIDTH - buffer.width)/2;
   offset.y = (HEIGHT - buffer.height)/2;
   
-  if (gfxSpec.format == FORMAT_565)
-    blitter = new Blitter565to565(manager->getGfx());
-  else if (gfxSpec.format == FORMAT_8888)
+  if (gfxSpec.format == FORMAT_RGB565)
+    blitter = new Blitter565to565();
+  else if (gfxSpec.format == FORMAT_XRGB888)
   {
     if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
-      blitter = new Blitter888to888(manager->getGfx());
+      blitter = new Blitter888to888();
     else
-      blitter = new Blitter888to565(manager->getGfx());
+      blitter = new Blitter888to565();
   }
 }
 

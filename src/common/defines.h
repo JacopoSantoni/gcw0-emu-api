@@ -128,8 +128,9 @@ struct CoreIdentifier
 
 enum GfxBufferFormat
 {
-  FORMAT_8888,
-  FORMAT_565
+  FORMAT_XRGB888,
+  FORMAT_RGB565,
+  FORMAT_RGBA5551
 };
 
 struct GfxBufferSpec
@@ -160,8 +161,8 @@ struct GfxBuffer
     
     switch (spec.format)
     {
-      case FORMAT_8888: bufferSize = width*height*sizeof(u32); break;
-      case FORMAT_565: bufferSize = width*height*sizeof(u16); break;
+      case FORMAT_XRGB888: bufferSize = width*height*sizeof(u32); break;
+      case FORMAT_RGB565: bufferSize = width*height*sizeof(u16); break;
     }
     
     data = new u8[bufferSize];
