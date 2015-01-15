@@ -86,6 +86,7 @@ public:
   bool canBeModified() const;
   void setValueTextWidth(u16 valueTextWidth) { this->valueTextWidth = valueTextWidth + 10; }
   
+  void action(Manager *manager, GCWKey key) override;
   void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
@@ -130,13 +131,16 @@ public:
   virtual void action(Manager *manager, GCWKey key);
 };
   
-class PathSettingMenuEntry : public StandardMenuEntry
+class PathSettingMenuEntry : public SettingMenuEntry
 {
 private:
   PathSetting* const setting;
   const std::string pathViewTitle;
 public:
-  PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : StandardMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
+  PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : SettingMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
+
+  const std::string getValueName() const override { return setting->getValue(); }
+  bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
 
   virtual void action(Manager *manager, GCWKey key);
   void render(Gfx* gfx, int x, int y, bool isSelected) override;

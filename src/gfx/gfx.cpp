@@ -47,7 +47,7 @@ void Gfx::rawBlit(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offs
 {
   SDL_LockSurface(dest);
   T *p = static_cast<T*>(dest->pixels) + offset.x + offset.y*dest->w;
-  T *sp = reinterpret_cast<T*>(buffer.data);
+  T *sp = buffer.getData<T>();
   
   for (int i = 0; i < buffer.height; ++i)
     memcpy(p+(i*dest->w), sp+i*buffer.width, sizeof(T)*buffer.width);
@@ -58,7 +58,7 @@ void Gfx::rawBlit(SDL_Surface *dest, const GfxBuffer &buffer, const Offset &offs
 template <typename T>
 void Gfx::clear(GfxBuffer &buffer, T color)
 {
-  T *p = reinterpret_cast<T*>(buffer.data);
+  T *p = buffer.getData<T>();
   
   for (int w = 0; w < buffer.width; ++w)
     for (int h = 0; h < buffer.height; ++h)

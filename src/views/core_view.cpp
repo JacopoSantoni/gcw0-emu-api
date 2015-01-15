@@ -16,18 +16,25 @@ void CoreView::initGfx()
   const GfxBufferSpec& gfxSpec = core->getGfxSpec();
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
-  offset.x = (WIDTH - buffer.width)/2;
-  offset.y = (HEIGHT - buffer.height)/2;
+  
+  BlitterFactory* factory = nullptr;
   
   if (gfxSpec.format == FORMAT_RGB565)
-    blitter = new FormatBlitter<FORMAT_RGB565, FORMAT_RGB565>();
+  {
+    factory = new NativeBlitterFactory<FORMAT_RGB565, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
+    blitter = factory->buildBlitter(gfxSpec.format);
+  }
   else if (gfxSpec.format == FORMAT_XRGB888)
   {
     if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
-      blitter = new FormatBlitter<FORMAT_XRGB888, FORMAT_RGBA8888>();
+      factory = new NativeBlitterFactory<FORMAT_XRGB888, FORMAT_RGBA8888>(gfxSpec.width, gfxSpec.height);
     else
-      blitter = new FormatBlitter<FORMAT_XRGB888, FORMAT_RGB565>();
+      factory = new NativeBlitterFactory<FORMAT_XRGB888, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
   }
+  
+  blitter = factory->buildBlitter(gfxSpec.format);
+  factory->computeOffset(offset, WIDTH, HEIGHT);
+  delete factory;
 }
 
 void CoreView::initSfx()

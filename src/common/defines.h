@@ -143,7 +143,7 @@ struct GfxBufferSpec
 
 struct GfxBuffer
 {
-  u8 *data;
+  void *data;
   //u16 pitch;
   u16 width;
   u16 height;
@@ -153,26 +153,29 @@ struct GfxBuffer
   
   void allocate(const GfxBufferSpec& spec)
   {
-    if (data) delete [] data;
+    delete [] static_cast<u32*>(data);
     
     u32 bufferSize;
     //pitch = spec.width;
     width = spec.width;
     height = spec.height;
-    
+        
     switch (spec.format)
     {
-      case FORMAT_XRGB888: bufferSize = width*height*sizeof(u32); break;
-      case FORMAT_RGB565: bufferSize = width*height*sizeof(u16); break;
+      case FORMAT_XRGB888: bufferSize = width*height; break;
+      case FORMAT_RGB565: bufferSize = width*height/2; break;
     }
     
-    data = new u8[bufferSize];
+    data = new u32[bufferSize];
     
   }
   
+  template <typename T>
+  inline T* getData() const { return static_cast<T*>(data); }
+  
   void release()
   {
-    delete [] data;
+    delete [] static_cast<u32*>(data);
     data = nullptr;
   }
   

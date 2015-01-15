@@ -95,7 +95,46 @@ inline void FormatBlitter<FORMAT_RGBA8888, FORMAT_RGBA8888>::blit(const GfxBuffe
   rawBlit<u32>(dest, buffer, offset);
 }
   
+class BlitterFactory
+{
+private:
+  std::string name;
+  
+public:
+  BlitterFactory(const std::string& name) : name(name) { }
+  virtual Blitter* buildBlitter(GfxBufferFormat format) = 0;
+  virtual void computeOffset(Offset& offset, u16 width, u16 height) = 0;
+  const std::string& getName() { return name;}
+  
+  virtual ~BlitterFactory() { }
+};
+  
+  
+template<GfxBufferFormat FROM, GfxBufferFormat TO>
+class NativeBlitterFactory : public BlitterFactory
+{
+private:
+  u16 sw, sh;
+  
+public:
+  NativeBlitterFactory(u16 sw, u16 sh) : BlitterFactory("Native"), sw(sw), sh(sh) { }
+  
+  void computeOffset(Offset& offset, u16 width, u16 height) override
+  {
+    offset.x = (width - sw)/2;
+    offset.y = (height - sh)/2;
+  }
+  
+  Blitter* buildBlitter(GfxBufferFormat format) override
+  {
+    return new FormatBlitter<FROM, TO>();
+  }
+};
+  
 }
+
+
+
 
 
 

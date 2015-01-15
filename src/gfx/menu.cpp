@@ -63,6 +63,17 @@ void SettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
   }
 }
 
+void SettingMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (!canBeModified())
+  {
+    DialogView* view = Manager::instance->getDialogView();
+    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
+    Manager::instance->pushView(View::Type::DIALOG);
+    return;
+  }
+}
+
 #pragma mark BoolMenuEntry
 
 
@@ -70,9 +81,7 @@ void BoolMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (!canBeModified())
   {
-    DialogView* view = Manager::instance->getDialogView();
-    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
-    Manager::instance->pushView(View::Type::DIALOG);
+    SettingMenuEntry::action(manager, key);
     return;
   }
   
@@ -89,9 +98,7 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
 {
   if (!canBeModified())
   {
-    DialogView* view = Manager::instance->getDialogView();
-    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
-    Manager::instance->pushView(View::Type::DIALOG);
+    SettingMenuEntry::action(manager, key);
     return;
   }
   
@@ -105,11 +112,9 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
 {
-  if (!setting->canBeModifiedAtRuntime() && manager->isEmulating())
+  if (!canBeModified())
   {
-    DialogView* view = Manager::instance->getDialogView();
-    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
-    Manager::instance->pushView(View::Type::DIALOG);
+    SettingMenuEntry::action(manager, key);
     return;
   }
   
@@ -129,7 +134,7 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
-  u16 color = (!setting->canBeModifiedAtRuntime() && Manager::instance->isEmulating()) ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
+  u16 color = (!canBeModified()) ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
   u16 width = gfx->print(x, y, false, Font::bigFont, color, name().c_str());
   
   const string&  path = setting->getValue();
