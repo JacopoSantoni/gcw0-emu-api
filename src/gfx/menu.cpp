@@ -35,12 +35,25 @@ void SubMenuEntry::action(Manager *manager, GCWKey key)
 
 #pragma mark SettingMenuEntry
 
+bool SettingMenuEntry::canBeModified() const
+{
+  return canBeModifiedAtRuntime() || !Manager::instance->isEmulating();
+}
+
 void SettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
-  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  u16 color = !canBeModified() ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
+  
+  u16 width = gfx->print(x, y, false, Font::bigFont, color, name().c_str());
   u16 basePosition = x+width+totalSpacing;
   u16 baseTextPosition = basePosition+Font::bigFont.stringWidth("\x14")+valueTextWidth/2;
   
+  if (!canBeModified())
+  {
+    gfx->print(baseTextPosition, y, true, Font::bigFont, color, getValueName());
+    return;
+  }
+
   gfx->print(baseTextPosition, y, true, Font::bigFont, getValueName());
   
   if (isSelected)
@@ -55,7 +68,15 @@ void SettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 
 void BoolMenuEntry::action(Manager *manager, GCWKey key)
 {
-  if (key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT || key == MENU_ACTION_BUTTON)
+  if (!canBeModified())
+  {
+    DialogView* view = Manager::instance->getDialogView();
+    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
+    Manager::instance->pushView(View::Type::DIALOG);
+    return;
+  }
+  
+  if ((key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT || key == MENU_ACTION_BUTTON) && canBeModified())
   {
     bool newValue = !setting->getValue();
     setting->setValue(newValue);
@@ -66,6 +87,14 @@ void BoolMenuEntry::action(Manager *manager, GCWKey key)
 
 void EnumMenuEntry::action(Manager *manager, GCWKey key)
 {
+  if (!canBeModified())
+  {
+    DialogView* view = Manager::instance->getDialogView();
+    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
+    Manager::instance->pushView(View::Type::DIALOG);
+    return;
+  }
+  
   if (key == GCW_KEY_RIGHT || key == MENU_ACTION_BUTTON)
     setting->next();
   else if (key == GCW_KEY_LEFT)
@@ -76,6 +105,14 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
 {
+  if (!setting->canBeModifiedAtRuntime() && manager->isEmulating())
+  {
+    DialogView* view = Manager::instance->getDialogView();
+    view->initMessage("This setting can't be changed\nwhile a core is running.", [](){ Manager::instance->popView(); } );
+    Manager::instance->pushView(View::Type::DIALOG);
+    return;
+  }
+  
   if (key == MENU_ACTION_BUTTON)
   {
     PathView* pview = manager->getPathView();
@@ -92,10 +129,11 @@ void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
 
 void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
-  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  u16 color = (!setting->canBeModifiedAtRuntime() && Manager::instance->isEmulating()) ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
+  u16 width = gfx->print(x, y, false, Font::bigFont, color, name().c_str());
   
   const string&  path = setting->getValue();
-  gfx->print(x+width, y, false, Font::bigFont, Text::clipText(path, -30, "...").c_str());
+  gfx->print(x+width, y, false, Font::bigFont, color, Text::clipText(path, -30, "...").c_str());
 }
 
 #pragma mark PathMenuEntry

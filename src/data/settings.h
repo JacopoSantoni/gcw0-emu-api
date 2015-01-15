@@ -11,26 +11,38 @@
 
 namespace gcw
 {
-  
-enum SettingType : u8
-{
-  SETTING_BOOL,
-  SETTING_PATH,
-  SETTING_ENUM
-};
 
 class Setting
 {
+  public:
+    enum class Type : u8
+    {
+      BOOLEAN,
+      PATH,
+      ENUMERATION,
+    };
+  
+    enum class Group : u8
+    {
+      VIDEO,
+      AUDIO,
+      MISC
+    };
+  
   private:
-    SettingType type;
+    Type type;
+    Group group;
     std::string name;
     std::string ident;
+    bool modifiableAtRuntime;
   
   public:
-    Setting(SettingType type, const std::string& name, const std::string& ident) : type(type), name(name), ident(ident) { }
+    Setting(Type type, Group group, const std::string& name, const std::string& ident, bool modifiableAtRuntime) : type(type), group(group), name(name), ident(ident), modifiableAtRuntime(modifiableAtRuntime) { }
     const std::string& getName() const { return name; }
     const std::string& getIdent() const { return ident; }
-    SettingType getType() const { return type; }
+    Type getType() const { return type; }
+    Group getGroup() const { return group; }
+    bool canBeModifiedAtRuntime() const { return modifiableAtRuntime; }
   
     virtual ~Setting() { }
 };
@@ -42,22 +54,21 @@ class ConcreteSetting : public Setting
     V value;
   
   public:
-    ConcreteSetting(SettingType type, const std::string& name, const std::string& ident, V value) : Setting(type, name, ident), value(value) { }
+    ConcreteSetting(Type type, Group group, const std::string& name, const std::string& ident, V value, bool modifiableAtRuntime) : Setting(type, group, name, ident, modifiableAtRuntime), value(value) { }
     const V& getValue() const { return value; }
     void setValue(V value) { this->value = value; }
 };
 
 class BoolSetting : public ConcreteSetting<bool>
 {
-  
-  public:
-    BoolSetting(const std::string& name, const std::string ident, bool value) : ConcreteSetting(SETTING_BOOL, name, ident, value) { }
+public:
+  BoolSetting(Group group, const std::string& name, const std::string ident, bool value, bool modifiableAtRuntime) : ConcreteSetting(Type::BOOLEAN, group, name, ident, value, modifiableAtRuntime) { }
 };
   
 class PathSetting : public ConcreteSetting<std::string>
 {
-  public:
-    PathSetting(const std::string& name, const std::string ident, const std::string value) : ConcreteSetting(SETTING_PATH, name, ident, value) { }
+public:
+  PathSetting(Group group, const std::string& name, const std::string ident, const std::string value, bool modifiableAtRuntime) : ConcreteSetting(Type::PATH, group, name, ident, value, modifiableAtRuntime) { }
 };
 
   
@@ -80,17 +91,6 @@ class EnumValue
 template<typename T> using EnumSet = std::vector<EnumValue<T>>;
 template<typename T> using EnumValueRef = std::reference_wrapper<const EnumValue<T>>;
 
-//typedef std::vector<std::unique_ptr<EnumValue>> EnumSet;
-  
-/*class EnumSetting
-{
-  private:
-  
-  public:
-    virtual size_t count() = 0;
-
-};*/
-  
   class EnumSetting
   {
     public:
@@ -99,6 +99,7 @@ template<typename T> using EnumValueRef = std::reference_wrapper<const EnumValue
       virtual const std::string& getName() const = 0;
       virtual const std::string& getValueName() const = 0;
       virtual std::vector<std::string> getValueNames() const = 0;
+      virtual bool canBeModifiedAtRuntime() const = 0;
   };
 
 template<typename T>
@@ -112,14 +113,16 @@ class ConcreteEnumSetting : public ConcreteSetting<EnumValueRef<T>>, public Enum
     using ConcreteSetting<EnumValueRef<T>>::getValue;
     using ConcreteSetting<EnumValueRef<T>>::setValue;
   
-    ConcreteEnumSetting<T>(const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue) : ConcreteSetting<EnumValueRef<T>>(SETTING_ENUM, name, ident, std::cref(values[defaultValue])),
+    ConcreteEnumSetting<T>(Setting::Group group, const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue, bool modifiableAtRuntime) :
+    ConcreteSetting<EnumValueRef<T>>(Setting::Type::ENUMERATION, group, name, ident, std::cref(values[defaultValue]), modifiableAtRuntime),
     values(values), defaultValue(std::cref(this->values[defaultValue]))
     {
       setValue(this->defaultValue);
     }
   
-    const std::string& getValueName() const { return getValue().get().getName(); }
-    const std::string& getName() const { return ConcreteSetting<EnumValueRef<T>>::getName(); }
+    const std::string& getValueName() const override { return getValue().get().getName(); }
+    const std::string& getName() const override { return ConcreteSetting<EnumValueRef<T>>::getName(); }
+    bool canBeModifiedAtRuntime() const override { return ConcreteSetting<EnumValueRef<T>>::canBeModifiedAtRuntime(); }
   
     void next() override {
       const EnumValueRef<T>& current = getValue();

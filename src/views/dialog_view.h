@@ -32,7 +32,7 @@ namespace gcw
     void initMessage(const std::string& message, void_lambda lambda)
     {
       this->message = message;
-      this->yesLambda = yesLambda;
+      this->yesLambda = lambda;
       this->type = MESSAGE;
     }
     

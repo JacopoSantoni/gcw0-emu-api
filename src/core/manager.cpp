@@ -5,6 +5,8 @@
 using namespace std;
 using namespace gcw;
 
+Manager* Manager::instance = nullptr;
+
 void Manager::init()
 {
   /*Path path = Path("/Users/jack/Documents/Dev/github/gcw0-emu-api/");
@@ -16,6 +18,7 @@ void Manager::init()
   /*persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gba/");
   persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/snes/");
   persistence.addRomPath(Persistence::ROOT_PATH+"media/SD/gb/");*/
+  Manager::instance = this;
 
   persistence.createFolderStructure();
   persistence.load();
@@ -48,9 +51,9 @@ void Manager::init()
   root->addEntry(new SubMenuEntry("Cores",menus.getCoresMenu()));
   root->addEntry(new SubMenuEntry("Browse by System",menus.getSystemsMenu()));
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
-  root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
-  root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>("Sample Rate", "sample-rate", sampleRates, 3)));
-  root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves"), "Choose saves path"));
+  root->addEntry(new BoolMenuEntry(new BoolSetting(Setting::Group::AUDIO, "Sound Enabled", "sound-enabled", true, true)));
+  root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>(Setting::Group::AUDIO, "Sample Rate", "sample-rate", sampleRates, 3, false)));
+  root->addEntry(new PathSettingMenuEntry(new PathSetting(Setting::Group::MISC, "Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves", true), "Choose saves path"));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   
   menus.setMainMenu(root);
@@ -168,6 +171,8 @@ void Manager::launchRom(const RomEntry& entry, CoreHandle& handle)
     
     if (handle.core->getSfxSpec())
       SDL_PauseAudio(0);
+    
+    emulating = true;
   }
   
 }

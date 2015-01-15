@@ -50,6 +50,8 @@ namespace gcw {
     
     bool running;
 
+    bool emulating;
+
   public:
     Manager() : handle(std::nullopt), core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
     coreView(this),
@@ -59,11 +61,12 @@ namespace gcw {
     pauseView(this, menus.pauseMenu),
     keybindView(this),
     dialogView(this),
-    currentView(nullptr), running(true) { }
+    currentView(nullptr),
+    running(true), emulating(false) { }
+    
     void scan() { loader.scan(); }
     void init();
     void run();
-  
     
     Menus* getMenus() { return &menus; }
     
@@ -79,6 +82,8 @@ namespace gcw {
     Gfx *getGfx() { return &gfx; }
     Timer *getTimer() { return &timer; }
     
+    bool isEmulating() const { return emulating; }
+    
     const RomEntry* getCurrentRom() { return rom; }
     const CoreInterface* getCurrentCore() { return core; }
     const CoreInfo& getCurrentCoreInfo() { return (*handle).get().info; }
@@ -87,11 +92,15 @@ namespace gcw {
     void reportRomLoaded() override { }
     
     const AudioStatus& writeAudioSamples(size_t count, size_t shift) override { return coreView.writeAudioSamples(count, shift); }
+    
+    void forceSwitch(View::Type type)
+    {
+      while (!viewStack.empty()) viewStack.pop();
+      switchView(type);
+    }
   
     void switchView(View::Type type)
     {
-      //while (!viewStack.empty()) viewStack.pop();
-      
       currentView->deactivated();
       
       switch (type)
@@ -142,6 +151,9 @@ namespace gcw {
     void stateLoad(SaveSlot slot);
         
     ButtonStatus getSuspendShortcut() { return GCW_KEY_L | GCW_KEY_R; }
+    
+    
+    static Manager* instance;
   };
 
 }

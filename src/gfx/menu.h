@@ -82,7 +82,9 @@ private:
   
 public:
   SettingMenuEntry(const std::string& name) : StandardMenuEntry(name) { }
-  virtual const std::string getValueName() = 0;
+  virtual const std::string getValueName() const = 0;
+  virtual bool canBeModifiedAtRuntime() const = 0;
+  bool canBeModified() const;
   void setValueTextWidth(u16 valueTextWidth) { this->valueTextWidth = valueTextWidth + 10; }
   
   void render(Gfx* gfx, int x, int y, bool isSelected) override;
@@ -98,7 +100,8 @@ class BoolMenuEntry : public SettingMenuEntry
       setValueTextWidth(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No")));
     }
 
-    const std::string getValueName() override { return setting->getValue() ? "Yes" : "No"; }
+    const std::string getValueName() const override { return setting->getValue() ? "Yes" : "No"; }
+    bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
   
     void action(Manager *manager, GCWKey key) override;
 };
@@ -122,7 +125,8 @@ class EnumMenuEntry : public SettingMenuEntry
       setValueTextWidth(maxWidth);
     }
   
-    const std::string getValueName() override { return setting->getValueName(); }
+    const std::string getValueName() const override { return setting->getValueName(); }
+    bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
 
     virtual void action(Manager *manager, GCWKey key);
 };
