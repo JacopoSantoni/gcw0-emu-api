@@ -30,12 +30,12 @@ void Manager::init()
   
   //persistence.savePath(loader.getCores()[0].info.ident, &collection.getRomsForSystem(System::getSpecForSystem(System::Type::GAME_BOY_COLOR)).second->second, 0);
   
-  EnumSet sampleRates = {
-    new ConcreteEnumValue<int32_t>("0",0),
-    new ConcreteEnumValue<int32_t>("11025",11025),
-    new ConcreteEnumValue<int32_t>("22050",22050),
-    new ConcreteEnumValue<int32_t>("44100",44100),
-    new ConcreteEnumValue<int32_t>("48000",48000)
+  EnumSet<s32> sampleRates = {
+    EnumValue<int32_t>("0",0),
+    EnumValue<int32_t>("11025",11025),
+    EnumValue<int32_t>("22050",22050),
+    EnumValue<int32_t>("44100",44100),
+    EnumValue<int32_t>("48000",48000)
   };
   
   RomPathsMenu *romPathsMenu = new RomPathsMenu("Rom Paths", getPersistence());
@@ -46,7 +46,7 @@ void Manager::init()
   root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
-  root->addEntry(new EnumMenuEntry(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3])));
+  root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>("Sample Rate", "sample-rate", sampleRates, 3)));
   root->addEntry(new PathSettingMenuEntry(new PathSetting("Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves"), "Choose saves path"));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   

@@ -78,7 +78,7 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
 void EnumMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  gfx->print(x+width+10, y, false, Font::bigFont, string("\x14 ") + setting->getValue()->getName().c_str() + " \x15");
+  gfx->print(x+width+10, y, false, Font::bigFont, string("\x14 ") + setting->getValueName().c_str() + " \x15");
   
 }
 
@@ -104,7 +104,7 @@ void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
 {
   u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
   
-  string &path = setting->getValue();
+  const string&  path = setting->getValue();
   gfx->print(x+width, y, false, Font::bigFont, Text::clipText(path, -30, "...").c_str());
 }
 

@@ -59,14 +59,14 @@ class DummyCore : public CoreInterface
       registerSetting(new BoolSetting("Auto Save SRAM", "auto-save-sram", false));
       registerSetting(new BoolSetting("Sound", "enable-sound", false));
       
-      EnumSet sampleRates = {
-        new ConcreteEnumValue<int32_t>("0",0),
-        new ConcreteEnumValue<int32_t>("11025",11025),
-        new ConcreteEnumValue<int32_t>("22050",22050),
-        new ConcreteEnumValue<int32_t>("44100",44100),
-        new ConcreteEnumValue<int32_t>("48000",48000)
+      EnumSet<s32> sampleRates = {
+        EnumValue<s32>("0",0),
+        EnumValue<s32>("11025",11025),
+        EnumValue<s32>("22050",22050),
+        EnumValue<s32>("44100",44100),
+        EnumValue<s32>("48000",48000)
       };
-      registerSetting(new EnumSetting("Sample Rate", "sample-rate", sampleRates, sampleRates[3]));
+      registerSetting(new ConcreteEnumSetting<s32>("Sample Rate", "sample-rate", sampleRates, 3));
       
       registerSetting(new BoolSetting("Stereo", "enable-sound-stereo", false));
       

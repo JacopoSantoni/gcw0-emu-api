@@ -1,12 +1,13 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
+#include "../common/defines.h"
+#include "../common/keys.h"
+
 #include <string>
 #include <vector>
 #include <algorithm>
 
-#include "../common/defines.h"
-#include "../common/keys.h"
 
 namespace gcw
 {
@@ -27,9 +28,9 @@ class Setting
   
   public:
     Setting(SettingType type, const std::string& name, const std::string& ident) : type(type), name(name), ident(ident) { }
-    std::string getName() { return name; }
-    std::string getIdent() { return ident; }
-    SettingType getType() { return type; }
+    const std::string& getName() const { return name; }
+    const std::string& getIdent() const { return ident; }
+    SettingType getType() const { return type; }
 };
 
 template<typename V>
@@ -40,7 +41,7 @@ class ConcreteSetting : public Setting
   
   public:
     ConcreteSetting(SettingType type, const std::string& name, const std::string& ident, V value) : Setting(type, name, ident), value(value) { }
-    V& getValue() { return value; }
+    const V& getValue() const { return value; }
     void setValue(V value) { this->value = value; }
 };
 
@@ -58,29 +59,24 @@ class PathSetting : public ConcreteSetting<std::string>
 };
 
   
+template<typename T>
 class EnumValue
 {
   private:
     const std::string name;
-    
-  public:
-    EnumValue(const std::string& name) : name(name) { }
-    const std::string& getName() { return name; }
-};
-  
-template<typename T>
-class ConcreteEnumValue : public EnumValue
-{
-  private:
     T value;
-    
-  public:
-    ConcreteEnumValue(const std::string& name, T value) : EnumValue(name), value(value) { }
-};
-
-//template<typename T> using EnumSet = std::vector< EnumValue<T> >;
   
-typedef std::vector<EnumValue*> EnumSet;
+  public:
+    EnumValue(const std::string& name, T value) : name(name), value(value) { }
+    const std::string& getName() const { return name; }
+  
+    bool operator==(const EnumValue& rhs) const { return name == rhs.name; }
+};
+  
+template<typename T> using EnumSet = std::vector<EnumValue<T>>;
+template<typename T> using EnumValueRef = std::reference_wrapper<const EnumValue<T>>;
+
+//typedef std::vector<std::unique_ptr<EnumValue>> EnumSet;
   
 /*class EnumSetting
 {
@@ -90,33 +86,54 @@ typedef std::vector<EnumValue*> EnumSet;
     virtual size_t count() = 0;
 
 };*/
+  
+  class EnumSetting
+  {
+    public:
+      virtual void next() = 0;
+      virtual void prev() = 0;
+      virtual const std::string& getName() const = 0;
+      virtual const std::string& getValueName() const = 0;
+  };
 
-class EnumSetting : public ConcreteSetting<EnumValue*>
+template<typename T>
+class ConcreteEnumSetting : public ConcreteSetting<EnumValueRef<T>>, public EnumSetting
 {
   private:
-    EnumSet values;
+    EnumSet<T> values;
+    EnumValueRef<T> defaultValue;
   
   public:
-    EnumSetting(const std::string& name, std::string ident, EnumSet values, EnumValue* value) : ConcreteSetting<EnumValue*>(SETTING_ENUM, name, ident, value), values(values)  { }
+    using ConcreteSetting<EnumValueRef<T>>::getValue;
+    using ConcreteSetting<EnumValueRef<T>>::setValue;
   
-    void next() {
-      EnumValue *current = getValue();
-      if (current == values.back())
+    ConcreteEnumSetting<T>(const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue) : ConcreteSetting<EnumValueRef<T>>(SETTING_ENUM, name, ident, std::cref(values[defaultValue])),
+    values(values), defaultValue(std::cref(this->values[defaultValue]))
+    {
+      setValue(this->defaultValue);
+    }
+  
+    const std::string& getValueName() const { return getValue().get().getName(); }
+    const std::string& getName() const { return ConcreteSetting<EnumValueRef<T>>::getName(); }
+  
+    void next() override {
+      const EnumValueRef<T>& current = getValue();
+      if (current.get() == values.back())
         setValue(values.front());
       else
       {
-        EnumSet::iterator it = find(values.begin(), values.end(), current);
+        auto it = find(values.begin(), values.end(), current);
         setValue(*(++it));
       }
     }
   
-    void prev() {
-      EnumValue *current = getValue();
+    void prev() override {
+      const EnumValue<T>& current = getValue();
       if (current == values.front())
         setValue(values.back());
       else
       {
-        EnumSet::iterator it = find(values.begin(), values.end(), current);
+        auto it = find(values.begin(), values.end(), current);
         setValue(*(--it));
       }
     }
