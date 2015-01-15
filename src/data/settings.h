@@ -98,6 +98,7 @@ template<typename T> using EnumValueRef = std::reference_wrapper<const EnumValue
       virtual void prev() = 0;
       virtual const std::string& getName() const = 0;
       virtual const std::string& getValueName() const = 0;
+      virtual std::vector<std::string> getValueNames() const = 0;
   };
 
 template<typename T>
@@ -140,6 +141,13 @@ class ConcreteEnumSetting : public ConcreteSetting<EnumValueRef<T>>, public Enum
         auto it = find(values.begin(), values.end(), current);
         setValue(*(--it));
       }
+    }
+
+    std::vector<std::string> getValueNames() const override
+    {
+      std::vector<std::string> names;
+      std::transform(values.begin(), values.end(), std::back_inserter(names), [](const EnumValue<T>& value){ return value.getName(); });
+      return names;
     }
 
 

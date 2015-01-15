@@ -74,30 +74,57 @@ class SubMenuEntry : public StandardMenuEntry
     void action(Manager *manager, GCWKey key) override;
 };
   
-class BoolMenuEntry : public StandardMenuEntry
+class SettingMenuEntry : public StandardMenuEntry
+{
+private:
+  const u16 totalSpacing = 10;
+  u16 valueTextWidth;
+  
+public:
+  SettingMenuEntry(const std::string& name) : StandardMenuEntry(name) { }
+  virtual const std::string getValueName() = 0;
+  void setValueTextWidth(u16 valueTextWidth) { this->valueTextWidth = valueTextWidth + 10; }
+  
+  void render(Gfx* gfx, int x, int y, bool isSelected) override;
+};
+  
+class BoolMenuEntry : public SettingMenuEntry
 {
   private:
     BoolSetting* const setting;
-    const u16 totalSpacing = 10;
-    const u16 valueSpacing;
-  
-  public:
-    BoolMenuEntry(BoolSetting *setting) : StandardMenuEntry(setting->getName()), setting(setting), valueSpacing(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No"))+10) { }
 
-    virtual void action(Manager *manager, GCWKey key);
-    void render(Gfx* gfx, int x, int y, bool isSelected) override;
+  public:
+    BoolMenuEntry(BoolSetting *setting) : SettingMenuEntry(setting->getName()), setting(setting) {
+      setValueTextWidth(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No")));
+    }
+
+    const std::string getValueName() override { return setting->getValue() ? "Yes" : "No"; }
+  
+    void action(Manager *manager, GCWKey key) override;
 };
   
-class EnumMenuEntry : public StandardMenuEntry
+class EnumMenuEntry : public SettingMenuEntry
 {
   private:
     EnumSetting* const setting;
   
   public:
-    EnumMenuEntry(EnumSetting* setting) : StandardMenuEntry(setting->getName()), setting(setting) { }
+    EnumMenuEntry(EnumSetting* setting) : SettingMenuEntry(setting->getName()), setting(setting)
+    {
+      std::vector<std::string> names = setting->getValueNames();
+      u16 maxWidth = 0;
+      for (const auto& name : names)
+      {
+        u16 length = Font::bigFont.stringWidth(name.c_str());
+        maxWidth = std::max(maxWidth, length);
+      }
+
+      setValueTextWidth(maxWidth);
+    }
   
+    const std::string getValueName() override { return setting->getValueName(); }
+
     virtual void action(Manager *manager, GCWKey key);
-    void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class PathSettingMenuEntry : public StandardMenuEntry

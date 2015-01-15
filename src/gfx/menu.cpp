@@ -33,6 +33,23 @@ void SubMenuEntry::action(Manager *manager, GCWKey key)
     manager->getView<MenuView>()->enterSubmenu(this);
 }
 
+#pragma mark SettingMenuEntry
+
+void SettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
+{
+  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
+  u16 basePosition = x+width+totalSpacing;
+  u16 baseTextPosition = basePosition+Font::bigFont.stringWidth("\x14")+valueTextWidth/2;
+  
+  gfx->print(baseTextPosition, y, true, Font::bigFont, getValueName());
+  
+  if (isSelected)
+  {
+    gfx->print(basePosition, y, false, Font::bigFont, "\x14");
+    gfx->print(baseTextPosition+valueTextWidth/2, y, false, Font::bigFont, "\x15");
+  }
+}
+
 #pragma mark BoolMenuEntry
 
 
@@ -45,26 +62,6 @@ void BoolMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
-void BoolMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
-{
-  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  u16 basePosition = x+width+totalSpacing;
-  u16 baseTextPosition = basePosition+Font::bigFont.stringWidth("\x14")+valueSpacing/2;
-  
-  gfx->print(baseTextPosition, y, true, Font::bigFont, setting->getValue()?"Yes":"No");
-
-  if (isSelected)
-  {
-    gfx->print(basePosition, y, false, Font::bigFont, "\x14");
-    gfx->print(baseTextPosition+valueSpacing/2, y, false, Font::bigFont, "\x15");
-  }
-  
-  /*if (isSelected)
-    gfx->print(x+width+totalSpacing, y, false, Font::bigFont, string("\x14 ") + (setting->getValue()?"Yes":"No") + " \x15");
-  else
-    gfx->print(x+width+totalSpacing+Font::bigFont.stringWidth("\x14 "), y, false, Font::bigFont, setting->getValue()?"Yes":"No");*/
-}
-
 #pragma mark EnumMenuEntry
 
 void EnumMenuEntry::action(Manager *manager, GCWKey key)
@@ -73,13 +70,6 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
     setting->next();
   else if (key == GCW_KEY_LEFT)
     setting->prev();
-}
-
-void EnumMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
-{
-  u16 width = gfx->print(x, y, false, Font::bigFont, name().c_str());
-  gfx->print(x+width+10, y, false, Font::bigFont, string("\x14 ") + setting->getValueName().c_str() + " \x15");
-  
 }
 
 #pragma mark PathSettingMenuEntry
