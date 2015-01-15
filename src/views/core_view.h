@@ -5,6 +5,7 @@
 #include "../core/emu_interface.h"
 #include "../gfx/view.h"
 #include "../gfx/gfx.h"
+#include "../gfx/blitter.h"
 #include "../gfx/ui.h"
 #include "../sfx/sfx.h"
 
