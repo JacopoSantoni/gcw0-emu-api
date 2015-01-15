@@ -21,8 +21,12 @@ void CoreView::initGfx()
   
   if (gfxSpec.format == FORMAT_RGB565)
   {
-    factory = new NativeBlitterFactory<FORMAT_RGB565, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
+    /*factory = new NativeBlitterFactory<FORMAT_RGB565, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
+    blitter = factory->buildBlitter(gfxSpec.format);*/
+    
+    factory = new BlitterFactorySimple<GBFullBlit, WIDTH, HEIGHT>("Fullscreen");
     blitter = factory->buildBlitter(gfxSpec.format);
+
   }
   else if (gfxSpec.format == FORMAT_XRGB888)
   {

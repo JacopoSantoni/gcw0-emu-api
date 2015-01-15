@@ -69,8 +69,8 @@ namespace gcw {
     const std::vector<Path>& getRomPaths() { return romPaths; }
 
     std::optional<CoreIdentifier> defaultCoreForEntry(const RomEntry& folder) {
-      return std::optional<CoreIdentifier>(CoreIdentifier("gambatte", "1.0"));
-      //return std::optional<CoreIdentifier>(CoreIdentifier("geekboy", "0.2a"));
+      //return std::optional<CoreIdentifier>(CoreIdentifier("gambatte", "1.0"));
+      return std::optional<CoreIdentifier>(CoreIdentifier("geekboy", "0.2a"));
     }
     
     std::optional<const Keybind&> keyBindOveriddenFor(const CoreIdentifier& identifier, const std::string& keyName);

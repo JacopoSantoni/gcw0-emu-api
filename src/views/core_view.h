@@ -60,6 +60,8 @@ public:
   
   void render() override;
   void handleEvents() override;
+  
+  void setBlitter(Blitter* blitter) { this->blitter = blitter; }
 
   void flushAudioBuffer()
   {

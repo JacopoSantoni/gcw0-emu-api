@@ -13,6 +13,7 @@
 #include "../data/settings.h"
 
 
+
 namespace gcw {
 
 class CoreInterface;

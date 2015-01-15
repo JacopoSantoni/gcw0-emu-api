@@ -14,10 +14,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#define WIDTH (320)
-#define HEIGHT (240)
-
-
+constexpr u16 WIDTH = 320;
+constexpr u16 HEIGHT = 240;
 
 namespace gcw
 {
