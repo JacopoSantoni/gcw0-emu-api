@@ -14,61 +14,65 @@ namespace gcw
 
 class Setting
 {
-  public:
-    enum class Type : u8
-    {
-      BOOLEAN,
-      PATH,
-      ENUMERATION,
-    };
-  
-    enum class Group : u8
-    {
-      VIDEO,
-      AUDIO,
-      MISC
-    };
-  
-  private:
-    Type type;
-    Group group;
-    std::string name;
-    std::string ident;
-    bool modifiableAtRuntime;
-  
-  public:
-    Setting(Type type, Group group, const std::string& name, const std::string& ident, bool modifiableAtRuntime) : type(type), group(group), name(name), ident(ident), modifiableAtRuntime(modifiableAtRuntime) { }
-    const std::string& getName() const { return name; }
-    const std::string& getIdent() const { return ident; }
-    Type getType() const { return type; }
-    Group getGroup() const { return group; }
-    bool canBeModifiedAtRuntime() const { return modifiableAtRuntime; }
-  
-    virtual ~Setting() { }
+public:
+  enum class Type : u8
+  {
+    BOOLEAN,
+    PATH,
+    ENUMERATION,
+  };
+
+  enum class Group : u8
+  {
+    VIDEO,
+    AUDIO,
+    MISC
+  };
+
+private:
+  Type type;
+  Group group;
+  std::string name;
+  std::string ident;
+  bool modifiableAtRuntime;
+
+public:
+  Setting(Type type, Group group, const std::string& name, const std::string& ident, bool modifiableAtRuntime) :
+type(type), group(group), name(name), ident(ident), modifiableAtRuntime(modifiableAtRuntime) { }
+  const std::string& getName() const { return name; }
+  const std::string& getIdent() const { return ident; }
+  Type getType() const { return type; }
+  Group getGroup() const { return group; }
+  bool canBeModifiedAtRuntime() const { return modifiableAtRuntime; }
+
+  virtual ~Setting() { }
 };
 
 template<typename V>
 class ConcreteSetting : public Setting
 {
-  private:
-    V value;
-  
-  public:
-    ConcreteSetting(Type type, Group group, const std::string& name, const std::string& ident, V value, bool modifiableAtRuntime) : Setting(type, group, name, ident, modifiableAtRuntime), value(value) { }
-    const V& getValue() const { return value; }
-    void setValue(V value) { this->value = value; }
+private:
+  V value;
+
+public:
+  ConcreteSetting(Type type, Group group, const std::string& name, const std::string& ident, V value, bool modifiableAtRuntime) :
+  Setting(type, group, name, ident, modifiableAtRuntime), value(value) { }
+  const V& getValue() const { return value; }
+  void setValue(V value) { this->value = value; }
 };
 
 class BoolSetting : public ConcreteSetting<bool>
 {
 public:
-  BoolSetting(Group group, const std::string& name, const std::string ident, bool value, bool modifiableAtRuntime) : ConcreteSetting(Type::BOOLEAN, group, name, ident, value, modifiableAtRuntime) { }
+  BoolSetting(Group group, const std::string& name, const std::string ident, bool value, bool modifiableAtRuntime) :
+  ConcreteSetting(Type::BOOLEAN, group, name, ident, value, modifiableAtRuntime) { }
 };
   
 class PathSetting : public ConcreteSetting<std::string>
 {
 public:
-  PathSetting(Group group, const std::string& name, const std::string ident, const std::string value, bool modifiableAtRuntime) : ConcreteSetting(Type::PATH, group, name, ident, value, modifiableAtRuntime) { }
+  PathSetting(Group group, const std::string& name, const std::string ident, const std::string value, bool modifiableAtRuntime) :
+  ConcreteSetting(Type::PATH, group, name, ident, value, modifiableAtRuntime) { }
 };
 
   
@@ -105,55 +109,53 @@ template<typename T> using EnumValueRef = std::reference_wrapper<const EnumValue
 template<typename T>
 class ConcreteEnumSetting : public ConcreteSetting<EnumValueRef<T>>, public EnumSetting
 {
-  private:
-    EnumSet<T> values;
-    EnumValueRef<T> defaultValue;
-  
-  public:
-    using ConcreteSetting<EnumValueRef<T>>::getValue;
-    using ConcreteSetting<EnumValueRef<T>>::setValue;
-  
-    ConcreteEnumSetting<T>(Setting::Group group, const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue, bool modifiableAtRuntime) :
-    ConcreteSetting<EnumValueRef<T>>(Setting::Type::ENUMERATION, group, name, ident, std::cref(values[defaultValue]), modifiableAtRuntime),
-    values(values), defaultValue(std::cref(this->values[defaultValue]))
+private:
+  EnumSet<T> values;
+  EnumValueRef<T> defaultValue;
+
+public:
+  using ConcreteSetting<EnumValueRef<T>>::getValue;
+  using ConcreteSetting<EnumValueRef<T>>::setValue;
+
+  ConcreteEnumSetting<T>(Setting::Group group, const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue, bool modifiableAtRuntime) :
+  ConcreteSetting<EnumValueRef<T>>(Setting::Type::ENUMERATION, group, name, ident, std::cref(values[defaultValue]), modifiableAtRuntime),
+  values(values), defaultValue(std::cref(this->values[defaultValue]))
+  {
+    setValue(this->defaultValue);
+  }
+
+  const std::string& getValueName() const override { return getValue().get().getName(); }
+  const std::string& getName() const override { return ConcreteSetting<EnumValueRef<T>>::getName(); }
+  bool canBeModifiedAtRuntime() const override { return ConcreteSetting<EnumValueRef<T>>::canBeModifiedAtRuntime(); }
+
+  void next() override {
+    const EnumValueRef<T>& current = getValue();
+    if (current.get() == values.back())
+      setValue(values.front());
+    else
     {
-      setValue(this->defaultValue);
+      auto it = find(values.begin(), values.end(), current);
+      setValue(*(++it));
     }
-  
-    const std::string& getValueName() const override { return getValue().get().getName(); }
-    const std::string& getName() const override { return ConcreteSetting<EnumValueRef<T>>::getName(); }
-    bool canBeModifiedAtRuntime() const override { return ConcreteSetting<EnumValueRef<T>>::canBeModifiedAtRuntime(); }
-  
-    void next() override {
-      const EnumValueRef<T>& current = getValue();
-      if (current.get() == values.back())
-        setValue(values.front());
-      else
-      {
-        auto it = find(values.begin(), values.end(), current);
-        setValue(*(++it));
-      }
-    }
-  
-    void prev() override {
-      const EnumValue<T>& current = getValue();
-      if (current == values.front())
-        setValue(values.back());
-      else
-      {
-        auto it = find(values.begin(), values.end(), current);
-        setValue(*(--it));
-      }
-    }
+  }
 
-    std::vector<std::string> getValueNames() const override
+  void prev() override {
+    const EnumValue<T>& current = getValue();
+    if (current == values.front())
+      setValue(values.back());
+    else
     {
-      std::vector<std::string> names;
-      std::transform(values.begin(), values.end(), std::back_inserter(names), [](const EnumValue<T>& value){ return value.getName(); });
-      return names;
+      auto it = find(values.begin(), values.end(), current);
+      setValue(*(--it));
     }
+  }
 
-
+  std::vector<std::string> getValueNames() const override
+  {
+    std::vector<std::string> names;
+    std::transform(values.begin(), values.end(), std::back_inserter(names), [](const EnumValue<T>& value){ return value.getName(); });
+    return names;
+  }
 };
   
 
