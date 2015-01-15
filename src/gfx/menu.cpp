@@ -108,6 +108,45 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
     setting->prev();
 }
 
+#pragma mark BlitterMenuEntry
+
+BlitterMenuEntry::BlitterMenuEntry(std::vector<const BlitterFactory*>& blitters) : SettingMenuEntry("Scaler"), blitters(blitters), current(this->blitters.begin())
+{
+  u16 maxWidth = 0;
+  for (const auto* blitter : blitters)
+  {
+    u16 width = Font::bigFont.stringWidth(blitter->getName().c_str());
+    maxWidth = std::max(width, maxWidth);
+  }
+
+  setValueTextWidth(maxWidth);
+}
+
+const std::string BlitterMenuEntry::getValueName() const
+{
+  return (*current)->getName();
+}
+
+void BlitterMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (key == GCW_KEY_RIGHT || key == MENU_ACTION_BUTTON)
+  {
+    if (current != blitters.end()-1)
+      ++current;
+    else
+      current = blitters.begin();
+  }
+  else if (key == GCW_KEY_LEFT)
+  {
+    if (current != blitters.begin()+1)
+      --current;
+    else
+      current = blitters.end();
+  }
+  
+  manager->getCoreView()->setBlitter(*current);
+}
+
 #pragma mark PathSettingMenuEntry
 
 void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
@@ -275,7 +314,20 @@ void CoreMenu::build(CoreHandle& handle)
   
   keybinds->addEntry(resetBindsEntry);
   
-  addEntry(new SubMenuEntry(std::string("Keys"), keybinds));
+  StandardMenu* settings = new StandardMenu("Settings");
+  
+  StandardMenu* settingsVideo = new StandardMenu("Video Settings");
+  settings->addEntry(new SubMenuEntry("Video Settings", settingsVideo));
+  
+  vector<const BlitterFactory*> blitters;
+  blitters.push_back(Manager::instance->getCoreView()->getNativeBlitter());
+  blitters.push_back(new BlitterFactorySimple<GBFullBlit, WIDTH, HEIGHT>("Fullscreen"));
+  MenuEntry* scalersEntry = new BlitterMenuEntry(blitters);
+  
+  settingsVideo->addEntry(scalersEntry);
+  
+  addEntry(new SubMenuEntry("Keys", keybinds));
+  addEntry(new SubMenuEntry("Settings", settings));
 }
 
 

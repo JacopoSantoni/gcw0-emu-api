@@ -28,6 +28,8 @@ private:
 
   std::unique_ptr<AudioOut> audioOut;
   std::unique_ptr<u32[]> audioBuffer;
+  
+  std::unique_ptr<BlitterFactory> nativeBlitter;
 
 
   struct IntegralDeadZone { s32 min, max, delta; };
@@ -44,7 +46,6 @@ private:
   ButtonStatus suspendShortcut;
 
   CoreInterface *core;
-  CoreInfo* info;
 
 public:
   CoreView(Manager *manager) : View(manager), blitter(nullptr) { }
@@ -61,13 +62,16 @@ public:
   void render() override;
   void handleEvents() override;
   
-  void setBlitter(Blitter* blitter) { this->blitter = blitter; }
+  void setBlitter(const BlitterFactory* blitter);
 
   void flushAudioBuffer()
   {
     if (audioOut)
       audioOut->clear();
   }
+  
+  const BlitterFactory* getNativeBlitter() { return nativeBlitter.get(); }
+  const BlitterFactory* computeNativeBlitter(const GfxBufferSpec& spec);
 
   const AudioStatus& writeAudioSamples(size_t count, size_t shift)
   {

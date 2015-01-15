@@ -16,6 +16,7 @@
 
 constexpr u16 WIDTH = 320;
 constexpr u16 HEIGHT = 240;
+constexpr GfxBufferFormat FORMAT = FORMAT_RGB565;
 
 namespace gcw
 {

@@ -21,7 +21,6 @@
 
 #include "ringbuffer.h"
 #include "rateest.h"
-#include <SDL.h>
 #include <cstddef>
 
 #include <condition_variable>

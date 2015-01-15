@@ -113,7 +113,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
     coreView.initForCore(core);
     core->initialize();
   }
-  }
+}
 
 void Manager::launchRom(const RomEntry& entry)
 {

@@ -70,6 +70,7 @@ namespace gcw {
     
     Menus* getMenus() { return &menus; }
     
+    CoreView* getCoreView() { return &coreView; }
     MenuView* getMenuView() { return &menuView; }
     PathView* getPathView() { return &pathView; }
     KeybindView* getKeybindView() { return &keybindView; }

@@ -15,6 +15,8 @@
 #include <memory>
 
 namespace gcw {
+
+class BlitterFactory;
   
 class Menu;
 class MenuView;
@@ -128,8 +130,24 @@ public:
   const std::string getValueName() const override { return setting->getValueName(); }
   bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
 
-  virtual void action(Manager *manager, GCWKey key);
+  void action(Manager *manager, GCWKey key) override;
 };
+  
+class BlitterMenuEntry : public SettingMenuEntry
+{
+private:
+  std::vector<const BlitterFactory*> blitters;
+  decltype(blitters)::iterator current;
+    
+public:
+  BlitterMenuEntry(std::vector<const BlitterFactory*>& blitters);
+  
+  const std::string getValueName() const override;
+  bool canBeModifiedAtRuntime() const override { return true; }
+  
+  void action(Manager *manager, GCWKey key) override;
+};
+  
   
 class PathSettingMenuEntry : public SettingMenuEntry
 {
@@ -183,9 +201,6 @@ public:
   void render(Gfx* gfx, int x, int y, bool isSelected) override;
   void action(Manager *manager, GCWKey key) override;
 };
-
-  
-  
   
 class Menu
 {

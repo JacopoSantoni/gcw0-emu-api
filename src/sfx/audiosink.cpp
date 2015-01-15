@@ -18,6 +18,7 @@
 
 #include "audiosink.h"
 
+#include <SDL.h>
 #include <cstdio>
 
 using namespace gcw;

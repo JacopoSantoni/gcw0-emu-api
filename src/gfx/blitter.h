@@ -102,9 +102,9 @@ private:
   
 public:
   BlitterFactory(const std::string& name) : name(name) { }
-  virtual Blitter* buildBlitter(GfxBufferFormat format) = 0;
-  virtual void computeOffset(Offset& offset, u16 width, u16 height) = 0;
-  const std::string& getName() { return name;}
+  virtual Blitter* buildBlitter(GfxBufferFormat format) const = 0;
+  virtual void computeOffset(Offset& offset, u16 width, u16 height) const = 0;
+  const std::string& getName() const { return name;}
   
   virtual ~BlitterFactory() { }
 };
@@ -115,14 +115,13 @@ class BlitterFactorySimple : public BlitterFactory
 public:
   BlitterFactorySimple(const std::string& name) : BlitterFactory(name) { }
   
-  Blitter* buildBlitter(GfxBufferFormat format) override { return new B(); }
-  void computeOffset(Offset& offset, u16 width, u16 height) override
+  Blitter* buildBlitter(GfxBufferFormat format) const override { return new B(); }
+  void computeOffset(Offset& offset, u16 width, u16 height) const override
   {
     offset.x = (width - W)/2;
     offset.y = (height - H)/2;
   }
 };
-  
   
 template<GfxBufferFormat FROM, GfxBufferFormat TO>
 class NativeBlitterFactory : public BlitterFactory
@@ -133,13 +132,13 @@ private:
 public:
   NativeBlitterFactory(u16 sw, u16 sh) : BlitterFactory("Native"), sw(sw), sh(sh) { }
   
-  void computeOffset(Offset& offset, u16 width, u16 height) override
+  void computeOffset(Offset& offset, u16 width, u16 height) const override
   {
     offset.x = (width - sw)/2;
     offset.y = (height - sh)/2;
   }
   
-  Blitter* buildBlitter(GfxBufferFormat format) override
+  Blitter* buildBlitter(GfxBufferFormat format) const override
   {
     return new FormatBlitter<FROM, TO>();
   }

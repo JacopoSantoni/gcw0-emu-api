@@ -38,6 +38,8 @@ namespace gcw
     Path() { }
     Path(const char *path);
     Path(const std::string& path);
+    Path(const Path& rhs) : path(rhs.path) { }
+    Path& operator=(const Path& rhs) { path = rhs.path; return *this; }
     const std::string& value() const { return path; }
     const char* c_str() const { return path.c_str(); }
     void set(std::string& value) { path = value; }

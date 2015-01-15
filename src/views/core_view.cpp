@@ -16,6 +16,7 @@ void CoreView::initGfx()
   const GfxBufferSpec& gfxSpec = core->getGfxSpec();
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
+  computeNativeBlitter(gfxSpec);
   
   BlitterFactory* factory = nullptr;
   
@@ -40,6 +41,36 @@ void CoreView::initGfx()
   factory->computeOffset(offset, WIDTH, HEIGHT);
   delete factory;
 }
+
+void CoreView::setBlitter(const BlitterFactory* factory)
+{
+  delete blitter;
+  blitter = factory->buildBlitter(FORMAT);
+  factory->computeOffset(offset, WIDTH, HEIGHT);
+}
+
+const BlitterFactory* CoreView::computeNativeBlitter(const GfxBufferSpec& spec)
+{
+  /* if width or height are greater than display size we can't have a native blitter */
+  if (spec.width <= WIDTH && spec.height <= HEIGHT)
+  {
+    if (spec.format == FORMAT_RGB565)
+      nativeBlitter.reset(new NativeBlitterFactory<FORMAT_RGB565, FORMAT>(spec.width, spec.height));
+    else if (spec.format == FORMAT_XRGB888)
+      nativeBlitter.reset(new NativeBlitterFactory<FORMAT_XRGB888, FORMAT>(spec.width, spec.height));
+    
+    /* TODO: we should care about the fact that the screen surface could be 32 or 16 bpp
+     if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
+     factory = new NativeBlitterFactory<FORMAT_XRGB888, FORMAT_RGBA8888>(gfxSpec.width, gfxSpec.height);
+     else
+     */
+  }
+  else
+    nativeBlitter.reset(nullptr);
+
+  return nativeBlitter.get();
+}
+
 
 void CoreView::initSfx()
 {
