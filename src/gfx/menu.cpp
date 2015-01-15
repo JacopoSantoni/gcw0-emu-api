@@ -205,16 +205,6 @@ void RomPathsMenu::build()
 
 }
 
-
-CoresMenu::CoresMenu(Manager* manager) : StandardMenu("Cores")
-{
-  auto& cores = manager->getLoader()->getCores();
-  
-  for (CoreHandle& core : cores)
-    entries.push_back(std::unique_ptr<MenuEntry>(new CoreMenuEntry(core, manager->getMenus()->getCoreMenu())));
-}
-
-
 void CoreMenu::build(CoreHandle& handle)
 {
   setTitle("Core "+handle.name());
@@ -314,5 +304,43 @@ void KeybindMenuEntry::render(Gfx* gfx, int x, int y, bool isSelected)
   {
     gfx->print(x, y, false, Font::bigFont, Gfx::ccc<u16>(200,200,200), setting.getName());
     gfx->print(x+spacing, y, false, Font::bigFont, Gfx::ccc<u16>(200,200,200), setting.mnemonic());
+  }
+}
+
+
+void Menus::buildCoresMenu(Manager *manager)
+{
+  Menu* menu = getCoresMenu();
+  
+  menu->clear();
+  
+  auto& cores = manager->getLoader()->getCores();
+  
+  for (CoreHandle& core : cores)
+    menu->addEntry(new CoreMenuEntry(core, manager->getMenus()->getCoreMenu()));
+  
+  static auto rescanCores = [manager](Manager* manager) {
+    // TODO
+  };
+  
+  menu->addEntry(new LambdaMenuEntry("Rescan for cores", rescanCores));
+}
+
+void Menus::buildSystemsMenu(const RomCollection *collection)
+{
+  Menu* menu = getSystemsMenu();
+  
+  menu->clear();
+  
+  const std::vector<System::Spec>& systems = System::getSystems();
+  std::vector<System::Spec>::const_iterator it;
+  
+  for (it = systems.begin(); it != systems.end(); ++it)
+  {
+    const System::Spec& system = *it;
+    RomIteratorRange roms = collection->getRomsForSystem(system);
+    
+    if (roms.first != roms.second)
+      menu->addEntry(new SystemMenuEntry(system, new RomsMenu(system.name, roms)));
   }
 }

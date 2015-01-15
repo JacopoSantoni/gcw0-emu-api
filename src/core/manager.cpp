@@ -28,6 +28,9 @@ void Manager::init()
   
   UI::enableKeyRepeat();
   
+  menus.buildCoresMenu(this);
+  menus.buildSystemsMenu(&collection);
+  
   //persistence.savePath(loader.getCores()[0].info.ident, &collection.getRomsForSystem(System::getSpecForSystem(System::Type::GAME_BOY_COLOR)).second->second, 0);
   
   EnumSet<s32> sampleRates = {
@@ -42,8 +45,8 @@ void Manager::init()
   romPathsMenu->build();
   
   StandardMenu *root = new StandardMenu("Root");
-  root->addEntry(new SubMenuEntry("Cores",new CoresMenu(this)));
-  root->addEntry(new SubMenuEntry("Browse by System",new SystemsMenu("Browse by System",&collection)));
+  root->addEntry(new SubMenuEntry("Cores",menus.getCoresMenu()));
+  root->addEntry(new SubMenuEntry("Browse by System",menus.getSystemsMenu()));
   root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting("Sound Enabled", "sound-enabled", true)));
   root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>("Sample Rate", "sample-rate", sampleRates, 3)));

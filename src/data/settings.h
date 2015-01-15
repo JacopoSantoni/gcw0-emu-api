@@ -31,6 +31,8 @@ class Setting
     const std::string& getName() const { return name; }
     const std::string& getIdent() const { return ident; }
     SettingType getType() const { return type; }
+  
+    virtual ~Setting() { }
 };
 
 template<typename V>
@@ -71,6 +73,8 @@ class EnumValue
     const std::string& getName() const { return name; }
   
     bool operator==(const EnumValue& rhs) const { return name == rhs.name; }
+  
+    virtual ~EnumValue() { }
 };
   
 template<typename T> using EnumSet = std::vector<EnumValue<T>>;
@@ -137,6 +141,8 @@ class ConcreteEnumSetting : public ConcreteSetting<EnumValueRef<T>>, public Enum
         setValue(*(--it));
       }
     }
+
+
 };
   
 

@@ -49,7 +49,7 @@ namespace gcw {
       RomCollection(Manager *manager) : manager(manager) { }
       void scan();
     
-      RomIteratorRange getRomsForSystem(const System::Spec& spec) { return roms.equal_range(std::reference_wrapper<const System::Spec>(spec)); }
+      RomIteratorRange getRomsForSystem(const System::Spec& spec) const { return roms.equal_range(std::reference_wrapper<const System::Spec>(spec)); }
   };
   
 }

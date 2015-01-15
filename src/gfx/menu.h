@@ -252,16 +252,7 @@ class SystemsMenu : public StandardMenu
     CoreMenuEntry(CoreHandle& core, Menu* menu) : SubMenuEntry(core.info.title(), menu), core(core) { }
     void action(Manager *manager, GCWKey key) override;
   };
-  
-  class CoresMenu : public StandardMenu
-  {
-  private:
-    
-  public:
-    CoresMenu(Manager* manager);
-  };
-  
-  
+
   class KeybindMenuEntry : public StandardMenuEntry
   {
   private:
@@ -279,9 +270,6 @@ class SystemsMenu : public StandardMenu
     void render(Gfx* gfx, int x, int y, bool isSelected) override;
   };
   
-  
-  
-  
   class CoreMenu : public StandardMenu
   {
   private:
@@ -298,17 +286,30 @@ class SystemsMenu : public StandardMenu
   private:
     std::unique_ptr<Menu> mainMenu;
     std::unique_ptr<CoreMenu> coreMenu;
+    std::unique_ptr<Menu> coresMenu;
     std::unique_ptr<Menu> pauseMenu;
+    std::unique_ptr<Menu> systemsMenu;
     
   public:
-    Menus() : coreMenu(new CoreMenu()), pauseMenu(new StandardMenu("Pause Menu")) { }
+    Menus() :
+    coreMenu(new CoreMenu()),
+    coresMenu(new StandardMenu("Cores")),
+    pauseMenu(new StandardMenu("Pause Menu")),
+    systemsMenu(new StandardMenu("Browse by System"))
+    
+    { }
     
     /* TODO: maybe unnecessary in final version? */
     void setMainMenu(Menu* menu) { mainMenu.reset(menu); }
     
     CoreMenu* getCoreMenu() { return coreMenu.get(); }
+    Menu* getCoresMenu() { return coresMenu.get(); }
     Menu* getMainMenu() { return mainMenu.get(); }
     Menu* getPauseMenu() { return pauseMenu.get(); }
+    Menu* getSystemsMenu() { return systemsMenu.get(); }
+    
+    void buildCoresMenu(Manager* manager);
+    void buildSystemsMenu(const RomCollection* collection);
     
     friend class Manager;
   };
