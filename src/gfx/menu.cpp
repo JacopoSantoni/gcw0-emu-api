@@ -110,19 +110,21 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
 
 #pragma mark BlitterMenuEntry
 
-BlitterMenuEntry::BlitterMenuEntry(std::vector<const BlitterFactory*>& blitters) : SettingMenuEntry("Scaler"), blitters(blitters), current(this->blitters.begin())
+BlitterMenuEntry::BlitterMenuEntry(vector<const BlitterFactory*>& blitters) : SettingMenuEntry("Scaler")
 {
   u16 maxWidth = 0;
   for (const auto* blitter : blitters)
   {
     u16 width = Font::bigFont.stringWidth(blitter->getName().c_str());
     maxWidth = std::max(width, maxWidth);
+    this->blitters.push_back(unique_ptr<const BlitterFactory>(blitter));
   }
 
   setValueTextWidth(maxWidth);
+  current = this->blitters.begin();
 }
 
-const std::string BlitterMenuEntry::getValueName() const
+const string BlitterMenuEntry::getValueName() const
 {
   return (*current)->getName();
 }
@@ -144,7 +146,9 @@ void BlitterMenuEntry::action(Manager *manager, GCWKey key)
       current = blitters.end();
   }
   
-  manager->getCoreView()->setBlitter(*current);
+  manager->getCoreView()->setBlitter(current->get());
+  if (manager->isEmulating())
+    manager->getCoreView()->updatedBlitter();
 }
 
 #pragma mark PathSettingMenuEntry
@@ -320,7 +324,12 @@ void CoreMenu::build(CoreHandle& handle)
   settings->addEntry(new SubMenuEntry("Video Settings", settingsVideo));
   
   vector<const BlitterFactory*> blitters;
-  blitters.push_back(Manager::instance->getCoreView()->getNativeBlitter());
+  const BlitterFactory* native = Manager::instance->getCoreView()->computeNativeBlitter(handle.info.gfxSpec);
+  if (native)
+   blitters.push_back(native);
+  
+  Manager::instance->getCoreView()->setBlitter(native);
+  
   blitters.push_back(new BlitterFactorySimple<GBFullBlit, WIDTH, HEIGHT>("Fullscreen"));
   MenuEntry* scalersEntry = new BlitterMenuEntry(blitters);
   

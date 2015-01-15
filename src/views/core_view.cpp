@@ -11,19 +11,18 @@ using namespace gcw;
 
 void CoreView::initGfx()
 {
-  delete blitter;
   
-  const GfxBufferSpec& gfxSpec = core->getGfxSpec();
+  const GfxBufferSpec& gfxSpec = core->info().gfxSpec;
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
-  computeNativeBlitter(gfxSpec);
   
-  BlitterFactory* factory = nullptr;
+  updatedBlitter();
   
+  /*
   if (gfxSpec.format == FORMAT_RGB565)
   {
-    /*factory = new NativeBlitterFactory<FORMAT_RGB565, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
-    blitter = factory->buildBlitter(gfxSpec.format);*/
+    //factory = new NativeBlitterFactory<FORMAT_RGB565, FORMAT_RGB565>(gfxSpec.width, gfxSpec.height);
+    //blitter = factory->buildBlitter(gfxSpec.format);
     
     factory = new BlitterFactorySimple<GBFullBlit, WIDTH, HEIGHT>("Fullscreen");
     blitter = factory->buildBlitter(gfxSpec.format);
@@ -40,13 +39,19 @@ void CoreView::initGfx()
   blitter = factory->buildBlitter(gfxSpec.format);
   factory->computeOffset(offset, WIDTH, HEIGHT);
   delete factory;
+  */
 }
 
 void CoreView::setBlitter(const BlitterFactory* factory)
 {
+  this->blitterFactory = factory;
+}
+
+void CoreView::updatedBlitter()
+{
   delete blitter;
-  blitter = factory->buildBlitter(FORMAT);
-  factory->computeOffset(offset, WIDTH, HEIGHT);
+  blitter = blitterFactory->buildBlitter(FORMAT);
+  blitterFactory->computeOffset(offset, WIDTH, HEIGHT);
 }
 
 const BlitterFactory* CoreView::computeNativeBlitter(const GfxBufferSpec& spec)
@@ -55,9 +60,9 @@ const BlitterFactory* CoreView::computeNativeBlitter(const GfxBufferSpec& spec)
   if (spec.width <= WIDTH && spec.height <= HEIGHT)
   {
     if (spec.format == FORMAT_RGB565)
-      nativeBlitter.reset(new NativeBlitterFactory<FORMAT_RGB565, FORMAT>(spec.width, spec.height));
+      return new NativeBlitterFactory<FORMAT_RGB565, FORMAT>(spec.width, spec.height);
     else if (spec.format == FORMAT_XRGB888)
-      nativeBlitter.reset(new NativeBlitterFactory<FORMAT_XRGB888, FORMAT>(spec.width, spec.height));
+      return new NativeBlitterFactory<FORMAT_XRGB888, FORMAT>(spec.width, spec.height);
     
     /* TODO: we should care about the fact that the screen surface could be 32 or 16 bpp
      if (manager->getGfx()->getFormat()->BitsPerPixel == 32)
@@ -65,10 +70,8 @@ const BlitterFactory* CoreView::computeNativeBlitter(const GfxBufferSpec& spec)
      else
      */
   }
-  else
-    nativeBlitter.reset(nullptr);
 
-  return nativeBlitter.get();
+  return nullptr;
 }
 
 

@@ -22,15 +22,13 @@ class Manager;
 class CoreView : public View
 {
 private:
+  const BlitterFactory* blitterFactory;
   Blitter *blitter;
   GfxBuffer buffer;
   Offset offset;
 
   std::unique_ptr<AudioOut> audioOut;
   std::unique_ptr<u32[]> audioBuffer;
-  
-  std::unique_ptr<BlitterFactory> nativeBlitter;
-
 
   struct IntegralDeadZone { s32 min, max, delta; };
   
@@ -63,6 +61,7 @@ public:
   void handleEvents() override;
   
   void setBlitter(const BlitterFactory* blitter);
+  void updatedBlitter();
 
   void flushAudioBuffer()
   {
@@ -70,7 +69,6 @@ public:
       audioOut->clear();
   }
   
-  const BlitterFactory* getNativeBlitter() { return nativeBlitter.get(); }
   const BlitterFactory* computeNativeBlitter(const GfxBufferSpec& spec);
 
   const AudioStatus& writeAudioSamples(size_t count, size_t shift)

@@ -136,7 +136,7 @@ public:
 class BlitterMenuEntry : public SettingMenuEntry
 {
 private:
-  std::vector<const BlitterFactory*> blitters;
+  std::vector<std::unique_ptr<const BlitterFactory>> blitters;
   decltype(blitters)::iterator current;
     
 public:

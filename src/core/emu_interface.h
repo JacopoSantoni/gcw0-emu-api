@@ -49,6 +49,7 @@ private:
 public:
   std::vector<System::Type> type;
 
+  GfxBufferSpec gfxSpec;
   CoreIdentifier ident;
   CoreDetails details;
   time_t timestamp;
@@ -63,6 +64,8 @@ public:
     this->ident = CoreIdentifier(ident, version);
     this->details = CoreDetails(name);
   }
+  
+  void setGfxSpec(GfxBufferSpec spec) { this->gfxSpec = spec; }
   
   const std::vector<ButtonSetting>& supportedButtons() const { return buttons; }
   void registerButton(const ButtonSetting& button) { buttons.push_back(button); }
@@ -92,7 +95,6 @@ public:
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
   
-    GfxBufferSpec gfxFormat;
     std::optional<SfxAudioSpec> sfxFormat;
   
 
@@ -107,7 +109,7 @@ public:
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
     
-    void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { gfxFormat = {width, height, format}; }
+    void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { information.setGfxSpec({width, height, format}); }
     void setSfxFormat(SfxAudioSpec format) { sfxFormat = std::optional<SfxAudioSpec>(format); }
   
     u32* audioBuffer;
@@ -183,7 +185,6 @@ public:
     AnalogDeadZone getAnalogDeadZone() const { return analogDeadZone; }
     bool isAnalogJoypadUsed() const { return analogJoypadEnabled; }
   
-    const GfxBufferSpec& getGfxSpec() const { return gfxFormat; }
     const std::optional<SfxAudioSpec>& getSfxSpec() const { return sfxFormat; }
     
     const CoreInfo& info() const { return information; }
