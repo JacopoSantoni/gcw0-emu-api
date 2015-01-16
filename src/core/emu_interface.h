@@ -125,6 +125,22 @@ public:
     
     void setGfxFormat(u16 width, u16 height, GfxBufferFormat format) { information.setGfxSpec({width, height, format}); }
     void setSfxFormat(SfxAudioSpec format) { sfxFormat = std::optional<SfxAudioSpec>(format); }
+    
+    template<typename T>
+    void enumSettingChanged(const std::string& ident, T value)
+    {
+      
+    }
+    
+    void boolSettingChanged(const std::string& ident, bool value)
+    {
+      
+    }
+    
+    void pathSettingChanged(const std::string& ident, std::string value)
+    {
+      
+    }
   
     u32* audioBuffer;
     GfxBuffer gfxBuffer;
@@ -190,8 +206,10 @@ public:
     const AudioStatus& writeAudioSamples(size_t count, size_t shift) { return manager->writeAudioSamples(count, shift); }
   
   
-  
-  
+    template<typename T>
+    void settingChanged(SettingValue<T>& value) { enumSettingChanged(value.getIdent(), value.get()); }
+    
+
     bool hasFeature(CoreFeature feature) const { return (features & static_cast<CoreFeatures>(feature)) != 0; }
 
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
@@ -209,6 +227,18 @@ public:
     
     const CoreInfo& info() const { return information; }
   };
+  
+  template<>
+  inline void CoreInterface::settingChanged(SettingValue<bool>& value)
+  {
+    boolSettingChanged(value.getIdent(), value.get());
+  }
+  
+  template<>
+  inline void CoreInterface::settingChanged(SettingValue<std::string>& value)
+  {
+    pathSettingChanged(value.getIdent(), value.get());
+  }
   
 }
 

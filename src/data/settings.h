@@ -12,7 +12,7 @@
 
 namespace gcw
 {
-
+  
 class Setting
 {
 public:
@@ -47,6 +47,29 @@ type(type), group(group), name(name), ident(ident), modifiableAtRuntime(modifiab
   bool canBeModifiedAtRuntime() const { return modifiableAtRuntime; }
 
   virtual ~Setting() { }
+};
+  
+template<typename T>
+class SettingValue
+{
+private:
+  std::string ident;
+  Setting::Type type;
+  std::unique_ptr<T> value;
+  
+  
+public:
+  SettingValue(const std::string& ident, Setting::Type type, T value) : ident(ident), type(type), value(new T(value)) { }
+
+  Setting::Type getType() const { return type; }
+  const std::string& getIdent() const { return ident; }
+  
+  T get()
+  {
+    T cvalue = *value.get();
+    value.reset(nullptr);
+    return cvalue;
+  }
 };
 
 template<typename V>
@@ -158,7 +181,6 @@ public:
     return names;
   }
 };
-  
 
 struct ButtonSetting
 {
