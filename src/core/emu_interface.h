@@ -4,10 +4,12 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <set>
 #include <stdint.h>
 //#include <SDL.h>
 
 #include "manager_interface.h"
+#include "../gfx/blitter.h"
 #include "../common/defines.h"
 #include "../common/optional.h"
 #include "../data/settings.h"
@@ -45,6 +47,7 @@ struct CoreInfo
 {
 private:
   std::vector<ButtonSetting> buttons;
+  std::vector<std::string> scalers;
 
 public:
   std::vector<System::Type> type;
@@ -56,7 +59,6 @@ public:
   
   CoreInfo() : type({System::Type::UNCATEGORISED}), ident(CoreIdentifier()) { }
   
-  void setButtons(const std::vector<ButtonSetting>& buttons) { this->buttons = buttons; }
   
   void setInformations(std::initializer_list<System::Type> type, const std::string& ident, const std::string& name, const std::string& version)
   {
@@ -65,10 +67,15 @@ public:
     this->details = CoreDetails(name);
   }
   
+  const std::vector<std::string> supportedScalers() const { return scalers; }
+  void registerScaler(const std::string& name) { scalers.push_back(name); }
+  void setScalers(const std::vector<std::string>& scalers) { this->scalers = scalers;}
+  
   void setGfxSpec(GfxBufferSpec spec) { this->gfxSpec = spec; }
   
   const std::vector<ButtonSetting>& supportedButtons() const { return buttons; }
   void registerButton(const ButtonSetting& button) { buttons.push_back(button); }
+  void setButtons(const std::vector<ButtonSetting>& buttons) { this->buttons = buttons; }
   
   const std::string identifier() const { return ident.identifier(); }
   const std::string title() const { return details.name + " (" + ident.version + ")"; }
@@ -89,9 +96,9 @@ public:
     CoreInfo information;
     
     CoreFeatures features;
-  
+    
+    std::vector<const BlitterFactory*> scalers;
     std::vector<std::unique_ptr<Setting>> settings;
-    std::vector<ButtonSetting> buttons;
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
   
@@ -106,6 +113,13 @@ public:
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
     void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
     void registerButton(const ButtonSetting& button) { information.registerButton(button); }
+    
+    void registerScaler(const BlitterFactory& blitter)
+    {
+      scalers.push_back(&blitter);
+      information.registerScaler(blitter.getName());
+    }
+    
     void setAnalogDeadZone(float min, float max ) { analogDeadZone.min = min; analogDeadZone.max = max; }
     void enableNormalAnalogJoypad() {  analogJoypadEnabled = true; }
     
@@ -181,6 +195,12 @@ public:
     bool hasFeature(CoreFeature feature) const { return (features & static_cast<CoreFeatures>(feature)) != 0; }
 
     const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
+    
+    const BlitterFactory* scalerForName(const std::string& name)
+    {
+      auto it = std::find_if(scalers.begin(), scalers.end(), [&name](const BlitterFactory* factory) { return factory->getName() == name; });
+      return it != scalers.end() ? *it : nullptr;
+    }
   
     AnalogDeadZone getAnalogDeadZone() const { return analogDeadZone; }
     bool isAnalogJoypadUsed() const { return analogJoypadEnabled; }

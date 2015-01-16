@@ -9,6 +9,12 @@ using namespace gcw;
 
 void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
 {
+  if (handle.canHaveNativeBlitter()) // TODO: with cores which require downsample we should go in a different way
+    handle.preferences.scaler = "Native";
+  else
+    handle.preferences.scaler = handle.info.supportedScalers()[0];
+    
+  
   cores.push_back(handle);
   addCoreManagedExtensions(handle);
   LOG("Found core: %s ident: %s\n",handle.name().c_str(), handle.info.ident.identifier().c_str());

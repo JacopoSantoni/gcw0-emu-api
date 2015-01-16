@@ -9,14 +9,14 @@ using namespace gcw;
 
 #pragma mark Core Controls
 
-void CoreView::initGfx()
+void CoreView::initGfx(const std::string& scaler)
 {
   
   const GfxBufferSpec& gfxSpec = core->info().gfxSpec;
   buffer.allocate(gfxSpec);
   core->setBuffer(buffer);
   
-  updatedBlitter();
+  setBlitter(scaler);
   
   /*
   if (gfxSpec.format == FORMAT_RGB565)
@@ -42,9 +42,22 @@ void CoreView::initGfx()
   */
 }
 
-void CoreView::setBlitter(const BlitterFactory* factory)
+void CoreView::setBlitter(const std::string& name)
 {
-  this->blitterFactory = factory;
+  if (name == "Native")
+    this->blitterFactory = computeNativeBlitter(core->info().gfxSpec);
+  else
+  {
+    const BlitterFactory* factory = core->scalerForName(name);
+    this->blitterFactory = factory;
+  }
+  
+  updatedBlitter();
+  
+  if (name == "Native")
+    delete blitterFactory;
+  
+  blitterFactory = nullptr;
 }
 
 void CoreView::updatedBlitter()
@@ -101,13 +114,13 @@ void CoreView::reset()
   core = nullptr;
 }
 
-void CoreView::initForCore(CoreInterface *core)
+void CoreView::initForCore(CoreInterface *core, const CorePreferences& preferences)
 {
   reset();
   this->core = core;
   
   initControls();
-  initGfx();
+  initGfx(preferences.scaler);
   initSfx();
 }
 

@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "../core/emu_interface.h"
+
 #include "../gfx/view.h"
 #include "../gfx/gfx.h"
 #include "../gfx/blitter.h"
@@ -44,13 +45,16 @@ private:
   ButtonStatus suspendShortcut;
 
   CoreInterface *core;
+  
+  void updatedBlitter();
+
 
 public:
-  CoreView(Manager *manager) : View(manager), blitter(nullptr) { }
+  CoreView(Manager *manager) : View(manager), blitterFactory(nullptr), blitter(nullptr) { }
 
-  void initForCore(CoreInterface* core);
+  void initForCore(CoreInterface* core, const CorePreferences& preferences);
   void initControls();
-  void initGfx();
+  void initGfx(const std::string& scaler);
   void initSfx();
   void reset();
   
@@ -60,8 +64,7 @@ public:
   void render() override;
   void handleEvents() override;
   
-  void setBlitter(const BlitterFactory* blitter);
-  void updatedBlitter();
+  void setBlitter(const std::string& name);
 
   void flushAudioBuffer()
   {

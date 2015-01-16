@@ -110,7 +110,7 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
   {
     core = loader.loadCore(handle);
     this->handle = optional<reference_wrapper<CoreHandle>>(ref(handle));
-    coreView.initForCore(core);
+    coreView.initForCore(core, handle.preferences);
     core->initialize();
   }
 }

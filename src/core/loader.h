@@ -9,6 +9,7 @@
 
 #include "../common/utils.h"
 #include "emu_interface.h"
+#include "../gfx/gfx.h" //TODO: for WIDTH and HEIGHT, not nice, move them
 
 //#define _DUMMY_CORE_
 
@@ -26,6 +27,16 @@ namespace gcw {
     Path path;
     CoreInterface* core;
     
+    mutable CorePreferences preferences;
+    
+    CoreHandle(const Path& path, const CoreInfo& info, const CorePreferences& preferences) :
+    info(info),
+    handle(nullptr),
+    path(path),
+    core(nullptr),
+    preferences(preferences)
+    { }
+    
     CoreHandle(const Path& path, const CoreInfo& info) :
     info(info),
     handle(nullptr),
@@ -34,6 +45,8 @@ namespace gcw {
     {
       
     }
+    
+    bool canHaveNativeBlitter() const { return info.gfxSpec.width <= WIDTH && info.gfxSpec.height <= HEIGHT; }
     
     const std::string name() const { return info.details.name; }
     

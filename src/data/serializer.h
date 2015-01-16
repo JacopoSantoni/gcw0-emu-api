@@ -53,6 +53,7 @@ public:
     writer.String("path");
     serialize(handle.path, writer);
     serialize(handle.info, writer, "info");
+    serialize(handle.preferences, writer, "preferences");
     writer.EndObject();
   }
   
@@ -65,6 +66,8 @@ public:
     serialize(info.ident, writer, "ident");
     serialize(info.details, writer, "details");
     serialize(info.supportedButtons(), writer, "buttons");
+    serialize(info.supportedScalers(), writer, "scalers");
+    serialize(info.gfxSpec, writer, "gfx");
   }
   
   template<typename Writer>
@@ -87,6 +90,35 @@ public:
     serialize(details.porter, writer);
     writer.String("webpage");
     serialize(details.webpage, writer);
+  }
+  
+  template<typename Writer>
+  void serialize(const CorePreferences& preferences, Writer& writer) const
+  {
+    writer.String("scaler");
+    serialize(preferences.scaler, writer);
+  }
+  
+  template<typename Writer>
+  void serialize(const GfxBufferSpec& gfxSpec, Writer& writer) const
+  {
+    writer.String("width");
+    writer.Uint(gfxSpec.width);
+    writer.String("height");
+    writer.Uint(gfxSpec.height);
+    writer.String("format");
+    
+    const char* formatStr = nullptr;
+    
+    switch (gfxSpec.format)
+    {
+      case FORMAT_RGB565: formatStr = "RGB565"; break;
+      case FORMAT_RGBA5551: formatStr = "RGB551"; break;
+      case FORMAT_RGBA8888: formatStr = "RGBA8888"; break;
+      case FORMAT_XRGB888: formatStr = "XRGB888"; break;
+    }
+    
+    writer.String(formatStr);
   }
   
   template<typename Writer>
@@ -168,6 +200,18 @@ CoreDetails Unserializer::unserialize(const Value& value)
 }
 
 template<>
+CorePreferences Unserializer::unserialize(const Value& value)
+{
+  std::string scaler = value["scaler"].GetString();
+  
+  CorePreferences preferences;
+  
+  preferences.scaler = scaler;
+  
+  return preferences;
+}
+
+template<>
 CoreIdentifier Unserializer::unserialize(const Value& value)
 {
   std::string ident = value["name"].GetString();
@@ -183,17 +227,40 @@ System::Type Unserializer::unserialize(const Value& value)
 }
 
 template<>
+GfxBufferSpec Unserializer::unserialize(const Value& value)
+{
+  u16 width = value["width"].GetUint();
+  u16 height = value["height"].GetUint();
+  
+  std::string formatStr = value["format"].GetString();
+  GfxBufferFormat format = FORMAT_RGB565;
+  
+  if (formatStr == "RGBA5551") format = FORMAT_RGBA5551;
+  else if (formatStr == "RGBA8888") format = FORMAT_RGBA8888;
+  else if (formatStr == "XRGB888") format = FORMAT_XRGB888;
+
+  return {width, height, format};
+}
+
+template<>
 CoreInfo Unserializer::unserialize(const Value& value)
 {
   CoreInfo info;
   
   unserialize(info.type, value["systems"]);
+  
   std::vector<ButtonSetting> buttons;
   unserialize(buttons, value["buttons"]);
   info.setButtons(buttons);
+  
+  std::vector<std::string> scalers;
+  unserialize(scalers, value["scalers"]);
+  info.setScalers(scalers);
+  
   info.timestamp = value["timestamp"].GetUint();
   info.ident = unserialize<CoreIdentifier>(value["ident"]);
   info.details = unserialize<CoreDetails>(value["details"]);
+  info.gfxSpec = unserialize<GfxBufferSpec>(value["gfx"]);
   
   return info;
 }
@@ -203,9 +270,13 @@ CoreHandle Unserializer::unserialize(const Value& value)
 {
   CoreInfo info = unserialize<CoreInfo>(value["info"]);
   Path path = unserialize<Path>(value["path"]);
+  CorePreferences preferences = unserialize<CorePreferences>(value["preferences"]);
   
-  return CoreHandle(path, info);
+  return CoreHandle(path, info, preferences);
 }
+
+template<>
+std::string Unserializer::unserialize(const Value &value) { return value.GetString(); }
 
 
 #endif

@@ -136,14 +136,15 @@ public:
 class BlitterMenuEntry : public SettingMenuEntry
 {
 private:
-  std::vector<std::unique_ptr<const BlitterFactory>> blitters;
+  const CoreHandle& handle;
+  std::vector<const std::string> blitters;
   decltype(blitters)::iterator current;
     
 public:
-  BlitterMenuEntry(std::vector<const BlitterFactory*>& blitters);
+  BlitterMenuEntry(const CoreHandle& handle, std::vector<const std::string>& blitters);
   
   const std::string getValueName() const override;
-  bool canBeModifiedAtRuntime() const override { return true; }
+  bool canBeModifiedAtRuntime() const override { return blitters.size() > 1; }
   
   void action(Manager *manager, GCWKey key) override;
 };

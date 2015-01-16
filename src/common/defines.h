@@ -155,11 +155,11 @@ struct GfxBuffer
   {
     delete [] static_cast<u32*>(data);
     
-    u32 bufferSize;
+    u32 bufferSize = 0;
     //pitch = spec.width;
     width = spec.width;
     height = spec.height;
-        
+    
     switch (spec.format)
     {
       case FORMAT_XRGB888: bufferSize = width*height; break;
@@ -206,6 +206,11 @@ struct SfxAudioSpec
   SfxAudioSpec(u32 bufferElementSize, u32 bufferSize, u16 sampleRate) : bufferElementSize(bufferElementSize), bufferSize(bufferSize), sampleRate(sampleRate) { }
   
   u32 totalBufferSize() const { return bufferSize * bufferElementSize; }
+};
+
+struct CorePreferences
+{
+  std::string scaler;
 };
 
 
