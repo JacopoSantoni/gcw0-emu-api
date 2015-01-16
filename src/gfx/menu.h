@@ -5,10 +5,12 @@
 
 #include "gfx.h"
 #include "ui.h"
+#include "../views/help.h"
 #include "../data/settings.h"
 #include "../data/rom_collection.h"
 #include "../data/persistence.h"
 #include "../core/loader.h"
+
 
 #include <string>
 #include <vector>
@@ -20,6 +22,8 @@ class BlitterFactory;
   
 class Menu;
 class MenuView;
+  
+enum class HelpType : u16;
 
 class MenuEntry
 {
@@ -29,6 +33,7 @@ public:
   virtual const std::string& name() const = 0;
   virtual SDL_Surface* icon() { return nullptr; }
   virtual bool isEnabled() const { return true; }
+  virtual HelpType help() const = 0;
 
 protected:
   virtual void action(Manager *manager, GCWKey key) { }
@@ -41,12 +46,16 @@ public:
 class StandardMenuEntry : public MenuEntry
 {
 protected:
+  HelpType hhelp;
   std::string caption;
   
 public:
-  StandardMenuEntry() : caption() { }
-  StandardMenuEntry(std::string caption) : caption(caption) { }
+  StandardMenuEntry() : hhelp(HelpType::NONE), caption() { }
+  StandardMenuEntry(std::string caption) : hhelp(HelpType::NONE), caption(caption) { }
+  HelpType help() const override { return hhelp; };
+  
   template<typename S> void setCaption(S caption) { this->caption = std::forward<S>(caption); }
+
 
   const std::string& name() const override { return caption; }
   void action(Manager *manager, GCWKey key) override { }
@@ -70,6 +79,7 @@ protected:
 
 public:
   SubMenuEntry(std::string caption, Menu *menu) : StandardMenuEntry(caption+" \x15"), menu(menu) { }
+  HelpType help() const override { return HelpType::SUBMENU; }
 
   Menu *subMenu() { return menu.get(); }
   void action(Manager *manager, GCWKey key) override;
@@ -101,6 +111,7 @@ public:
   BoolMenuEntry(BoolSetting *setting) : SettingMenuEntry(setting->getName()), setting(setting) {
     setValueTextWidth(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No")));
   }
+  HelpType help() const override { return canBeModified() ? HelpType::BOOL_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
 
   const std::string getValueName() const override { return setting->getValue() ? "Yes" : "No"; }
   bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
@@ -126,6 +137,8 @@ public:
 
     setValueTextWidth(maxWidth);
   }
+  HelpType help() const override { return canBeModified() ? HelpType::ENUM_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
+
 
   const std::string getValueName() const override { return setting->getValueName(); }
   bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
@@ -157,7 +170,8 @@ private:
   const std::string pathViewTitle;
 public:
   PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : SettingMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
-
+  HelpType help() const override { return canBeModified() ? HelpType::PATH_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
+  
   const std::string getValueName() const override { return setting->getValue(); }
   bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
 
@@ -168,9 +182,10 @@ public:
 class PathMenuEntry : public MenuEntry
 {
 private:
-  Path path;
+  const Path& path;
 public:
   PathMenuEntry(const Path& path) : path(path) { }
+  virtual HelpType help() const { return HelpType::NONE; }
 
   const Path& getPath() { return path; }
   
@@ -201,6 +216,7 @@ public:
   const std::string& name() const override { return rom.name; }
   void render(Gfx* gfx, int x, int y, bool isSelected) override;
   void action(Manager *manager, GCWKey key) override;
+  HelpType help() const override { return HelpType::LAUNCH_ROM; }
 };
   
 class Menu

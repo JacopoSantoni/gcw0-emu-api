@@ -57,6 +57,8 @@ void MenuView::handleEvents()
         }
       }
     }
+    
+    manager->getHelp()->set(list.selected()->help());
   }
 }
 
@@ -72,4 +74,5 @@ void MenuView::render()
   //gfx->blit(gfx->cache.get("data/syrstems/gba-small.png"), 100, 100);
   
   list.status().menu->render(gfx, list.minOffset(), list.getDisplayedAmount(), UI::TITLE_OFFSET.x, UI::TITLE_OFFSET.y, UI::MENU_OFFSET.x, UI::MENU_OFFSET.y, list.current());
+  manager->getHelp()->render();
 }

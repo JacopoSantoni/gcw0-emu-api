@@ -50,7 +50,7 @@ void Manager::init()
   StandardMenu *root = new StandardMenu("Root");
   root->addEntry(new SubMenuEntry("Cores",menus.getCoresMenu()));
   root->addEntry(new SubMenuEntry("Browse by System",menus.getSystemsMenu()));
-  root->addEntry(new SubMenuEntry("Configure Rom Paths",romPathsMenu));
+  root->addEntry(new SubMenuEntry("Rom Paths",romPathsMenu));
   root->addEntry(new BoolMenuEntry(new BoolSetting(Setting::Group::AUDIO, "Sound Enabled", "sound-enabled", true, true)));
   root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>(Setting::Group::AUDIO, "Sample Rate", "sample-rate", sampleRates, 3, false)));
   root->addEntry(new PathSettingMenuEntry(new PathSetting(Setting::Group::MISC, "Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves", true), "Choose saves path"));

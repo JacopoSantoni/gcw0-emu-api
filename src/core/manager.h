@@ -16,6 +16,7 @@
 #include "../views/pause_view.h"
 #include "../views/keybind_view.h"
 #include "../views/dialog_view.h"
+#include "../views/help.h"
 
 #include <stack>
 
@@ -35,6 +36,7 @@ namespace gcw {
     Timer timer;
     
     Menus menus;
+    Help help;
   
     CoreView coreView;
     MenuView menuView;
@@ -54,6 +56,7 @@ namespace gcw {
 
   public:
     Manager() : handle(std::nullopt), core(nullptr), loader(this), persistence(this), collection(this), gfx(Gfx()),
+    help(this),
     coreView(this),
     menuView(this, menus.mainMenu),
     pathView(this),
@@ -76,6 +79,7 @@ namespace gcw {
     KeybindView* getKeybindView() { return &keybindView; }
     DialogView* getDialogView() { return &dialogView; }
     template<typename T> T* getView() { return static_cast<T*>(currentView); }
+    Help* getHelp() { return &help; }
   
     Loader *getLoader() { return &loader; }
     Persistence *getPersistence() { return &persistence; }

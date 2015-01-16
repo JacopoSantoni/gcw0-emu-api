@@ -24,6 +24,8 @@
 		047E9AB11A55CF140066C697 /* core_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A941A55CF140066C697 /* core_view.cpp */; };
 		047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A961A55CF140066C697 /* menu_view.cpp */; };
 		047E9AB51A55CF140066C697 /* path_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A981A55CF140066C697 /* path_view.cpp */; };
+		04836A591A68C209006A876E /* help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04836A571A68C209006A876E /* help.cpp */; };
+		04836A5A1A68C209006A876E /* help.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04836A571A68C209006A876E /* help.cpp */; };
 		048888231A678483005DBCEB /* sfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04914ABB1A60254F001EAD6A /* sfx.cpp */; };
 		048888241A678483005DBCEB /* pause_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0435E55C1A636BC10059AC7E /* pause_view.cpp */; };
 		048888251A678483005DBCEB /* manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047E9A7E1A55CF140066C697 /* manager.cpp */; };
@@ -240,6 +242,8 @@
 		047E9A971A55CF140066C697 /* menu_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_view.h; sourceTree = "<group>"; };
 		047E9A981A55CF140066C697 /* path_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = path_view.cpp; sourceTree = "<group>"; };
 		047E9A991A55CF140066C697 /* path_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path_view.h; sourceTree = "<group>"; };
+		04836A571A68C209006A876E /* help.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = help.cpp; sourceTree = "<group>"; };
+		04836A581A68C209006A876E /* help.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = help.h; sourceTree = "<group>"; };
 		0488881C1A678479005DBCEB /* blitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blitter.h; sourceTree = "<group>"; };
 		048888461A678483005DBCEB /* Loader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		048888471A678483005DBCEB /* Cocoa copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Cocoa copy-Info.plist"; path = "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/Cocoa copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -585,6 +589,8 @@
 				04783E5B1A64C52600B56380 /* keybind_view.h */,
 				0433076E1A65B3CA000FDCD9 /* dialog_view.cpp */,
 				0433076F1A65B3CA000FDCD9 /* dialog_view.h */,
+				04836A571A68C209006A876E /* help.cpp */,
+				04836A581A68C209006A876E /* help.h */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -1125,6 +1131,7 @@
 				048888281A678483005DBCEB /* menu.cpp in Sources */,
 				048888291A678483005DBCEB /* systems.cpp in Sources */,
 				0488882A1A678483005DBCEB /* main.cpp in Sources */,
+				04836A5A1A68C209006A876E /* help.cpp in Sources */,
 				0488882B1A678483005DBCEB /* gfx.cpp in Sources */,
 				0488882C1A678483005DBCEB /* menu_view.cpp in Sources */,
 				0488882D1A678483005DBCEB /* dialog_view.cpp in Sources */,
@@ -1177,6 +1184,7 @@
 				04914AB71A601E28001EAD6A /* menu.cpp in Sources */,
 				0497E2C51A5795E800CAC445 /* systems.cpp in Sources */,
 				047E9AA91A55CF140066C697 /* main.cpp in Sources */,
+				04836A591A68C209006A876E /* help.cpp in Sources */,
 				04914AB61A601E28001EAD6A /* gfx.cpp in Sources */,
 				047E9AB31A55CF140066C697 /* menu_view.cpp in Sources */,
 				043307701A65B3CA000FDCD9 /* dialog_view.cpp in Sources */,
