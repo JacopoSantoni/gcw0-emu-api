@@ -49,54 +49,36 @@ type(type), group(group), name(name), ident(ident), modifiableAtRuntime(modifiab
   virtual ~Setting() { }
 };
   
-template<typename T>
-class SettingValue
-{
-private:
-  std::string ident;
-  Setting::Type type;
-  std::unique_ptr<T> value;
-  
-  
-public:
-  SettingValue(const std::string& ident, Setting::Type type, T value) : ident(ident), type(type), value(new T(value)) { }
-
-  Setting::Type getType() const { return type; }
-  const std::string& getIdent() const { return ident; }
-  
-  T get()
-  {
-    T cvalue = *value.get();
-    value.reset(nullptr);
-    return cvalue;
-  }
-};
-
 template<typename V>
 class ConcreteSetting : public Setting
 {
-private:
+protected:
   V value;
+  std::function<void(V)> callback;
 
 public:
-  ConcreteSetting(Type type, Group group, const std::string& name, const std::string& ident, V value, bool modifiableAtRuntime) :
-  Setting(type, group, name, ident, modifiableAtRuntime), value(value) { }
+  ConcreteSetting(Type type, Group group, const std::string& name, const std::string& ident, V value, bool modifiableAtRuntime, std::function<void(V)> callback = [](const V value){ }) :
+  Setting(type, group, name, ident, modifiableAtRuntime), value(value), callback(callback) { }
   const V& getValue() const { return value; }
-  void setValue(V value) { this->value = value; }
+  
+  void setValue(V value) {
+    this->value = value;
+    callback(this->value);
+  }
 };
 
 class BoolSetting : public ConcreteSetting<bool>
 {
 public:
-  BoolSetting(Group group, const std::string& name, const std::string ident, bool value, bool modifiableAtRuntime) :
-  ConcreteSetting(Type::BOOLEAN, group, name, ident, value, modifiableAtRuntime) { }
+  BoolSetting(Group group, const std::string& name, const std::string ident, bool value, bool modifiableAtRuntime, std::function<void(bool)> callback = [](const bool value){ }) :
+  ConcreteSetting(Type::BOOLEAN, group, name, ident, value, modifiableAtRuntime, callback) { }
 };
   
 class PathSetting : public ConcreteSetting<std::string>
 {
 public:
-  PathSetting(Group group, const std::string& name, const std::string ident, const std::string value, bool modifiableAtRuntime) :
-  ConcreteSetting(Type::PATH, group, name, ident, value, modifiableAtRuntime) { }
+  PathSetting(Group group, const std::string& name, const std::string ident, const std::string value, bool modifiableAtRuntime, std::function<void(std::string)> callback = [](const std::string value){ }) :
+  ConcreteSetting(Type::PATH, group, name, ident, value, modifiableAtRuntime, callback) { }
 };
 
   
@@ -141,11 +123,11 @@ public:
   using ConcreteSetting<EnumValueRef<T>>::getValue;
   using ConcreteSetting<EnumValueRef<T>>::setValue;
 
-  ConcreteEnumSetting<T>(Setting::Group group, const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue, bool modifiableAtRuntime) :
-  ConcreteSetting<EnumValueRef<T>>(Setting::Type::ENUMERATION, group, name, ident, std::cref(values[defaultValue]), modifiableAtRuntime),
+  ConcreteEnumSetting<T>(Setting::Group group, const std::string& name, std::string ident, EnumSet<T>& values, size_t defaultValue, bool modifiableAtRuntime, std::function<void(EnumValueRef<T>)> callback = [](const EnumValueRef<T> value){ }) :
+  ConcreteSetting<EnumValueRef<T>>(Setting::Type::ENUMERATION, group, name, ident, std::cref(values[defaultValue]), modifiableAtRuntime, callback),
   values(values), defaultValue(std::cref(this->values[defaultValue]))
   {
-    setValue(this->defaultValue);
+    this->value = this->defaultValue;
   }
 
   const std::string& getValueName() const override { return getValue().get().getName(); }

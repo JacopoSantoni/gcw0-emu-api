@@ -343,6 +343,21 @@ void CoreMenu::build(CoreHandle& handle)
   
   settingsVideo->addEntry(scalersEntry);
   
+  auto& csettings = handle.core->supportedSettings();
+  
+  for (const auto& setting : csettings)
+  {
+    MenuEntry* entry = nullptr;
+    
+    if (setting->getType() == Setting::Type::BOOLEAN)
+      entry = new BoolMenuEntry(static_cast<BoolSetting*>(setting.get()));
+    
+    if (setting->getGroup() == Setting::Group::VIDEO)
+      settingsVideo->addEntry(entry);
+  }
+  
+  
+  
   addEntry(new SubMenuEntry("Keys", keybinds));
   addEntry(new SubMenuEntry("Settings", settings));
 }

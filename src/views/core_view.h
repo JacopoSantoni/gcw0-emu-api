@@ -81,34 +81,10 @@ public:
     return std::move(astatus);
   }
   
-  template<typename T>
-  void setSettingOnCore(ConcreteSetting<T>* setting) { }
-  
-  template<typename T>
-  void setSettingOnCore(ConcreteSetting<EnumValue<T>>* setting)
-  {
-    SettingValue<T> value(setting->getIdent(), setting->getType(), setting->getValue());
-    core->settingChanged(value);
-  }
-
 
   std::unique_ptr<AudioOut>& getAudioOut() { return audioOut; }
 };
 
-template<>
-inline void CoreView::setSettingOnCore(ConcreteSetting<bool>* setting)
-{
-  SettingValue<bool> value(setting->getIdent(), setting->getType(), setting->getValue());
-  core->settingChanged(value);
-}
-  
-template<>
-inline void CoreView::setSettingOnCore(ConcreteSetting<std::string>* setting)
-{
-  SettingValue<std::string> value(setting->getIdent(), setting->getType(), setting->getValue());
-  core->settingChanged(value);
-}
-  
 }
 
 
