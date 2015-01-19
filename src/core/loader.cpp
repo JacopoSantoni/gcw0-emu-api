@@ -13,7 +13,10 @@ void Loader::loadCoreInfo(const CoreHandle& handle, CoreInterface *info)
     handle.preferences.scaler = "Native";
   else
     handle.preferences.scaler = handle.info.supportedScalers()[0];
-    
+  
+  /* fetch all default values for settings */
+  for (const auto& setting : handle.info.supportedSettings())
+    handle.preferences.setValueForSetting(setting.ident, setting.defaultValue);
   
   cores.push_back(handle);
   addCoreManagedExtensions(handle);

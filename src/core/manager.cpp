@@ -36,13 +36,13 @@ void Manager::init()
   
   //persistence.savePath(loader.getCores()[0].info.ident, &collection.getRomsForSystem(System::getSpecForSystem(System::Type::GAME_BOY_COLOR)).second->second, 0);
   
-  EnumSet<s32> sampleRates = {
+  /*EnumSet<s32> sampleRates = {
     EnumValue<int32_t>("0",0),
     EnumValue<int32_t>("11025",11025),
     EnumValue<int32_t>("22050",22050),
     EnumValue<int32_t>("44100",44100),
     EnumValue<int32_t>("48000",48000)
-  };
+  };*/
   
   RomPathsMenu *romPathsMenu = new RomPathsMenu("Rom Paths", getPersistence());
   romPathsMenu->build();
@@ -51,9 +51,9 @@ void Manager::init()
   root->addEntry(new SubMenuEntry("Cores",menus.getCoresMenu()));
   root->addEntry(new SubMenuEntry("Browse by System",menus.getSystemsMenu()));
   root->addEntry(new SubMenuEntry("Rom Paths",romPathsMenu));
-  root->addEntry(new BoolMenuEntry(new BoolSetting(Setting::Group::AUDIO, "Sound Enabled", "sound-enabled", true, true)));
-  root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>(Setting::Group::AUDIO, "Sample Rate", "sample-rate", sampleRates, 3, false)));
-  root->addEntry(new PathSettingMenuEntry(new PathSetting(Setting::Group::MISC, "Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves", true), "Choose saves path"));
+  //root->addEntry(new BoolMenuEntry(new BoolSetting(Setting::Group::AUDIO, "Sound Enabled", "sound-enabled", true, true)));
+  //root->addEntry(new EnumMenuEntry(new ConcreteEnumSetting<s32>(Setting::Group::AUDIO, "Sample Rate", "sample-rate", sampleRates, 3, false)));
+  //root->addEntry(new PathSettingMenuEntry(new PathSetting(Setting::Group::MISC, "Saves path", "save-path", "/Users/jack/Documents/Dev/github/gcw0-emu-api/xcode/root/usr/local/home/saves", true), "Choose saves path"));
   root->addEntry(new LambdaMenuEntry("Exit",[](Manager* manager){ manager->exit(); }) );
   
   menus.setMainMenu(root);
@@ -113,6 +113,10 @@ void Manager::loadCoreAndWarmUp(CoreHandle& handle)
     coreView.initForCore(core, handle.preferences);
     core->initialize();
   }
+  
+  /* pass all setting values to the core */
+  for (const auto& setting : handle.info.supportedSettings())
+    core->settingChanged(setting.ident, handle.preferences.valueForSetting(setting.ident));
 }
 
 void Manager::launchRom(const RomEntry& entry)

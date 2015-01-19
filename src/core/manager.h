@@ -90,7 +90,7 @@ namespace gcw {
     bool isEmulating() const { return emulating; }
     
     const RomEntry* getCurrentRom() { return rom; }
-    const CoreInterface* getCurrentCore() { return core; }
+    CoreInterface* getCurrentCore() { return core; }
     const CoreInfo& getCurrentCoreInfo() { return (*handle).get().info; }
     
     void reportRomLoading(float percent) override { }

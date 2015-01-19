@@ -43,11 +43,13 @@ class CoreInterface;
   
   typedef u32 CoreFeatures;
   
+  
 struct CoreInfo
 {
 private:
   std::vector<ButtonSetting> buttons;
   std::vector<std::string> scalers;
+  std::vector<Setting> settings;
 
 public:
   std::vector<System::Type> type;
@@ -77,6 +79,10 @@ public:
   void registerButton(const ButtonSetting& button) { buttons.push_back(button); }
   void setButtons(const std::vector<ButtonSetting>& buttons) { this->buttons = buttons; }
   
+  const std::vector<Setting>& supportedSettings() const { return settings; }
+  void registerSetting(const Setting& setting) { settings.push_back(setting); }
+  void setSettings(const std::vector<Setting>& settings) { this->settings = settings; }
+  
   const std::string identifier() const { return ident.identifier(); }
   const std::string title() const { return details.name + " (" + ident.version + ")"; }
   
@@ -98,7 +104,7 @@ public:
     CoreFeatures features;
     
     std::vector<const BlitterFactory*> scalers;
-    std::vector<std::unique_ptr<Setting>> settings;
+    std::vector<std::unique_ptr<SettingHandle>> settings;
     bool analogJoypadEnabled;
     AnalogDeadZone analogDeadZone;
   
@@ -111,8 +117,37 @@ public:
     void registerFeature(CoreFeature features) { this->features |= static_cast<CoreFeatures>(features); }
     void registerInformations(std::initializer_list<System::Type> systems, std::string ident, std::string name, std::string version) { information.setInformations(systems,ident,name,version); }
     void registerInformations(System::Type type, std::string ident, std::string name, std::string version) { registerInformations({type},ident,name,version); }
-    void registerSetting(Setting *setting) { settings.push_back(std::unique_ptr<Setting>(setting)); }
     void registerButton(const ButtonSetting& button) { information.registerButton(button); }
+    
+    void registerBoolSetting(const std::string& ident, const std::string& name, Setting::Group group, bool defaultValue, bool canBeModifiedAtRuntime, const std::function<void(bool)>& callback)
+    {
+      BoolSettingHandle* handle = new BoolSettingHandle(ident, callback);
+      settings.push_back(std::unique_ptr<SettingHandle>(handle));
+      information.registerSetting(Setting(ident, name, group, defaultValue, canBeModifiedAtRuntime));
+    }
+    
+    void registerPathSetting(const std::string& ident, const std::string& name, Setting::Group group, const std::string& defaultValue, bool canBeModifiedAtRuntime, const std::function<void(std::string)>& callback)
+    {
+      PathSettingHandle* handle = new PathSettingHandle(ident, callback);
+      settings.push_back(std::unique_ptr<SettingHandle>(handle));
+      information.registerSetting(Setting(ident, name, group, defaultValue, canBeModifiedAtRuntime));
+    }
+    
+    template<typename T>
+    void registerEnumSetting(const std::string& ident, const std::string& name, Setting::Group group, const EnumSet<T>& values, T defaultValue, bool canBeChangedAtRuntime, const std::function<void(T)>& callback)
+    {
+      EnumSettingHandle<T>* handle = new EnumSettingHandle<T>(ident, values, callback);
+      settings.push_back(std::unique_ptr<SettingHandle>(handle));
+      
+      std::string dvalue;
+      std::vector<std::string> svalues;
+      std::transform(values.begin(), values.end(), std::back_inserter(svalues), [&dvalue, defaultValue](const EnumValue<T>& value) {
+        if (value.getValue() == defaultValue)
+          dvalue = value.getName();
+        return value.getName();
+      });
+      information.registerSetting(Setting(ident, name, group, svalues, dvalue, canBeChangedAtRuntime));
+    }
     
     void registerScaler(const BlitterFactory& blitter)
     {
@@ -183,6 +218,14 @@ public:
     virtual void sramSaveTo(const std::string& path, const std::string& romName) { }
     virtual void sramLoadFrom(const std::string& path, const std::string& romName) { }
   
+    void settingChanged(const std::string& ident, const std::string& value)
+    {
+      for (const auto& handle : settings)
+      {
+        if (handle->getIdent() == ident)
+          handle->valueChanged(value);
+      }
+    }
   
     void setBuffer(GfxBuffer buffer) { this->gfxBuffer = buffer; }
     void setAudioBuffer(u32* buffer) { this->audioBuffer = buffer; }
@@ -190,8 +233,6 @@ public:
     const AudioStatus& writeAudioSamples(size_t count, size_t shift) { return manager->writeAudioSamples(count, shift); }
     
     bool hasFeature(CoreFeature feature) const { return (features & static_cast<CoreFeatures>(feature)) != 0; }
-
-    const std::vector<std::unique_ptr<Setting>>& supportedSettings() const { return settings; }
     
     const BlitterFactory* scalerForName(const std::string& name)
     {

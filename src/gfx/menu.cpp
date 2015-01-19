@@ -37,7 +37,7 @@ void SubMenuEntry::action(Manager *manager, GCWKey key)
 
 bool SettingMenuEntry::canBeModified() const
 {
-  return canBeModifiedAtRuntime() || !Manager::instance->isEmulating();
+  return canBeModifiedAtRuntime() || !Manager::instance->isEmulating() || Manager::instance->getCurrentCoreInfo() != handle.info;
 }
 
 void SettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
@@ -74,6 +74,21 @@ void SettingMenuEntry::action(Manager *manager, GCWKey key)
   }
 }
 
+#pragma mark RealSettingMenuEntry
+
+void RealSettingMenuEntry::setValue(Manager* manager, const std::string &value)
+{
+  handle.preferences.setValueForSetting(setting.ident, value);
+  
+  if (manager->isEmulating() && handle.info == manager->getCurrentCoreInfo())
+    manager->getCurrentCore()->settingChanged(setting.ident, value);
+}
+
+const std::string& RealSettingMenuEntry::getValue() const
+{
+  return handle.preferences.valueForSetting(setting.ident);
+}
+
 #pragma mark BoolMenuEntry
 
 
@@ -87,10 +102,13 @@ void BoolMenuEntry::action(Manager *manager, GCWKey key)
   
   if ((key == GCW_KEY_RIGHT || key == GCW_KEY_LEFT || key == MENU_ACTION_BUTTON) && canBeModified())
   {
-    bool newValue = !setting->getValue();
-    setting->setValue(newValue);
+    const std::string& oldValue = getValue();
+    const std::string newValue = oldValue == "true" ? "false" : "true";
+    
+    setValue(manager, newValue);
   }
 }
+
 
 #pragma mark EnumMenuEntry
 
@@ -102,15 +120,64 @@ void EnumMenuEntry::action(Manager *manager, GCWKey key)
     return;
   }
   
+  const std::string& oldValue = getValue();
+  auto it = std::find(setting.values.begin(), setting.values.end(), oldValue);
+  
   if (key == GCW_KEY_RIGHT || key == MENU_ACTION_BUTTON)
-    setting->next();
+  {
+    if (it != setting.values.end() - 1)
+      ++it;
+    else
+      it = setting.values.begin();
+  }
   else if (key == GCW_KEY_LEFT)
-    setting->prev();
+  {
+    if (it != setting.values.begin())
+      --it;
+    else
+      it = setting.values.end() - 1;
+  }
+
+  setValue(manager, *it);
 }
+
+#pragma mark PathSettingMenuEntry
+
+void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
+{
+  if (!canBeModified())
+  {
+    SettingMenuEntry::action(manager, key);
+    return;
+  }
+  
+  if (key == MENU_ACTION_BUTTON)
+  {
+    PathView* pview = manager->getPathView();
+    
+    auto lambda = [manager, this](const Path& path) {
+      this->setValue(manager, path.value());
+      manager->popView();
+    };
+    
+    pview->init(string("Set \'")+setting.name+"\' path", "Set this path", Path(getValue()), lambda, [manager, this](){ manager->popView(); });
+    manager->pushView(View::Type::PATH);
+  }
+}
+
+void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
+{
+  u16 color = (!canBeModified()) ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
+  u16 width = gfx->print(x, y, false, Font::bigFont, color, name().c_str());
+  
+  const string&  path = getValue();
+  gfx->print(x+width, y, false, Font::bigFont, color, Text::clipText(path, -30, "...").c_str());
+}
+
 
 #pragma mark BlitterMenuEntry
 
-BlitterMenuEntry::BlitterMenuEntry(const CoreHandle& handle, vector<const std::string>& blitters) : SettingMenuEntry("Scaler"), handle(handle)
+BlitterMenuEntry::BlitterMenuEntry(const CoreHandle& handle, vector<const std::string>& blitters) : SettingMenuEntry("Scaler", handle)
 {
   u16 maxWidth = 0;
   for (const auto& blitter : blitters)
@@ -154,41 +221,8 @@ void BlitterMenuEntry::action(Manager *manager, GCWKey key)
   
   handle.preferences.scaler = *current;
 
-  if (manager->isEmulating())
+  if (manager->isEmulating() && manager->getCurrentCoreInfo() == handle.info)
     manager->getCoreView()->setBlitter(*current);
-}
-
-#pragma mark PathSettingMenuEntry
-
-void PathSettingMenuEntry::action(Manager *manager, GCWKey key)
-{
-  if (!canBeModified())
-  {
-    SettingMenuEntry::action(manager, key);
-    return;
-  }
-  
-  if (key == MENU_ACTION_BUTTON)
-  {
-    PathView* pview = manager->getPathView();
-    
-    auto lambda = [manager, this](const Path& path) {
-      setting->setValue(path.value());
-      manager->popView();
-    };
-    
-    pview->init(pathViewTitle, "Set this path", Path(setting->getValue()), lambda, [manager, this](){ manager->popView(); });
-    manager->pushView(View::Type::PATH);
-  }
-}
-
-void PathSettingMenuEntry::render(Gfx *gfx, int x, int y, bool isSelected)
-{
-  u16 color = (!canBeModified()) ? Gfx::ccc<u16>(160, 160, 160) : Gfx::ccc<u16>(255, 255, 255);
-  u16 width = gfx->print(x, y, false, Font::bigFont, color, name().c_str());
-  
-  const string&  path = setting->getValue();
-  gfx->print(x+width, y, false, Font::bigFont, color, Text::clipText(path, -30, "...").c_str());
 }
 
 #pragma mark PathMenuEntry
@@ -343,16 +377,20 @@ void CoreMenu::build(CoreHandle& handle)
   
   settingsVideo->addEntry(scalersEntry);
   
-  auto& csettings = handle.core->supportedSettings();
+  auto& csettings = handle.info.supportedSettings();
   
   for (const auto& setting : csettings)
   {
     MenuEntry* entry = nullptr;
     
-    if (setting->getType() == Setting::Type::BOOLEAN)
-      entry = new BoolMenuEntry(static_cast<BoolSetting*>(setting.get()));
-    
-    if (setting->getGroup() == Setting::Group::VIDEO)
+    if (setting.type == Setting::Type::BOOLEAN)
+      entry = new BoolMenuEntry(handle, setting);
+    else if (setting.type == Setting::Type::ENUMERATION)
+      entry = new EnumMenuEntry(handle, setting);
+    else if (setting.type == Setting::Type::PATH)
+      entry = new PathSettingMenuEntry(handle, setting);
+
+    if (setting.group == Setting::Group::VIDEO)
       settingsVideo->addEntry(entry);
   }
   

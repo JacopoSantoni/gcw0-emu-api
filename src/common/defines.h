@@ -17,6 +17,8 @@
 #define LOG(...) do { } while (false)
 #endif
 
+#include <unordered_map>
+
 #include "../systems/systems.h"
 
 typedef uint8_t u8;
@@ -211,6 +213,11 @@ struct SfxAudioSpec
 struct CorePreferences
 {
   std::string scaler;
+  std::unordered_map<std::string, std::string> settings;
+  
+  
+  const std::string& valueForSetting(const std::string& ident) const { return settings.find(ident)->second; }
+  void setValueForSetting(const std::string& ident, const std::string& value) { settings[ident] = value; }
 };
 
 

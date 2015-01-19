@@ -91,8 +91,11 @@ private:
   const u16 totalSpacing = 10;
   u16 valueTextWidth;
   
+protected:
+  const CoreHandle& handle;
+  
 public:
-  SettingMenuEntry(const std::string& name) : StandardMenuEntry(name) { }
+  SettingMenuEntry(const std::string& name, const CoreHandle& handle) : StandardMenuEntry(name), handle(handle) { }
   virtual const std::string getValueName() const = 0;
   virtual bool canBeModifiedAtRuntime() const = 0;
   bool canBeModified() const;
@@ -102,34 +105,40 @@ public:
   void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
-class BoolMenuEntry : public SettingMenuEntry
+class RealSettingMenuEntry : public SettingMenuEntry
 {
-private:
-  BoolSetting* const setting;
-
+protected:
+  const Setting& setting;
+  void setValue(Manager* manager, const std::string& value);
+  const std::string& getValue() const;
+  
 public:
-  BoolMenuEntry(BoolSetting *setting) : SettingMenuEntry(setting->getName()), setting(setting) {
+  RealSettingMenuEntry(const CoreHandle& handle, const Setting& setting) : SettingMenuEntry(setting.name, handle), setting(setting) { }
+
+  bool canBeModifiedAtRuntime() const override { return setting.canBeModifiedAtRuntime; }
+  const std::string getValueName() const override { return getValue(); }
+};
+  
+class BoolMenuEntry : public RealSettingMenuEntry
+{
+public:
+  BoolMenuEntry(const CoreHandle& handle, const Setting& setting) : RealSettingMenuEntry(handle, setting) {
     setValueTextWidth(std::max(Font::bigFont.stringWidth("Yes"), Font::bigFont.stringWidth("No")));
   }
   HelpType help() const override { return canBeModified() ? HelpType::BOOL_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
+  const std::string getValueName() const override { return getValue() == "true" ? "Yes" : "No"; }
 
-  const std::string getValueName() const override { return setting->getValue() ? "Yes" : "No"; }
-  bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
-
+  
   void action(Manager *manager, GCWKey key) override;
 };
   
-class EnumMenuEntry : public SettingMenuEntry
+class EnumMenuEntry : public RealSettingMenuEntry
 {
-private:
-  EnumSetting* const setting;
-
 public:
-  EnumMenuEntry(EnumSetting* setting) : SettingMenuEntry(setting->getName()), setting(setting)
+  EnumMenuEntry(const CoreHandle& handle, const Setting& setting) : RealSettingMenuEntry(handle, setting)
   {
-    std::vector<std::string> names = setting->getValueNames();
     u16 maxWidth = 0;
-    for (const auto& name : names)
+    for (const auto& name : setting.values)
     {
       u16 length = Font::bigFont.stringWidth(name.c_str());
       maxWidth = std::max(maxWidth, length);
@@ -139,20 +148,25 @@ public:
   }
   HelpType help() const override { return canBeModified() ? HelpType::ENUM_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
 
-
-  const std::string getValueName() const override { return setting->getValueName(); }
-  bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
-
   void action(Manager *manager, GCWKey key) override;
+};
+  
+class PathSettingMenuEntry : public RealSettingMenuEntry
+{
+public:
+  PathSettingMenuEntry(const CoreHandle& handle, const Setting& setting) : RealSettingMenuEntry(handle, setting) { }
+  HelpType help() const override { return canBeModified() ? HelpType::PATH_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
+  
+  virtual void action(Manager *manager, GCWKey key);
+  void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class BlitterMenuEntry : public SettingMenuEntry
 {
 private:
-  const CoreHandle& handle;
   std::vector<const std::string> blitters;
   decltype(blitters)::iterator current;
-    
+  
 public:
   BlitterMenuEntry(const CoreHandle& handle, std::vector<const std::string>& blitters);
   
@@ -160,23 +174,6 @@ public:
   bool canBeModifiedAtRuntime() const override { return blitters.size() > 1; }
   
   void action(Manager *manager, GCWKey key) override;
-};
-  
-  
-class PathSettingMenuEntry : public SettingMenuEntry
-{
-private:
-  PathSetting* const setting;
-  const std::string pathViewTitle;
-public:
-  PathSettingMenuEntry(PathSetting *setting, const std::string& pathViewTitle) : SettingMenuEntry(setting->getName()), setting(setting), pathViewTitle(pathViewTitle) { }
-  HelpType help() const override { return canBeModified() ? HelpType::PATH_SETTING : HelpType::SETTING_CANT_BE_CHANGED; }
-  
-  const std::string getValueName() const override { return setting->getValue(); }
-  bool canBeModifiedAtRuntime() const override { return setting->canBeModifiedAtRuntime(); }
-
-  virtual void action(Manager *manager, GCWKey key);
-  void render(Gfx* gfx, int x, int y, bool isSelected) override;
 };
   
 class PathMenuEntry : public MenuEntry
