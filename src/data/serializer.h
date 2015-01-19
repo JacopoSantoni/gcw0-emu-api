@@ -156,9 +156,7 @@ public:
   {
     serialize("width", (u32)gfxSpec.width, writer);
     serialize("height", (u32)gfxSpec.height, writer);
-    
-    writer.String("format");
-    
+      
     const char* formatStr = nullptr;
     
     switch (gfxSpec.format)
