@@ -7,7 +7,7 @@ SDL_INCLUDES := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
 SDL_LIBS := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
 
 CCFLAGS = -std=c++11 $(SDL_INCLUDES)
-LDFLAGS += $(SDL_LIBS) -lSDL_image
+LDFLAGS += $(SDL_LIBS) -lSDL_image -ldl
 
 all opt debug:
 opk opt: CCFLAGS += -O3 -ffast-math
@@ -32,7 +32,7 @@ clean:
 $(BINDIR)/%.o : $(BASESRC)/%.cpp
 	@test -d $(@D) || mkdir -p $(@D)
 	$(CC) -DMAKE -c $(CCFLAGS) $< -o $@
-	
+
 opk: $(EXECUTABLE)
 	rm -rf .opk_data
 	mkdir -p .opk_data/data/
@@ -40,7 +40,6 @@ opk: $(EXECUTABLE)
 	cp -r gcw/* .opk_data/
 	cp $< .opk_data/gcwemu
 	mksquashfs .opk_data $(EXECUTABLE).opk -all-root -noappend -no-exports -no-xattrs -no-progress >/dev/null
-	
+
 send: opk
   scp gcwemu.opk root@10.1.1.2:/media/SD/apps
-
